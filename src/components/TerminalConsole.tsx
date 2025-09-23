@@ -38,7 +38,7 @@ export default function TerminalConsole() {
             { id: nextId.current++, content: <span className="text-neutral-500">Welcome to <span className="text-blue-400">bluedot.it.com</span>. Type <span className="text-neutral-200">help</span> to get started.</span> },
         ];
         setEntries(banner);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+         
     }, []);
 
     // Focus input on first user keypress, without scrolling the page
