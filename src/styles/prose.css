@@ -1,0 +1,4 @@
+.prose-tech :where(code):not(:where([class~="not-prose"] *)){
+    @apply bg-neutral-900 text-blue-200 px-1.5 py-0.5 rounded border border-neutral-800;
+}
+.prose-tech a{ @apply text-bluedot-400 underline underline-offset-4 hover:text-bluedot-300; }
