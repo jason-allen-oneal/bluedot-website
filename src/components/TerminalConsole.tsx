@@ -81,17 +81,20 @@ export default function TerminalConsole() {
         [
             <span key="h0" className="text-neutral-200">Available commands:</span>,
             <span key="h1"><span className="text-green-400">help</span>                <span className="text-neutral-400">Show this help</span></span>,
-            <span key="h2"><span className="text-green-400">about</span>               <span className="text-neutral-400">Who I am and what I do</span></span>,
-            <span key="h3"><span className="text-green-400">projects</span>            <span className="text-neutral-400">List featured projects</span></span>,
-            <span key="h4"><span className="text-green-400">blog</span>                <span className="text-neutral-400">Open blog</span></span>,
-            <span key="h5"><span className="text-green-400">contact</span>             <span className="text-neutral-400">Open contact</span></span>,
-            <span key="h6"><span className="text-green-400">ls</span>                  <span className="text-neutral-400">List directory (supports ~ and ~/projects)</span></span>,
-            <span key="h7"><span className="text-green-400">cd</span> <span className="text-blue-400">&lt;dir&gt;</span>           <span className="text-neutral-400">Change directory</span></span>,
-            <span key="h8"><span className="text-green-400">pwd</span>                 <span className="text-neutral-400">Print working directory</span></span>,
-            <span key="h9"><span className="text-green-400">whoami</span>              <span className="text-neutral-400">Print current user</span></span>,
-            <span key="h10"><span className="text-green-400">date</span>                <span className="text-neutral-400">Print current date</span></span>,
-            <span key="h11"><span className="text-green-400">echo</span> <span className="text-blue-400">&lt;text&gt;</span>         <span className="text-neutral-400">Print text</span></span>,
-            <span key="h12"><span className="text-green-400">clear</span>               <span className="text-neutral-400">Clear the screen</span></span>,
+            <span key="h2"><span className="text-green-400">open</span> <span className="text-blue-400">&lt;target&gt;</span>       <span className="text-neutral-400">Open about, contact, projects, or blog</span></span>,
+            <span key="h3"><span className="text-green-400">ls</span>                  <span className="text-neutral-400">List directory contents</span></span>,
+            <span key="h4"><span className="text-green-400">cd</span> <span className="text-blue-400">&lt;dir&gt;</span>           <span className="text-neutral-400">Change directory</span></span>,
+            <span key="h5"><span className="text-green-400">pwd</span>                 <span className="text-neutral-400">Print working directory</span></span>,
+            <span key="h6"><span className="text-green-400">whoami</span>              <span className="text-neutral-400">Print current user</span></span>,
+            <span key="h7"><span className="text-green-400">date</span>                <span className="text-neutral-400">Print current date</span></span>,
+            <span key="h8"><span className="text-green-400">echo</span> <span className="text-blue-400">&lt;text&gt;</span>         <span className="text-neutral-400">Print text</span></span>,
+            <span key="h9"><span className="text-green-400">clear</span>               <span className="text-neutral-400">Clear the screen</span></span>,
+            <span key="h10"><span className="text-green-400">cat</span> <span className="text-blue-400">&lt;file&gt;</span>          <span className="text-neutral-400">Display file contents</span></span>,
+            <span key="h11"><span className="text-green-400">grep</span> <span className="text-blue-400">&lt;pattern&gt;</span>      <span className="text-neutral-400">Search for pattern (simulated)</span></span>,
+            <span key="h12"><span className="text-green-400">ps</span>                  <span className="text-neutral-400">Show running processes</span></span>,
+            <span key="h13"><span className="text-green-400">top</span>                 <span className="text-neutral-400">Display system info</span></span>,
+            <span key="h14"><span className="text-green-400">history</span>             <span className="text-neutral-400">Show command history</span></span>,
+            <span key="h15"><span className="text-green-400">uname</span>               <span className="text-neutral-400">System information</span></span>,
         ]
     ), []);
 
@@ -171,18 +174,6 @@ export default function TerminalConsole() {
             case "help":
                 writeLines(helpContent);
                 break;
-            case "about":
-                write(aboutContent);
-                break;
-            case "projects":
-                writeLines(listProjects());
-                break;
-            case "blog":
-                write(<Line>Opening /blog …</Line>);
-                break;
-            case "contact":
-                write(<Line>Opening /contact …</Line>);
-                break;
             case "ls": {
                 const dir = fs[cwd as keyof typeof fs];
                 if (dir?.type === "dir") {
@@ -225,11 +216,70 @@ export default function TerminalConsole() {
                     router.push(path);
                 } else if (target.startsWith("http")) {
                     write(<Line>Opening <span className="text-blue-400">{target}</span> …</Line>);
+                    window.open(target, '_blank');
                 } else {
-                    write(<Line>Unknown target. Try: open about | projects | blog</Line>);
+                    write(<Line>Usage: open &lt;target&gt;</Line>);
+                    write(<Line>Available targets: about, projects, blog, contact</Line>);
+                    write(<Line>Or provide a URL starting with http</Line>);
                 }
                 break;
             }
+            case "cat": {
+                const filename = rest.join(" ");
+                if (!filename) {
+                    write(<Line>cat: missing file operand</Line>);
+                } else if (filename === "about.txt") {
+                    write(aboutContent);
+                } else if (filename === "contact.txt") {
+                    write(<Line>Email: contact@bluedot.it.com</Line>);
+                    write(<Line>LinkedIn: /in/jasonallenoneal</Line>);
+                    write(<Line>GitHub: github.com/jason-allen-oneal</Line>);
+                } else {
+                    write(<Line>cat: {filename}: No such file or directory</Line>);
+                }
+                break;
+            }
+            case "grep": {
+                const pattern = rest.join(" ");
+                if (!pattern) {
+                    write(<Line>grep: missing search pattern</Line>);
+                } else {
+                    write(<Line>grep: searching for "{pattern}" in current directory...</Line>);
+                    write(<Line>about.txt: Found matches in personal information</Line>);
+                    write(<Line>Use 'cat about.txt' to read full content</Line>);
+                }
+                break;
+            }
+            case "ps":
+                write(<Line>  PID TTY          TIME CMD</Line>);
+                write(<Line>    1 pts/0    00:00:01 bash</Line>);
+                write(<Line>   42 pts/0    00:00:00 node</Line>);
+                write(<Line>   89 pts/0    00:00:00 bluedot-console</Line>);
+                break;
+            case "top":
+                write(<Line>System: BlueDot Terminal v1.0</Line>);
+                write(<Line>Uptime: 2 days, 4 hours</Line>);
+                write(<Line>Load average: 0.12, 0.08, 0.05</Line>);
+                write(<Line>Memory: 512MB available</Line>);
+                write(<Line>Processes: 3 running</Line>);
+                break;
+            case "history":
+                write(<Line>Command history:</Line>);
+                history.slice(0, 10).forEach((cmd, i) => {
+                    write(<Line>  {history.length - i} {cmd}</Line>);
+                });
+                if (history.length > 10) {
+                    write(<Line>  ... ({history.length - 10} more commands)</Line>);
+                }
+                break;
+            case "uname":
+                const flags = rest.join(" ");
+                if (flags === "-a" || flags === "--all") {
+                    write(<Line>BlueDot 1.0.0 bluedot-console x86_64 GNU/Linux</Line>);
+                } else {
+                    write(<Line>BlueDot</Line>);
+                }
+                break;
             case "clear":
                 setEntries([]);
                 break;
