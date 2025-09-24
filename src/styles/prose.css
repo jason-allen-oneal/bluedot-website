@@ -2,3 +2,65 @@
     @apply bg-neutral-900 text-blue-200 px-1.5 py-0.5 rounded border border-neutral-800;
 }
 .prose-tech a{ @apply text-bluedot-400 underline underline-offset-4 hover:text-bluedot-300; }
+.prose-tech a:focus-visible{ @apply outline-none ring-2 ring-bluedot-500/40 rounded-sm; }
+
+/* Block code */
+.prose-tech :where(pre):not(:where([class~="not-prose"] *)){
+    @apply bg-neutral-900 border border-neutral-800 rounded-lg p-4 overflow-x-auto;
+}
+.prose-tech :where(pre code):not(:where([class~="not-prose"] *)){
+    @apply bg-transparent text-blue-200 p-0 border-0 font-mono text-sm leading-relaxed;
+}
+.prose-tech :where(pre){ @apply my-6; }
+.prose-tech :where(code)::before,
+.prose-tech :where(code)::after{ content: none; }
+
+/* Headings */
+.prose-tech :where(h1){ @apply text-cyan-400 tracking-tight; }
+.prose-tech :where(h2){ @apply text-blue-300 mt-8 mb-2 tracking-tight; }
+.prose-tech :where(h3){ @apply text-blue-200 mt-6 mb-1; }
+.prose-tech :where(h4){ @apply text-neutral-200 mt-6 mb-1; }
+.prose-tech :where(h5){ @apply text-neutral-300 mt-4 mb-1; }
+.prose-tech :where(h6){ @apply text-neutral-400 mt-4 mb-1 uppercase tracking-wide; }
+.prose-tech :where(h1,h2,h3,h4,h5,h6){ @apply scroll-mt-24; }
+
+/* Paragraphs */
+.prose-tech :where(p){ @apply leading-7 text-neutral-300 my-4; }
+
+/* Blockquote */
+.prose-tech :where(blockquote){ @apply border-l-2 border-neutral-700 pl-4 italic text-neutral-300; }
+
+/* Lists */
+.prose-tech :where(ul,ol){ @apply my-6 pl-6; }
+.prose-tech :where(ul>li)::marker{ @apply text-neutral-500; }
+.prose-tech :where(ol>li)::marker{ @apply text-neutral-500; }
+.prose-tech :where(li){ @apply my-2; }
+.prose-tech :where(li>p){ @apply my-0; }
+.prose-tech :where(input[type="checkbox"]){ @apply mr-2 rounded border-neutral-600 bg-neutral-900 text-bluedot-500; }
+
+/* Tables */
+.prose-tech :where(table){ @apply w-full table-auto border-collapse overflow-hidden rounded-lg; }
+.prose-tech :where(th, td){ @apply border border-neutral-800 px-3 py-2; }
+.prose-tech :where(thead th){ @apply bg-neutral-900 text-neutral-200; }
+.prose-tech :where(tbody tr:nth-child(odd)){ @apply bg-neutral-950; }
+.prose-tech :where(caption){ @apply caption-bottom text-neutral-500 text-sm mt-2; }
+
+/* Horizontal rule */
+.prose-tech :where(hr){ @apply my-10 border-neutral-800; }
+
+/* Images and figures */
+.prose-tech :where(img){ @apply rounded-lg border border-neutral-800 mx-auto; }
+.prose-tech :where(figure){ @apply my-8; }
+.prose-tech :where(figcaption){ @apply mt-2 text-center text-neutral-500 text-sm; }
+
+/* Inline elements */
+.prose-tech :where(kbd){ @apply inline-block rounded border border-neutral-700 bg-neutral-900 px-1.5 py-0.5 text-xs font-medium text-neutral-200 shadow-sm; }
+.prose-tech :where(mark){ @apply bg-yellow-400/20 text-yellow-200 px-1 rounded; }
+.prose-tech :where(del){ @apply text-neutral-400; }
+.prose-tech :where(sup){ @apply align-super text-xs; }
+.prose-tech :where(sub){ @apply align-sub text-xs; }
+
+/* Details/summary */
+.prose-tech :where(details){ @apply my-4 rounded border border-neutral-800 bg-neutral-950; }
+.prose-tech :where(details[open]){ @apply bg-neutral-900/40; }
+.prose-tech :where(summary){ @apply cursor-pointer select-none px-3 py-2 text-neutral-200; }

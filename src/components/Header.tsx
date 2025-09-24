@@ -1,16 +1,16 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import CommandMenu from "@/components/CommandMenu";
 import ThemeToggle from "@/components/ThemeToggle";
 
 
 const links = [
-    { href: "/", label: "home()" },
-    { href: "/projects", label: "view_projects()" },
-    { href: "/about", label: "about_me()" },
-    { href: "/contact", label: "access_contact()" },
-    { href: "/auth", label: "authenticate()" }
+    { href: "/", label: "Home" },
+    { href: "/projects", label: "Projects" },
+    { href: "/blog", label: "Blog" },
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
+    { href: "/auth", label: "Login" }
 ];
 
 
@@ -27,7 +27,6 @@ export default function Header(){
                     ))}
                 </nav>
                 <div className="ml-auto flex items-center gap-2">
-                    <CommandMenu />
                     <ThemeToggle />
                 </div>
             </div>

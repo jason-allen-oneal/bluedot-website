@@ -105,7 +105,7 @@ function relativeTimeFrom(dateStr: string): string {
   return "just now";
 }
 
-export async function getGitHubRepos(): Promise<FormattedRepo[]> {
+export async function getGitHubRepos(count = 3): Promise<FormattedRepo[]> {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github.v3+json",
   };
@@ -132,7 +132,8 @@ export async function getGitHubRepos(): Promise<FormattedRepo[]> {
     return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
   });
 
-  return filtered.slice(0, 3).map((repo) => ({
+  const limit = Number.isFinite(count) && count > 0 ? Math.floor(count) : 3;
+  return filtered.slice(0, limit).map((repo) => ({
     name: repo.name,
     description: repo.description || "No description available",
     language: repo.language || "Unknown",

@@ -3,7 +3,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { projects } from "@/lib/projects";
 
 type TerminalEntry = {
     id: number;
@@ -19,6 +18,10 @@ export default function TerminalConsole() {
     const [history, setHistory] = useState<string[]>([]);
     const [historyIndex, setHistoryIndex] = useState<number>(-1);
     const [cwd, setCwd] = useState<string>("~");
+    const [isRunning, setIsRunning] = useState<boolean>(false);
+    const [isClosed, setIsClosed] = useState<boolean>(false);
+    type WindowState = "normal" | "minimized" | "maximized";
+    const [windowState, setWindowState] = useState<WindowState>("normal");
     const inputRef = useRef<HTMLInputElement>(null);
     const scrollAreaRef = useRef<HTMLDivElement>(null);
     const didInitialAutoScrollRef = useRef<boolean>(false);
@@ -81,6 +84,7 @@ export default function TerminalConsole() {
         [
             <span key="h0" className="text-neutral-200">Available commands:</span>,
             <span key="h1"><span className="text-green-400">help</span>                <span className="text-neutral-400">Show this help</span></span>,
+            <span key="h1b"><span className="text-green-400">projects</span> <span className="text-blue-400">[n]</span>       <span className="text-neutral-400">List top GitHub repos</span></span>,
             <span key="h2"><span className="text-green-400">open</span> <span className="text-blue-400">&lt;target&gt;</span>       <span className="text-neutral-400">Open about, contact, projects, or blog</span></span>,
             <span key="h3"><span className="text-green-400">ls</span>                  <span className="text-neutral-400">List directory contents</span></span>,
             <span key="h4"><span className="text-green-400">cd</span> <span className="text-blue-400">&lt;dir&gt;</span>           <span className="text-neutral-400">Change directory</span></span>,
@@ -101,21 +105,49 @@ export default function TerminalConsole() {
     const aboutContent = (
         <div className="space-y-2">
             <div>
-                Cybersecurity engineer • Software builder • I design resilient systems and craft tooling for red/blue teams.
+                <b>Jason O’Neal</b><br></br>
+                <span className="text-green-400">Cybersecurity Student (IoT)</span> • <span className="text-cyan-400">Full-Stack Developer</span> • <span className="text-blue-400">AI/LLM Developer</span><br></br>
+                I’m a cybersecurity student specializing in IoT and a full-stack developer who builds resilient web applications. I work with Python 3, TypeScript, and JavaScript to design secure systems and craft custom tooling for red and blue teams. My interests also extend into artificial intelligence — exploring large language models with Ollama, LM Studio, PyTorch, and advanced prompting techniques. I enjoy bridging security, software, and AI to create practical, forward-thinking solutions.
             </div>
             <div className="space-x-2">
-                <Link className="underline underline-offset-4" href="/about">/about</Link>
-                <span>·</span>
                 <Link className="underline underline-offset-4" href="/projects">/projects</Link>
             </div>
         </div>
     );
 
-    const listProjects = () => projects.map(p => (
-        <span key={p.slug}>
-            <span className="text-neutral-500">-</span> <span className="text-neutral-200">{p.title}</span>{p.slug ? <span className="text-neutral-500"> ({p.slug})</span> : null}
-        </span>
-    ));
+    // Fetch and list GitHub repositories inside the console
+    async function listProjectsFromGitHub(limit = 6) {
+        try {
+            const res = await fetch("https://api.github.com/users/jason-allen-oneal/repos?per_page=100", { headers: { Accept: "application/vnd.github.v3+json" } });
+            if (!res.ok) {
+                write(<Line>projects: failed to fetch ({res.status})</Line>);
+                return;
+            }
+            const data = await res.json();
+            const filtered = (data || []).filter((r: any) => !r.fork && !r.private);
+            filtered.sort((a: any, b: any) => {
+                if (b.stargazers_count !== a.stargazers_count) return b.stargazers_count - a.stargazers_count;
+                return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+            });
+            const top = filtered.slice(0, Math.max(1, Math.min(50, limit)));
+            write(<Line><span className="text-neutral-300">Top repositories:</span></Line>);
+            top.forEach((r: any) => {
+                write(
+                    <Line>
+                        <span className="text-blue-400">{r.name}</span>
+                        <span className="text-neutral-500"> — </span>
+                        <span className="text-neutral-300">{r.description || "No description"}</span>
+                        <span className="text-neutral-500"> · </span>
+                        <span className="text-yellow-300">★ {r.stargazers_count}</span>
+                        <span className="text-neutral-500"> · </span>
+                        <a className="underline underline-offset-4" href={r.html_url} target="_blank" rel="noreferrer">repo</a>
+                    </Line>
+                );
+            });
+        } catch (err) {
+            write(<Line>projects: network error</Line>);
+        }
+    }
 
     const Line: React.FC<{ children: React.ReactNode }>
         = ({ children }) => <div className="whitespace-pre-wrap">{children}</div>;
@@ -142,7 +174,7 @@ export default function TerminalConsole() {
     // Simple virtual FS map
     const fs = useMemo(() => ({
         "~": { type: "dir", children: { "projects": "dir", "about.txt": "file", "contact.txt": "file" } as Record<string, "dir"|"file"> },
-        "~/projects": { type: "dir", children: Object.fromEntries(projects.map(p => [p.slug, "file"])) as Record<string, "dir"|"file"> },
+        "~/projects": { type: "dir", children: {} as Record<string, "dir"|"file"> },
     }), []);
 
     const normalizePath = (inputPath: string): string | null => {
@@ -160,7 +192,33 @@ export default function TerminalConsole() {
         return null;
     };
 
-    const runCommand = (raw: string) => {
+    async function tryGeminiCommand(fullCommand: string): Promise<boolean> {
+        try {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 6000);
+            const res = await fetch("/api/gemini", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ prompt: fullCommand }),
+                signal: controller.signal,
+            });
+            clearTimeout(timeout);
+            if (!res.ok) return false;
+            const data = await res.json();
+            const text: string = data?.response || "";
+            if (!text) return false;
+            const cleaned = text
+                .replace(/^```[a-zA-Z]*\n?/, "")
+                .replace(/\n?```\s*$/, "")
+                .trimEnd();
+            cleaned.split(/\r?\n/).forEach((line) => write(<Line>{line}</Line>));
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    const runCommand = async (raw: string) => {
         const input = raw.trim();
         if (!input) return;
 
@@ -174,6 +232,12 @@ export default function TerminalConsole() {
             case "help":
                 writeLines(helpContent);
                 break;
+            case "projects": {
+                const nRaw = rest[0];
+                const n = nRaw ? parseInt(nRaw) : 6;
+                listProjectsFromGitHub(Number.isFinite(n) && n > 0 ? n : 6);
+                break;
+            }
             case "ls": {
                 const dir = fs[cwd as keyof typeof fs];
                 if (dir?.type === "dir") {
@@ -214,13 +278,9 @@ export default function TerminalConsole() {
                     const path = `/${target}`;
                     write(<Line>Navigating to <span className="text-blue-400">{path}</span> …</Line>);
                     router.push(path);
-                } else if (target.startsWith("http")) {
-                    write(<Line>Opening <span className="text-blue-400">{target}</span> …</Line>);
-                    window.open(target, '_blank');
                 } else {
                     write(<Line>Usage: open &lt;target&gt;</Line>);
                     write(<Line>Available targets: about, projects, blog, contact</Line>);
-                    write(<Line>Or provide a URL starting with http</Line>);
                 }
                 break;
             }
@@ -231,7 +291,7 @@ export default function TerminalConsole() {
                 } else if (filename === "about.txt") {
                     write(aboutContent);
                 } else if (filename === "contact.txt") {
-                    write(<Line>Email: contact@bluedot.it.com</Line>);
+                    write(<Line>Email: jason.allen.oneal@gmail.com</Line>);
                     write(<Line>LinkedIn: /in/jasonallenoneal</Line>);
                     write(<Line>GitHub: github.com/jason-allen-oneal</Line>);
                 } else {
@@ -250,19 +310,27 @@ export default function TerminalConsole() {
                 }
                 break;
             }
-            case "ps":
-                write(<Line>  PID TTY          TIME CMD</Line>);
-                write(<Line>    1 pts/0    00:00:01 bash</Line>);
-                write(<Line>   42 pts/0    00:00:00 node</Line>);
-                write(<Line>   89 pts/0    00:00:00 bluedot-console</Line>);
+            case "ps": {
+                const success = await tryGeminiCommand(input);
+                if (!success) {
+                    write(<Line>  PID TTY          TIME CMD</Line>);
+                    write(<Line>    1 pts/0    00:00:01 bash</Line>);
+                    write(<Line>   42 pts/0    00:00:00 node</Line>);
+                    write(<Line>   89 pts/0    00:00:00 bluedot-console</Line>);
+                }
                 break;
-            case "top":
-                write(<Line>System: BlueDot Terminal v1.0</Line>);
-                write(<Line>Uptime: 2 days, 4 hours</Line>);
-                write(<Line>Load average: 0.12, 0.08, 0.05</Line>);
-                write(<Line>Memory: 512MB available</Line>);
-                write(<Line>Processes: 3 running</Line>);
+            }
+            case "top": {
+                const success = await tryGeminiCommand(input);
+                if (!success) {
+                    write(<Line>System: BlueDot Terminal v1.0</Line>);
+                    write(<Line>Uptime: 2 days, 4 hours</Line>);
+                    write(<Line>Load average: 0.12, 0.08, 0.05</Line>);
+                    write(<Line>Memory: 512MB available</Line>);
+                    write(<Line>Processes: 3 running</Line>);
+                }
                 break;
+            }
             case "history":
                 write(<Line>Command history:</Line>);
                 history.slice(0, 10).forEach((cmd, i) => {
@@ -272,30 +340,43 @@ export default function TerminalConsole() {
                     write(<Line>  ... ({history.length - 10} more commands)</Line>);
                 }
                 break;
-            case "uname":
-                const flags = rest.join(" ");
-                if (flags === "-a" || flags === "--all") {
-                    write(<Line>BlueDot 1.0.0 bluedot-console x86_64 GNU/Linux</Line>);
-                } else {
-                    write(<Line>BlueDot</Line>);
+            case "uname": {
+                const success = await tryGeminiCommand(input);
+                if (!success) {
+                    const flags = rest.join(" ");
+                    if (flags === "-a" || flags === "--all") {
+                        write(<Line>BlueDot 1.0.0 bluedot-console x86_64 GNU/Linux</Line>);
+                    } else {
+                        write(<Line>BlueDot</Line>);
+                    }
                 }
                 break;
+            }
             case "clear":
                 setEntries([]);
                 break;
-            default:
-                write(<Line>Command not found: {cmd}. Try help.</Line>);
+            default: {
+                const success = await tryGeminiCommand(input);
+                if (!success) {
+                    write(<Line>Command not found: {cmd}. Try help.</Line>);
+                }
+                break;
+            }
         }
     };
 
-    const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const onKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             e.preventDefault();
+            if (isRunning) return;
             const current = command;
             setHistory((prev) => (current ? [current, ...prev] : prev));
             setHistoryIndex(-1);
-            runCommand(current);
+            setIsRunning(true);
+            await runCommand(current);
             setCommand("");
+            setIsRunning(false);
+            focusInput();
             return;
         }
         if (e.key === "ArrowUp") {
@@ -320,45 +401,120 @@ export default function TerminalConsole() {
         }
     };
 
+    const windowHeightClass = windowState === "normal" ? "h-[320px] md:h-[440px]" : (windowState === "minimized" ? "h-[36px]" : "h-[80vh]");
+
+    const handleClose = () => {
+        setIsClosed(true);
+    };
+    const handleMinimize = () => {
+        inputRef.current?.blur();
+        setWindowState("minimized");
+    };
+    const handleMaximize = () => {
+        setWindowState((s) => (s === "maximized" ? "normal" : "maximized"));
+    };
+
     return (
         <div className="h-full min-h-0" onClick={focusInput}>
             <div className="mx-auto max-w-3xl h-full min-h-0 px-4 py-8">
-                <div className="flex h-full min-h-[300px] flex-col rounded-lg border border-neutral-800 bg-neutral-950/80 shadow-xl">
-                    {/* window bar */}
-                    <div className="flex items-center justify-between border-b border-neutral-800 px-4 py-2">
-                        <div className="flex gap-2">
-                            <span className="h-3 w-3 rounded-full bg-red-500/80" />
-                            <span className="h-3 w-3 rounded-full bg-yellow-500/80" />
-                            <span className="h-3 w-3 rounded-full bg-green-500/80" />
-                        </div>
-                        <div className="text-xs text-neutral-500">bluedot console</div>
-                    </div>
+                {!isClosed ? (
+                    <>
+                        {windowState !== "maximized" && (
+                            <div className={`flex ${windowHeightClass} flex-col rounded-lg border border-neutral-800 bg-neutral-950/80 shadow-xl transition-[height] duration-200`}>
+                                {/* window bar */}
+                                <div className="flex items-center justify-between border-b border-neutral-800 px-4 py-2">
+                                    <div className="flex gap-2">
+                                        <button onClick={handleClose} title="Close" aria-label="Close terminal" className="h-3 w-3 rounded-full bg-red-500/80 hover:bg-red-500" />
+                                        <button onClick={handleMinimize} title="Minimize" aria-label="Minimize terminal" className="h-3 w-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500" />
+                                        <button onClick={handleMaximize} title="Maximize" aria-label="Maximize terminal" className="h-3 w-3 rounded-full bg-green-500/80 hover:bg-green-500" />
+                                    </div>
+                                    <div className="text-xs text-neutral-500">bluedot console</div>
+                                </div>
 
-                    {/* scrollable terminal content */}
-                    <div ref={scrollAreaRef} className="flex-1 min-h-0 overflow-y-auto font-mono text-sm leading-relaxed px-4 py-4">
-                        <div className="space-y-2">
-                            {entries.map((e) => (
-                                <div key={e.id}>{e.content}</div>
-                            ))}
+                                {/* scrollable terminal content */}
+                                {windowState !== "minimized" && (
+                                    <div ref={scrollAreaRef} className="flex-1 min-h-0 overflow-y-auto font-mono text-sm leading-relaxed px-4 py-4">
+                                    <div className="space-y-2">
+                                            {entries.map((e) => (
+                                                <div key={e.id}>{e.content}</div>
+                                            ))}
+                                        </div>
+                                        {!isRunning && (
+                                            <div className="mt-2 flex items-center gap-2">
+                                                <span className="select-none">{renderPrompt(cwd)}</span>
+                                                <input
+                                                    ref={inputRef}
+                                                    value={command}
+                                                    onChange={(ev) => setCommand(ev.target.value)}
+                                                    onKeyDown={onKeyDown}
+                                                    className="flex-1 bg-transparent outline-none placeholder:text-neutral-600"
+                                                    placeholder="type a command… (help)"
+                                                    aria-label="terminal input"
+                                                    autoCapitalize="none"
+                                                    autoCorrect="off"
+                                                    spellCheck={false}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {windowState === "maximized" && (
+                            <div className="fixed inset-x-3 top-16 bottom-3 z-50 flex flex-col rounded-lg border border-neutral-800 bg-neutral-950/90 shadow-2xl">
+                                <div className="flex items-center justify-between border-b border-neutral-800 px-4 py-2">
+                                    <div className="flex gap-2">
+                                        <button onClick={handleClose} title="Close" aria-label="Close terminal" className="h-3 w-3 rounded-full bg-red-500/80 hover:bg-red-500" />
+                                        <button onClick={handleMinimize} title="Minimize" aria-label="Minimize terminal" className="h-3 w-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500" />
+                                        <button onClick={handleMaximize} title="Restore" aria-label="Restore terminal" className="h-3 w-3 rounded-full bg-green-500/80 hover:bg-green-500" />
+                                    </div>
+                                    <div className="text-xs text-neutral-500">bluedot console (maximized)</div>
+                                </div>
+                                <div ref={scrollAreaRef} className="flex-1 min-h-0 overflow-y-auto font-mono text-sm leading-relaxed px-4 py-4">
+                                    <div className="space-y-2">
+                                        {entries.map((e) => (
+                                            <div key={e.id}>{e.content}</div>
+                                        ))}
+                                    </div>
+                                    {!isRunning && (
+                                        <div className="mt-2 flex items-center gap-2">
+                                            <span className="select-none">{renderPrompt(cwd)}</span>
+                                            <input
+                                                ref={inputRef}
+                                                value={command}
+                                                onChange={(ev) => setCommand(ev.target.value)}
+                                                onKeyDown={onKeyDown}
+                                                className="flex-1 bg-transparent outline-none placeholder:text-neutral-600"
+                                                placeholder="type a command… (help)"
+                                                aria-label="terminal input"
+                                                autoCapitalize="none"
+                                                autoCorrect="off"
+                                                spellCheck={false}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {windowState === "minimized" && (
+                            <div className="fixed left-3 bottom-3 z-40">
+                                <button onClick={() => setWindowState("normal")} className="rounded-md border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-sm text-neutral-300 hover:bg-neutral-900">
+                                    bluedot console — minimized (click to restore)
+                                </button>
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    <div className="rounded-lg border border-neutral-800 bg-neutral-950/60 p-4 text-sm text-neutral-300">
+                        <div className="flex items-center justify-between">
+                            <div>Terminal closed.</div>
+                            <button onClick={() => { setIsClosed(false); setWindowState("normal"); focusInput(); }} className="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-500">Re-open</button>
                         </div>
-                        {/* live prompt inside scroll area */}
-                        <div className="mt-2 flex items-center gap-2">
-                            <span className="select-none">{renderPrompt(cwd)}</span>
-                            <input
-                                ref={inputRef}
-                                value={command}
-                                onChange={(ev) => setCommand(ev.target.value)}
-                                onKeyDown={onKeyDown}
-                                className="flex-1 bg-transparent outline-none placeholder:text-neutral-600"
-                                placeholder="type a command… (help)"
-                                aria-label="terminal input"
-                                autoCapitalize="none"
-                                autoCorrect="off"
-                                spellCheck={false}
-                            />
-                        </div>
+                        <div className="mt-2 text-xs text-neutral-500">Click re-open to restore the console window.</div>
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );

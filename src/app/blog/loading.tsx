@@ -1,16 +1,12 @@
-import Background from "@/components/Background";
-import Nav from "@/components/Nav";
 import { BlogGridSkeleton } from "@/components/LoadingSkeleton";
+import Section from "@/components/Section";
 
 export default function BlogLoading() {
   return (
-    <div className="min-h-screen">
-      <Background />
-      <Nav />
-      <section id="content" className="relative mx-auto max-w-[1100px] px-6 pt-28 pb-10 md:pt-36 md:pb-20">
-        <div className="h-8 bg-muted rounded mb-6 w-24 animate-pulse"></div>
+    <div className="py-16">
+      <Section title="Blog" subtitle="Loading posts…">
         <BlogGridSkeleton />
-      </section>
+      </Section>
     </div>
   );
 }

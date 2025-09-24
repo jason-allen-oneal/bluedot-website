@@ -1,20 +1,22 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import Background from "@/components/Background";
-import Nav from "@/components/Nav";
+import Section from "@/components/Section";
 import SocialShare from "@/components/SocialShare";
 import Comments from "@/components/Comments";
-import { remark } from "remark";
-import html from "remark-html";
-import sanitizeHtml from "sanitize-html";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkGfm from "remark-gfm";
+import remarkRehype from "remark-rehype";
+import remarkBreaks from "remark-breaks";
+import rehypeStringify from "rehype-stringify";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+import rehypeRaw from "rehype-raw";
 import type { Metadata } from "next";
 
-type Props = {
-  params: Promise<{ slug: string }>;
-};
+type Props = { params: { slug: string } };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug } = params;
   
   const post = await prisma.post.findUnique({
     where: { slug },
@@ -46,38 +48,69 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function BlogPost({ params }: Props) {
+  const { slug } = params;
   
   const post = await prisma.post.findUnique({
     where: { slug },
   });
 
   if (!post) return notFound();
+  console.log("raw",post.content);
 
-  // Parse markdown to HTML on the server
-  const processedContent = await remark()
-    .use(html)
-    .process(post.content);
-  const contentHtml = processedContent.toString();
+  // Normalize content: remove shared leading indentation to avoid accidental full-page code blocks
+  const stripSharedIndent = (text: string): string => {
+    const lines = text.replace(/\t/g, "    ").split("\n");
+    const nonEmpty = lines.filter((l) => l.trim().length > 0);
+    if (nonEmpty.length === 0) return text;
+    const indentSizes = nonEmpty.map((l) => (l.match(/^ +/g)?.[0]?.length ?? 0));
+    const minIndent = Math.min(...indentSizes);
+    if (!isFinite(minIndent) || minIndent === 0) return text;
+    return lines
+      .map((l) => (l.startsWith(" ".repeat(minIndent)) ? l.slice(minIndent) : l))
+      .join("\n");
+  };
 
-  // Sanitize the HTML content to prevent XSS
-  const sanitizedHtml = sanitizeHtml(contentHtml, {
-    allowedTags: [
-      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-      'p', 'br', 'strong', 'em', 'u', 's',
-      'code', 'pre', 'blockquote',
-      'ul', 'ol', 'li',
-      'a', 'img',
-      'table', 'thead', 'tbody', 'tr', 'th', 'td'
-    ],
-    allowedAttributes: {
-      'a': ['href', 'title', 'target'],
-      'img': ['src', 'alt', 'title']
-    },
-    allowedSchemes: ['http', 'https', 'mailto'],
-    allowProtocolRelative: false
-  });
+  const normalizedContent = stripSharedIndent(post.content || "");
+
+  // Parse markdown → HTML and sanitize with a strict schema
+  const processor = unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkBreaks)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
+    .use(rehypeSanitize, {
+      ...defaultSchema,
+      tagNames: [
+        ...(defaultSchema.tagNames || []),
+        'figure', 'figcaption', 'caption', 'details', 'summary', 'input'
+      ],
+      attributes: {
+        ...(defaultSchema.attributes || {}),
+        a: [
+          ...(defaultSchema.attributes?.a || []),
+          ['target', 'string'],
+          ['rel', 'space-separated']
+        ],
+        img: [
+          ...(defaultSchema.attributes?.img || []),
+          ['loading', 'string'], ['decoding', 'string'],
+          ['width', 'number'], ['height', 'number']
+        ],
+        input: [
+          ['type', 'checkbox'], ['checked', 'checked'], ['disabled', 'disabled']
+        ],
+        code: [
+          ...(defaultSchema.attributes?.code || []),
+          ['className', 'token list']
+        ]
+      }
+    })
+    .use(rehypeStringify);
+
+  const file = await processor.process(normalizedContent);
+  const sanitizedHtml = String(file);
 
   // Format date in a friendly way
   const formatDate = (date: Date) => {
@@ -89,11 +122,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   };
 
   return (
-    <div className="min-h-screen">
-      <Background />
-      <Nav />
-                        <div className="relative mx-auto max-w-[1100px] px-6 pt-20 pb-10 md:pt-28 md:pb-20">
-                    <article className="card p-8 md:p-12">
+    <div className="py-16">
+      <Section title="Blog" subtitle="Notes, essays, and updates">
+        <article className="rounded-lg border border-neutral-800/70 bg-neutral-950/70 p-6 md:p-10">
           {/* Header Section */}
           <header className="mb-8 text-center">
             <div className="mb-4">
@@ -101,7 +132,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 Blog Post
               </span>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-cyan-400">
               {post.title}
             </h1>
             {post.excerpt && (
@@ -127,7 +158,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
             
             <div 
-              className="prose prose-lg w-full mt-8"
+              className="prose prose-lg prose-invert prose-tech max-w-none w-full mt-8"
               dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
             />
             
@@ -144,10 +175,10 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </div>
           </div>
         </article>
-        
-        {/* Comments Section */}
-        <Comments postId={post.id} />
-      </div>
+        <div className="mt-8">
+          <Comments postId={post.id} />
+        </div>
+      </Section>
     </div>
   );
 }
