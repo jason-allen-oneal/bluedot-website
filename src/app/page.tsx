@@ -138,15 +138,6 @@ export default function HomePage() {
     setWindows((prev) => prev.filter((w) => w.id !== id));
   }, []);
 
-  // Removed openWindowAt (was unused and tripping no-unused-vars)
-
-  const openBlogPost = useCallback(
-    (slug: string, title: string) => {
-      openWindow("blog-post", title, undefined, undefined, slug);
-    },
-    [openWindow]
-  );
-
   const icons: DesktopIcon[] = useMemo(
     () => [
       { id: "about", label: "About", icon: "👤", onClick: () => openWindow("about", "About") },
@@ -165,23 +156,6 @@ export default function HomePage() {
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
   }, [showStart]);
-
-  // Handle hash-based navigation for blog posts
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash;
-      if (hash.startsWith("#blog-post-")) {
-        const slug = hash.replace("#blog-post-", "");
-        const postTitle = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
-        openBlogPost(slug, postTitle);
-        window.history.replaceState(null, "", window.location.pathname);
-      }
-    };
-
-    handleHashChange();
-    window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
-  }, [openBlogPost]);
 
   return (
     <div className="fixed inset-0 w-full h-full select-none overflow-hidden text-slate-100">
@@ -215,7 +189,6 @@ export default function HomePage() {
               onUpdate={(updates) => updateWindow(window.id, updates)}
               onClose={() => closeWindow(window.id)}
               onFocus={() => updateWindow(window.id, { zIndex: zRef.current++ })}
-              onOpenBlogPost={openBlogPost}
             />
           )
       )}
@@ -286,13 +259,11 @@ function Window({
   onUpdate,
   onClose,
   onFocus,
-  onOpenBlogPost,
 }: {
   window: WindowType;
   onUpdate: (updates: Partial<WindowType>) => void;
   onClose: () => void;
   onFocus: () => void;
-  onOpenBlogPost: (slug: string, title: string) => void;
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
@@ -347,7 +318,7 @@ function Window({
       case "projects":
         return <Projects />;
       case "blog":
-        return <Blog onOpenPost={onOpenBlogPost} />;
+        return <Blog />;
       case "contact":
         return <Contact />;
       case "login":
