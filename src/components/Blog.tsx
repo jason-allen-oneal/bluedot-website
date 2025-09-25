@@ -21,10 +21,11 @@ interface Post {
 }
 
 interface BlogProps {
-  // No props needed - this component manages its own state internally
+  // Currently no props needed - this component manages its own state internally
 }
 
-export default function Blog({}: BlogProps) {
+// Use an empty object for props since the interface is empty
+export default function Blog(_props: BlogProps) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentView, setCurrentView] = useState<'list' | 'post'>('list');
