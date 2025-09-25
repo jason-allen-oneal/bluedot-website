@@ -12,7 +12,19 @@ type TerminalEntry = {
 const USERNAME = "guest";
 const HOSTNAME = "bluedot";
 
-export default function TerminalConsole() {
+interface TerminalConsoleProps {
+  windowState?: 'normal' | 'minimized' | 'maximized';
+  onStateChange?: (state: 'normal' | 'minimized' | 'maximized') => void;
+  onPositionChange?: (position: { x: number; y: number }) => void;
+  onSizeChange?: (size: { width: number; height: number }) => void;
+}
+
+export default function TerminalConsole({ 
+  windowState = 'normal',
+  onStateChange,
+  onPositionChange,
+  onSizeChange 
+}: TerminalConsoleProps) {
     const [entries, setEntries] = useState<TerminalEntry[]>([]);
     const [command, setCommand] = useState("");
     const [history, setHistory] = useState<string[]>([]);
@@ -20,8 +32,6 @@ export default function TerminalConsole() {
     const [cwd, setCwd] = useState<string>("~");
     const [isRunning, setIsRunning] = useState<boolean>(false);
     const [isClosed, setIsClosed] = useState<boolean>(false);
-    type WindowState = "normal" | "minimized" | "maximized";
-    const [windowState, setWindowState] = useState<WindowState>("normal");
     const inputRef = useRef<HTMLInputElement>(null);
     const scrollAreaRef = useRef<HTMLDivElement>(null);
     const didInitialAutoScrollRef = useRef<boolean>(false);
@@ -401,116 +411,85 @@ export default function TerminalConsole() {
         }
     };
 
-    const windowHeightClass = windowState === "normal" ? "h-[320px] md:h-[440px]" : (windowState === "minimized" ? "h-[36px]" : "h-[80vh]");
 
     const handleClose = () => {
         setIsClosed(true);
     };
     const handleMinimize = () => {
         inputRef.current?.blur();
-        setWindowState("minimized");
+        onStateChange?.("minimized");
     };
     const handleMaximize = () => {
-        setWindowState((s) => (s === "maximized" ? "normal" : "maximized"));
+        const newState = windowState === "maximized" ? "normal" : "maximized";
+        onStateChange?.(newState);
     };
 
     return (
         <div className="h-full min-h-0" onClick={focusInput}>
-            <div className="mx-auto max-w-3xl h-full min-h-0 px-4 py-8">
+            <div className="w-full h-full min-h-0">
                 {!isClosed ? (
                     <>
-                        {windowState !== "maximized" && (
-                            <div className={`flex ${windowHeightClass} flex-col rounded-lg border border-neutral-800 bg-neutral-950/80 shadow-xl transition-[height] duration-200`}>
-                                {/* window bar */}
-                                <div className="flex items-center justify-between border-b border-neutral-800 px-4 py-2">
-                                    <div className="flex gap-2">
-                                        <button onClick={handleClose} title="Close" aria-label="Close terminal" className="h-3 w-3 rounded-full bg-red-500/80 hover:bg-red-500" />
-                                        <button onClick={handleMinimize} title="Minimize" aria-label="Minimize terminal" className="h-3 w-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500" />
-                                        <button onClick={handleMaximize} title="Maximize" aria-label="Maximize terminal" className="h-3 w-3 rounded-full bg-green-500/80 hover:bg-green-500" />
-                                    </div>
-                                    <div className="text-xs text-neutral-500">bluedot console</div>
+                        {/* scrollable terminal content */}
+                        {windowState !== "minimized" && (
+                            <div ref={scrollAreaRef} className="flex-1 min-h-0 overflow-y-auto font-mono text-sm leading-relaxed px-4 py-4">
+                                <div className="space-y-2">
+                                    {entries.map((e) => (
+                                        <div key={e.id}>{e.content}</div>
+                                    ))}
                                 </div>
-
-                                {/* scrollable terminal content */}
-                                {windowState !== "minimized" && (
-                                    <div ref={scrollAreaRef} className="flex-1 min-h-0 overflow-y-auto font-mono text-sm leading-relaxed px-4 py-4">
-                                    <div className="space-y-2">
-                                            {entries.map((e) => (
-                                                <div key={e.id}>{e.content}</div>
-                                            ))}
-                                        </div>
-                                        {!isRunning && (
-                                            <div className="mt-2 flex items-center gap-2">
-                                                <span className="select-none">{renderPrompt(cwd)}</span>
-                                                <input
-                                                    ref={inputRef}
-                                                    value={command}
-                                                    onChange={(ev) => setCommand(ev.target.value)}
-                                                    onKeyDown={onKeyDown}
-                                                    className="flex-1 bg-transparent outline-none placeholder:text-neutral-600"
-                                                    placeholder="type a command… (help)"
-                                                    aria-label="terminal input"
-                                                    autoCapitalize="none"
-                                                    autoCorrect="off"
-                                                    spellCheck={false}
-                                                />
-                                            </div>
-                                        )}
+                                {!isRunning && (
+                                    <div className="mt-2 flex items-center gap-2">
+                                        <span className="select-none">{renderPrompt(cwd)}</span>
+                                        <input
+                                            ref={inputRef}
+                                            value={command}
+                                            onChange={(ev) => setCommand(ev.target.value)}
+                                            onKeyDown={onKeyDown}
+                                            className="flex-1 bg-transparent outline-none placeholder:text-neutral-600"
+                                            placeholder="type a command… (help)"
+                                            aria-label="terminal input"
+                                            autoCapitalize="none"
+                                            autoCorrect="off"
+                                            spellCheck={false}
+                                        />
                                     </div>
                                 )}
                             </div>
                         )}
 
                         {windowState === "maximized" && (
-                            <div className="fixed inset-x-3 top-16 bottom-3 z-50 flex flex-col rounded-lg border border-neutral-800 bg-neutral-950/90 shadow-2xl">
-                                <div className="flex items-center justify-between border-b border-neutral-800 px-4 py-2">
-                                    <div className="flex gap-2">
-                                        <button onClick={handleClose} title="Close" aria-label="Close terminal" className="h-3 w-3 rounded-full bg-red-500/80 hover:bg-red-500" />
-                                        <button onClick={handleMinimize} title="Minimize" aria-label="Minimize terminal" className="h-3 w-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500" />
-                                        <button onClick={handleMaximize} title="Restore" aria-label="Restore terminal" className="h-3 w-3 rounded-full bg-green-500/80 hover:bg-green-500" />
-                                    </div>
-                                    <div className="text-xs text-neutral-500">bluedot console (maximized)</div>
+                            <div ref={scrollAreaRef} className="flex-1 min-h-0 overflow-y-auto font-mono text-sm leading-relaxed px-4 py-4">
+                                <div className="space-y-2">
+                                    {entries.map((e) => (
+                                        <div key={e.id}>{e.content}</div>
+                                    ))}
                                 </div>
-                                <div ref={scrollAreaRef} className="flex-1 min-h-0 overflow-y-auto font-mono text-sm leading-relaxed px-4 py-4">
-                                    <div className="space-y-2">
-                                        {entries.map((e) => (
-                                            <div key={e.id}>{e.content}</div>
-                                        ))}
+                                {!isRunning && (
+                                    <div className="mt-2 flex items-center gap-2">
+                                        <span className="select-none">{renderPrompt(cwd)}</span>
+                                        <input
+                                            ref={inputRef}
+                                            value={command}
+                                            onChange={(ev) => setCommand(ev.target.value)}
+                                            onKeyDown={onKeyDown}
+                                            className="flex-1 bg-transparent outline-none placeholder:text-neutral-600"
+                                            placeholder="type a command… (help)"
+                                            aria-label="terminal input"
+                                            autoCapitalize="none"
+                                            autoCorrect="off"
+                                            spellCheck={false}
+                                        />
                                     </div>
-                                    {!isRunning && (
-                                        <div className="mt-2 flex items-center gap-2">
-                                            <span className="select-none">{renderPrompt(cwd)}</span>
-                                            <input
-                                                ref={inputRef}
-                                                value={command}
-                                                onChange={(ev) => setCommand(ev.target.value)}
-                                                onKeyDown={onKeyDown}
-                                                className="flex-1 bg-transparent outline-none placeholder:text-neutral-600"
-                                                placeholder="type a command… (help)"
-                                                aria-label="terminal input"
-                                                autoCapitalize="none"
-                                                autoCorrect="off"
-                                                spellCheck={false}
-                                            />
-                                        </div>
-                                    )}
-                                </div>
+                                )}
                             </div>
                         )}
 
-                        {windowState === "minimized" && (
-                            <div className="fixed left-3 bottom-3 z-40">
-                                <button onClick={() => setWindowState("normal")} className="rounded-md border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-sm text-neutral-300 hover:bg-neutral-900">
-                                    bluedot console — minimized (click to restore)
-                                </button>
-                            </div>
-                        )}
                     </>
                 ) : (
                     <div className="rounded-lg border border-neutral-800 bg-neutral-950/60 p-4 text-sm text-neutral-300">
                         <div className="flex items-center justify-between">
                             <div>Terminal closed.</div>
-                            <button onClick={() => { setIsClosed(false); setWindowState("normal"); focusInput(); }} className="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-500">Re-open</button>
+                            <button onClick={() => { setIsClosed(false); onStateChange?.("normal"); focusInput(); }} className="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-500">Re-open</button>
                         </div>
                         <div className="mt-2 text-xs text-neutral-500">Click re-open to restore the console window.</div>
                     </div>

@@ -1,13 +1,8 @@
-import Section from "@/components/Section";
-import Image from "next/image";
+import Section from "./Section";
 
-
-export const metadata = { title: "About — bluedot.it.com" };
-
-
-export default function AboutPage(){
+export default function About() {
     return (
-        <div className="py-16">
+        <div className="h-full overflow-auto p-6">
             <Section title="About" subtitle="Security-minded builder with a taste for clean systems and sharp tools.">
                 <div className="grid gap-8 md:grid-cols-[240px,1fr] items-start">
                     <div className="prose prose-invert prose-tech max-w-none">
