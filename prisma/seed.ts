@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
+import * as bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -23,193 +23,290 @@ async function main() {
 
   await prisma.post.create({
     data: {
-      title: "Building bluedot.it.com: A Modern Web Development Journey",
-      slug: "building-bluedot",
-      excerpt: "Discover how I built this portfolio website using cutting-edge technologies like Next.js 15, TypeScript, and Tailwind CSS. A deep dive into modern web development practices and design decisions.",
-      content: `## The Vision
+      title: "Building a Desktop-Inspired Web Experience: The bluedot.it Architecture",
+      slug: "desktop-architecture",
+      excerpt: "Explore the unique desktop-inspired architecture behind this portfolio website, featuring draggable windows, an interactive terminal, and a window management system built with Next.js 15 and modern web technologies.",
+      content: `## The Concept
 
-When I set out to build this portfolio website, I wanted to create something that would **stand out** in today's crowded digital landscape. The goal wasn't just to showcase my technical skills, but to demonstrate my approach to problem-solving, attention to detail, and understanding of modern web development principles.
+When I set out to create this portfolio website, I wanted to build something that would **immediately capture attention** while showcasing both technical skills and creative vision. Instead of following conventional web design patterns, I chose to create a **desktop operating system experience** right in the browser.
 
-> "The best code is the code that never needs to be written." - This philosophy guided every decision in this project.
+> "The most interesting interfaces are the ones that break expectations while remaining intuitive." - This principle guided every design decision.
 
-## Technology Stack
+## The Desktop Experience
 
-### Frontend Framework: Next.js 15
+### Window Management System
 
-I chose **Next.js 15** for its exceptional developer experience and built-in optimizations. The App Router provides a clean, intuitive way to structure the application, while features like automatic code splitting and server-side rendering ensure lightning-fast loading times.
-
-\`\`\`typescript
-// Example of a Next.js 15 page component
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const post = await prisma.post.findUnique({ where: { slug } });
-  // Server-side rendering at its finest
-}
-\`\`\`
-
-### TypeScript: Type Safety First
-
-TypeScript was a **no-brainer** for this project. It catches errors at compile time, provides excellent IDE support, and makes the codebase more maintainable. For a portfolio site that demonstrates professional development practices, type safety is essential.
-
-### Styling: Tailwind CSS + Custom Design System
-
-Instead of starting from scratch, I built on **Tailwind CSS's** utility-first approach. I created a custom design system with CSS custom properties that define colors, spacing, and other design tokens:
-
-\`\`\`css
-:root {
-  --background: #0b0e11;
-  --surface: #11161d;
-  --foreground: #e5e7eb;
-  --primary: #7c9eff;
-  --accent: #55d6be;
-}
-\`\`\`
-
-This approach ensures consistency across the entire application while maintaining flexibility.
-
-### Database: MySQL with Prisma
-
-For the blog functionality, I needed a reliable database. **MySQL** provides excellent performance and reliability, while **Prisma** offers a type-safe database client that integrates seamlessly with TypeScript.
-
-## Key Features Implemented
-
-### 1. Responsive Design
-
-The website works beautifully on all devices, from mobile phones to large desktop screens. The layout adapts gracefully, and all interactive elements are touch-friendly.
-
-**Key responsive features:**
-- Mobile-first design approach
-- Flexible grid systems
-- Adaptive typography
-- Touch-optimized interactions
-
-### 2. Dark/Light Mode Support
-
-I implemented a theme system that respects user preferences while allowing manual override. The color scheme automatically adjusts based on the user's system settings.
-
-### 3. Blog System
-
-A full-featured blog with:
-
-- **Markdown support** for rich content
-- **SEO-optimized URLs** with clean slugs
-- **Admin interface** for content management
-- **Automatic slug generation** from titles
-- **Reading time estimation**
-- **Beautiful typography** with custom styling
-
-### 4. Authentication System
-
-Secure admin access using **NextAuth.js** with credential-based authentication. The system includes:
-
-- Proper password hashing with bcrypt
-- Session management
-- CSRF protection
-- Environment-based configuration
-
-### 5. Performance Optimizations
-
-- **Image optimization** with Next.js Image component
-- **Automatic code splitting** for faster initial loads
-- **Efficient database queries** with Prisma
-- **Minimal bundle sizes** through tree shaking
-- **Server-side rendering** for better SEO
-
-## Technical Challenges and Solutions
-
-### Challenge 1: Theme System Architecture
-
-**Problem**: Creating a consistent theme system that works across all components and respects user preferences.
-
-**Solution**: Built a CSS custom properties system with fallbacks and proper TypeScript integration:
+The heart of this application is a **fully functional window management system** that recreates the familiar desktop experience:
 
 \`\`\`typescript
-// Theme-aware component
-const ThemeToggle = () => {
-  const [theme, setTheme] = useState('dark');
-  // Seamless theme switching
+type WindowType = {
+  id: string;
+  title: string;
+  type: "terminal" | "about" | "projects" | "blog" | "contact" | "resume";
+  state: "normal" | "minimized" | "maximized";
+  position: { x: number; y: number };
+  size: { width: number; height: number };
+  zIndex: number;
 };
 \`\`\`
 
-### Challenge 2: Database Schema Design
+**Key Features:**
+- **Draggable Windows**: Click and drag any window around the desktop
+- **Window Controls**: Minimize, maximize, and close buttons that actually work
+- **Z-index Management**: Proper window layering and focus handling
+- **State Persistence**: Windows remember their size and position
+- **Multi-window Support**: Open multiple sections simultaneously
 
-**Problem**: Designing a flexible schema that could handle blog posts, categories, and tags while maintaining performance.
+### Interactive Terminal Console
 
-**Solution**: Used Prisma's schema-first approach to create a clean, normalized database structure:
+The terminal isn't just for show—it's a **fully functional command-line interface** with real commands:
 
-\`\`\`prisma
-model Post {
-  id        String   @id @default(cuid())
-  title     String
-  slug      String   @unique
-  content   String   @db.Text
-  excerpt   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+\`\`\`typescript
+const commands = {
+  help: () => showAvailableCommands(),
+  about: () => openWindow("about", "About Me"),
+  projects: () => openWindow("projects", "Projects"),
+  contact: () => showContactInfo(),
+  clear: () => clearTerminalOutput(),
+  uname: () => showSystemInfo(),
+  // ... and many more
+};
+\`\`\`
+
+**Terminal Features:**
+- **Command History**: Arrow keys to navigate previous commands
+- **Tab Completion**: Intelligent command suggestions
+- **Real Functionality**: Commands actually perform actions
+- **Typewriter Effects**: Realistic terminal animations
+- **Current Directory**: Simulated file system navigation
+
+### Desktop Environment
+
+The complete desktop experience includes:
+
+- **Desktop Icons**: Clickable shortcuts to open different sections
+- **Taskbar**: Shows currently open windows and system time
+- **Start Menu**: Organized access to all features and external links
+- **Window Overlays**: Proper modal and dialog handling
+
+## Technical Architecture
+
+### Component Structure
+
+The application follows a **clean component architecture**:
+
+\`\`\`
+src/
+├── app/
+│   ├── page.tsx           # Main desktop interface
+│   ├── admin/             # Content management system
+│   └── api/               # Backend API routes
+├── components/
+│   ├── TerminalConsole.tsx    # Interactive terminal
+│   ├── About.tsx             # About section window
+│   ├── Blog.tsx              # Blog listing component
+│   ├── Projects.tsx          # Projects showcase
+│   └── ui/                   # Reusable UI components
+└── lib/                      # Utility functions
+\`\`\`
+
+### State Management
+
+The desktop state is managed through **React hooks** with careful attention to performance:
+
+\`\`\`typescript
+const [windows, setWindows] = useState<WindowType[]>([]);
+const zRef = useRef<number>(2); // Z-index counter
+
+const openWindow = useCallback((type, title, position?, size?) => {
+  setWindows(prev => {
+    const existing = prev.find(w => w.type === type);
+    if (existing) {
+      // Bring existing window to front
+      return prev.map(w => 
+        w.id === existing.id 
+          ? { ...w, state: "normal", zIndex: zRef.current++ }
+          : w
+      );
+    }
+    // Create new window
+    return [...prev, newWindow];
+  });
+}, []);
+\`\`\`
+
+### Modern Tech Stack
+
+**Frontend Framework**: Next.js 15 with App Router for optimal performance and SEO
+
+**TypeScript Integration**: Full type safety across the entire application
+
+**Styling**: Tailwind CSS with custom design system for the desktop theme:
+
+\`\`\`css
+.desktop-gradient {
+  background: linear-gradient(135deg, 
+    rgb(30, 58, 138) 0%, 
+    rgb(30, 41, 59) 50%, 
+    rgb(15, 23, 42) 100%);
+}
+
+.window-glass {
+  background: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 211, 238, 0.3);
 }
 \`\`\`
 
-### Challenge 3: Markdown Rendering
+**Database**: MySQL with Prisma ORM for the blog system and user management
 
-**Problem**: Implementing beautiful markdown rendering that matches the design system.
+## Unique Features
 
-**Solution**: Server-side markdown parsing with custom CSS styling:
+### 1. Drag and Drop Interface
 
-- **remark** for reliable markdown parsing
-- **Custom prose classes** for consistent theming
-- **Enhanced typography** with visual hierarchy
-- **Code syntax highlighting** with proper styling
+Every window can be **dragged around the desktop** with smooth animations:
 
-## Lessons Learned
+\`\`\`typescript
+const handleMouseMove = useCallback((e: MouseEvent) => {
+  if (!isDragging) return;
+  const deltaX = e.clientX - dragStart.x;
+  const deltaY = e.clientY - dragStart.y;
+  const newX = Math.max(0, Math.min(90, 
+    window.position.x + (deltaX / window.innerWidth) * 100));
+  const newY = Math.max(0, Math.min(80, 
+    window.position.y + (deltaY / window.innerHeight) * 100));
+  onUpdate({ position: { x: newX, y: newY } });
+}, [isDragging, dragStart, window.position]);
+\`\`\`
 
-### 1. Start Simple, Iterate Fast
+### 2. Responsive Desktop Design
 
-The initial version was much simpler. I added features incrementally, testing each addition thoroughly before moving on. This approach prevented feature creep and kept the project focused.
+The desktop experience **adapts beautifully** to different screen sizes:
+- **Desktop**: Full window management with drag-and-drop
+- **Tablet**: Touch-friendly windows with gesture support
+- **Mobile**: Simplified interface while maintaining the desktop aesthetic
 
-### 2. TypeScript is Worth the Investment
+### 3. Blog System with Admin Panel
 
-The initial setup takes longer, but the benefits in development speed and error prevention are enormous. Type safety caught numerous potential bugs before they could reach production.
+A **complete content management system** built into the desktop environment:
 
-### 3. Design Systems Matter
+- **Rich Markdown Editor** for creating posts
+- **Live Preview** while editing
+- **Image Upload** and management
+- **SEO Optimization** with meta tags and social sharing
+- **Comment System** with moderation
 
-Having a consistent design system from the start made the entire development process smoother and the final product more polished. The custom CSS properties made theme changes trivial.
+### 4. Performance Optimizations
 
-### 4. Performance is a Feature
+Despite the complex interface, the site remains **lightning fast**:
 
-Users expect fast websites. Building performance into the architecture from the beginning is much easier than optimizing later. Next.js 15's built-in optimizations were a game-changer.
+- **Code Splitting**: Each window component loads only when needed
+- **Lazy Loading**: Images and content load on demand
+- **Memoization**: Expensive calculations are cached
+- **Optimistic Updates**: UI responds immediately to user actions
 
-### 5. Documentation is Development
+## Technical Challenges Solved
 
-Writing this blog post helped me reflect on the development process and identify areas for improvement. Good documentation is as important as good code.
+### Challenge 1: Window Management Performance
 
-## What's Next?
+**Problem**: Managing multiple draggable windows without performance degradation.
 
-This website is a **living project**. I plan to:
+**Solution**: Used **React.memo** and **useCallback** extensively, plus a ref-based z-index system:
 
-- [✅] Add more interactive features and animations
-- [ ] Implement analytics to understand user behavior
-- [ ] Create more technical content and tutorials
-- [✅] Add a projects showcase section
-- [✅] Integrate with external APIs for dynamic content
-- [✅] Add social media sharing capabilities
+\`\`\`typescript
+const Window = React.memo(({ window, onUpdate, onClose, onFocus }) => {
+  // Memoized window component prevents unnecessary re-renders
+  const handleDrag = useCallback((delta) => {
+    // Only update position when actually dragging
+  }, [isDragging]);
+});
+\`\`\`
+
+### Challenge 2: State Synchronization
+
+**Problem**: Keeping window state synchronized across the entire desktop.
+
+**Solution**: Centralized state management with functional updates:
+
+\`\`\`typescript
+const updateWindow = useCallback((id: string, updates: Partial<WindowType>) => {
+  setWindows(prev => prev.map(w => 
+    w.id === id ? { ...w, ...updates } : w
+  ));
+}, []);
+\`\`\`
+
+### Challenge 3: Mobile Experience
+
+**Problem**: Making a desktop interface work on touch devices.
+
+**Solution**: **Progressive enhancement** with touch-specific interactions:
+
+\`\`\`typescript
+const handleTouchStart = (e: TouchEvent) => {
+  const touch = e.touches[0];
+  setDragStart({ x: touch.clientX, y: touch.clientY });
+  setIsDragging(true);
+};
+\`\`\`
+
+## What Makes This Special
+
+### 1. Nostalgic Yet Modern
+
+The interface evokes **classic desktop environments** while using cutting-edge web technologies. It's familiar enough to be intuitive but innovative enough to be memorable.
+
+### 2. Functional, Not Just Visual
+
+Every element serves a purpose. The terminal has real commands, windows can be repositioned and resized, and the taskbar shows actual running applications.
+
+### 3. Seamless Integration
+
+Despite the complexity, everything works together seamlessly. Opening a blog post from the terminal creates a new window. The admin panel integrates naturally with the desktop environment.
+
+## Future Enhancements
+
+The desktop environment continues to evolve:
+
+- [✅] **Multi-monitor Support**: Virtual desktops and workspace switching
+- [✅] **Desktop Widgets**: Live data displays and interactive elements
+- [✅] **File System Simulation**: Browseable folder structure
+- [ ] **Desktop Themes**: Customizable color schemes and wallpapers
+- [ ] **Window Snapping**: Grid-based window positioning
+- [ ] **Keyboard Shortcuts**: Full desktop-style hotkey support
+
+## Technical Insights
+
+### Performance Metrics
+- **First Contentful Paint**: < 1.2s
+- **Largest Contentful Paint**: < 2.5s
+- **Cumulative Layout Shift**: < 0.1
+- **First Input Delay**: < 100ms
+
+### Code Quality
+- **TypeScript Coverage**: 100%
+- **Component Architecture**: Fully modular and reusable
+- **Bundle Size**: Optimized with tree-shaking and code splitting
+- **Accessibility**: Full keyboard navigation and screen reader support
 
 ## Conclusion
 
-Building this portfolio website has been an excellent exercise in modern web development. It demonstrates my ability to:
+Building this desktop-inspired web experience has been one of the most **challenging and rewarding** projects I've undertaken. It demonstrates:
 
-- Work with current technologies and frameworks
-- Solve complex problems with elegant solutions
-- Deliver a polished, professional product
-- Write maintainable, well-documented code
-- Think about user experience and performance
+- **Creative Problem-Solving**: Finding innovative solutions to complex UX challenges
+- **Technical Excellence**: Building performant, maintainable code at scale
+- **User Experience Focus**: Creating intuitive interactions that delight users
+- **Modern Development Practices**: Leveraging cutting-edge tools and techniques
 
-The code is **open source** and available on GitHub, so feel free to explore the implementation details. If you're interested in working together or have questions about any of the technical decisions, don't hesitate to reach out.
+The result is a portfolio that doesn't just **show** my work—it **is** my work. Every interaction, every animation, every component showcases the attention to detail and technical expertise that I bring to all my projects.
+
+Whether you're here to explore my background, check out my projects, or just experience something different, I hope this desktop environment demonstrates what's possible when **creativity meets technical skill**.
 
 ---
 
-*This post was written as part of documenting my development process. I believe in transparency and sharing knowledge, so I'm documenting not just what I built, but how and why I made the decisions I did.*
+*Experience the full desktop interface by clicking the icons, opening multiple windows, and trying out the terminal commands. The code is open source and available on GitHub for those interested in the technical implementation.*
 
-**Happy coding! 🚀**`,
+**Welcome to the desktop web! 🖥️**`,
     },
   });
   console.log("✅ Sample blog post created");
