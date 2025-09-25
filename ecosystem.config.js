@@ -5,8 +5,8 @@ module.exports = {
         name: "bluedot",
         cwd: "/var/www/bluedot",
         script: "npm",
-        args: "run dev -- -p 3000", // next dev
-        env: { NODE_ENV: "development" },
+        args: "start -- -p 3000", // next dev
+        env: { NODE_ENV: "production" },
   
         // You *don’t* need PM2 watch here—Next does it.
         watch: false,

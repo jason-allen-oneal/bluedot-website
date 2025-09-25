@@ -74,7 +74,7 @@ export default function LoginWindow() {
         setRegSuccess("Registration successful. You can now sign in.");
       }
     } catch (err) {
-      setRegError("Network error");
+      setRegError("Network error: " + err);
     }
     setRegLoading(false);
   }

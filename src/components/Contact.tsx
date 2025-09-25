@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Github, Linkedin, Twitter, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Github, Send } from 'lucide-react';
 
 interface ContactForm {
   name: string;
@@ -34,13 +34,13 @@ export default function Contact() {
     setSubmitStatus('idle');
 
     try {
-      // Simulate form submission - you can replace this with actual API call
+      // Simulate form submission - replace with actual API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Reset form
       setFormData({ name: '', email: '', subject: '', message: '' });
       setSubmitStatus('success');
-    } catch (error) {
+    } catch {
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -51,15 +51,15 @@ export default function Contact() {
     {
       icon: Mail,
       label: 'Email',
-      value: 'jason@bluedot.it',
-      href: 'mailto:jason@bluedot.it',
+      value: 'jason.allen.oneal@gmail.com',
+      href: 'mailto:jason.allen.oneal@gmail.com',
       color: 'text-blue-400'
     },
     {
       icon: Phone,
       label: 'Phone',
-      value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567',
+      value: '+1 (828) 215-6403',
+      href: 'tel:+18282156403',
       color: 'text-green-400'
     },
     {
@@ -78,18 +78,6 @@ export default function Contact() {
       href: 'https://github.com/jason-allen-oneal',
       color: 'text-gray-400 hover:text-white'
     },
-    {
-      icon: Linkedin,
-      label: 'LinkedIn',
-      href: 'https://linkedin.com/in/jason-allen-oneal',
-      color: 'text-blue-400 hover:text-blue-300'
-    },
-    {
-      icon: Twitter,
-      label: 'Twitter',
-      href: 'https://twitter.com/jason_allen_oneal',
-      color: 'text-cyan-400 hover:text-cyan-300'
-    }
   ];
 
   return (
@@ -99,8 +87,8 @@ export default function Contact() {
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-cyan-400 mb-2">Get In Touch</h2>
           <p className="text-neutral-400 text-lg">
-            I'm always interested in new opportunities and collaborations. 
-            Let's connect and discuss how we can work together!
+            I&apos;m always interested in new opportunities and collaborations.
+            Let&apos;s connect and discuss how we can work together!
           </p>
         </div>
 
@@ -108,14 +96,14 @@ export default function Contact() {
           {/* Contact Information */}
           <div className="space-y-6">
             <h3 className="text-xl font-semibold text-blue-300 mb-4">Contact Information</h3>
-            
+
             <div className="space-y-4">
               {contactMethods.map((method, index) => (
                 <div key={index} className="flex items-center space-x-4 p-4 bg-neutral-900/50 rounded-lg border border-neutral-800">
                   <method.icon className={`w-5 h-5 ${method.color}`} />
                   <div>
                     <p className="text-sm text-neutral-500">{method.label}</p>
-                    <a 
+                    <a
                       href={method.href}
                       className={`text-sm font-medium ${method.color} hover:underline`}
                     >
@@ -149,7 +137,7 @@ export default function Contact() {
           {/* Contact Form */}
           <div className="bg-neutral-900/50 rounded-lg border border-neutral-800 p-6">
             <h3 className="text-xl font-semibold text-blue-300 mb-4">Send a Message</h3>
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -167,7 +155,7 @@ export default function Contact() {
                     placeholder="Your name"
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-2">
                     Email *
@@ -197,7 +185,7 @@ export default function Contact() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="What's this about?"
+                  placeholder="What&apos;s this about?"
                 />
               </div>
 
@@ -238,10 +226,10 @@ export default function Contact() {
               {/* Status Messages */}
               {submitStatus === 'success' && (
                 <div className="p-3 bg-green-900/50 border border-green-700 rounded-md text-green-300 text-sm">
-                  ✓ Message sent successfully! I'll get back to you soon.
+                  ✓ Message sent successfully! I&apos;ll get back to you soon.
                 </div>
               )}
-              
+
               {submitStatus === 'error' && (
                 <div className="p-3 bg-red-900/50 border border-red-700 rounded-md text-red-300 text-sm">
                   ✗ Failed to send message. Please try again or contact me directly.
@@ -255,8 +243,8 @@ export default function Contact() {
         <div className="mt-8 p-6 bg-gradient-to-r from-blue-900/20 to-cyan-900/20 rounded-lg border border-blue-800/30">
           <h4 className="text-lg font-semibold text-cyan-400 mb-2">Quick Response Times</h4>
           <p className="text-neutral-300 text-sm">
-            I typically respond to emails within 24 hours. For urgent matters, feel free to reach out 
-            via any of the social channels above. I'm always excited to discuss new projects, 
+            I typically respond to emails within 24 hours. For urgent matters, feel free to reach out
+            via any of the social channels above. I&apos;m always excited to discuss new projects,
             cybersecurity challenges, or just chat about technology!
           </p>
         </div>

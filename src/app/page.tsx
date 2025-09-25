@@ -1,7 +1,7 @@
 // src/app/page.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import TerminalConsole from "@/components/TerminalConsole";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
@@ -11,6 +11,7 @@ import Contact from "@/components/Contact";
 import LoginWindow from "@/components/LoginWindow";
 import Privacy from "@/components/Privacy";
 import Terms from "@/components/Terms";
+import Resume from "@/components/Resume";
 
 type DesktopIcon = {
   id: string;
@@ -23,120 +24,135 @@ type DesktopIcon = {
 type WindowType = {
   id: string;
   title: string;
-  type: 'terminal' | 'about' | 'projects' | 'blog' | 'contact' | 'resume' | 'login' | 'privacy' | 'terms' | 'blog-post';
-  state: 'normal' | 'minimized' | 'maximized';
+  type:
+    | "terminal"
+    | "about"
+    | "projects"
+    | "blog"
+    | "contact"
+    | "resume"
+    | "login"
+    | "privacy"
+    | "terms"
+    | "blog-post";
+  state: "normal" | "minimized" | "maximized";
   position: { x: number; y: number };
   size: { width: number; height: number };
   zIndex: number;
   slug?: string; // For blog posts
 };
 
+/* ---------- stable helpers (no hook deps) ---------- */
+function getDefaultPosition(type: WindowType["type"]) {
+  const positions: Record<WindowType["type"], { x: number; y: number }> = {
+    terminal: { x: 25, y: 30 },
+    about: { x: 15, y: 10 },
+    projects: { x: 25, y: 25 },
+    blog: { x: 20, y: 15 },
+    contact: { x: 14, y: 20 },
+    resume: { x: 10, y: 5 },
+    login: { x: 25, y: 6 },
+    privacy: { x: 10, y: 10 },
+    terms: { x: 15, y: 15 },
+    "blog-post": { x: 20, y: 20 },
+  };
+  return positions[type] || { x: 20, y: 20 };
+}
+
+function getDefaultSize(type: WindowType["type"]) {
+  const sizes: Record<WindowType["type"], { width: number; height: number }> = {
+    terminal: { width: 60, height: 50 },
+    about: { width: 45, height: 60 },
+    projects: { width: 70, height: 60 },
+    blog: { width: 80, height: 70 },
+    contact: { width: 60, height: 75 },
+    resume: { width: 60, height: 80 },
+    login: { width: 45, height: 85 },
+    privacy: { width: 80, height: 80 },
+    terms: { width: 80, height: 80 },
+    "blog-post": { width: 80, height: 80 },
+  };
+  return sizes[type] || { width: 50, height: 40 };
+}
+/* --------------------------------------------------- */
+
 export default function HomePage() {
   const [showStart, setShowStart] = useState(false);
   const [windows, setWindows] = useState<WindowType[]>([
     {
-      id: 'terminal',
-      title: 'Terminal',
-      type: 'terminal',
-      state: 'normal',
+      id: "terminal",
+      title: "Terminal",
+      type: "terminal",
+      state: "normal",
       position: { x: 25, y: 30 },
       size: { width: 60, height: 50 },
-      zIndex: 1
-    }
+      zIndex: 1,
+    },
   ]);
-  const [nextZIndex, setNextZIndex] = useState(2);
 
-  const openWindow = (type: WindowType['type'], title: string, customPosition?: { x: number; y: number }, customSize?: { width: number; height: number }, slug?: string) => {
-    const existingWindow = windows.find(w => w.type === type && w.slug === slug);
-    if (existingWindow) {
-      // Bring to front and restore if minimized
-      setWindows(prev => prev.map(w => 
-        w.id === existingWindow.id 
-          ? { ...w, state: 'normal', zIndex: nextZIndex }
-          : w
-      ));
-      setNextZIndex(prev => prev + 1);
-    } else {
-      // Create new window with custom or default positioning
-      const newWindow: WindowType = {
-        id: `${type}-${Date.now()}`,
-        title,
-        type,
-        state: 'normal',
-        position: customPosition || getDefaultPosition(type),
-        size: customSize || getDefaultSize(type),
-        zIndex: nextZIndex,
-        slug
-      };
-      setWindows(prev => [...prev, newWindow]);
-      setNextZIndex(prev => prev + 1);
-    }
-  };
+  // z-index counter as a ref so using it doesn't trigger re-renders or deps churn
+  const zRef = useRef(2);
 
-  const getDefaultPosition = (type: WindowType['type']) => {
-    const positions: Record<WindowType['type'], { x: number; y: number }> = {
-      terminal: { x: 25, y: 30 },
-      about: { x: 15, y: 10 },
-      projects: { x: 25, y: 25 },
-      blog: { x: 20, y: 15 },
-      contact: { x: 14, y: 20 },
-      resume: { x: 40, y: 35 },
-      login: { x: 25, y: 6 },
-      privacy: { x: 10, y: 10 },
-      terms: { x: 15, y: 15 },
-      'blog-post': { x: 20, y: 20 }
-    };
-    return positions[type] || { x: 20, y: 20 };
-  };
+  const openWindow = useCallback(
+    (
+      type: WindowType["type"],
+      title: string,
+      customPosition?: { x: number; y: number },
+      customSize?: { width: number; height: number },
+      slug?: string
+    ) => {
+      // Use functional updates to avoid depending on `windows` in deps
+      setWindows((prev) => {
+        const existing = prev.find((w) => w.type === type && w.slug === slug);
+        if (existing) {
+          // bring to front & restore if minimized
+          const newZ = zRef.current++;
+          return prev.map((w) =>
+            w.id === existing.id ? { ...w, state: "normal", zIndex: newZ } : w
+          );
+        } else {
+          const newZ = zRef.current++;
+          const newWindow: WindowType = {
+            id: `${type}-${Date.now()}`,
+            title,
+            type,
+            state: "normal",
+            position: customPosition || getDefaultPosition(type),
+            size: customSize || getDefaultSize(type),
+            zIndex: newZ,
+            slug,
+          };
+          return [...prev, newWindow];
+        }
+      });
+    },
+    []
+  );
 
-  const getDefaultSize = (type: WindowType['type']) => {
-    const sizes: Record<WindowType['type'], { width: number; height: number }> = {
-      terminal: { width: 60, height: 50 },
-      about: { width: 45, height: 60 },
-      projects: { width: 70, height: 60 },
-      blog: { width: 80, height: 70 },
-      contact: { width: 60, height: 75 },
-      resume: { width: 50, height: 45 },
-      login: { width: 45, height: 85 },
-      privacy: { width: 80, height: 80 },
-      terms: { width: 80, height: 80 },
-      'blog-post': { width: 80, height: 80 },
-    };
-    return sizes[type] || { width: 50, height: 40 };
-  };
+  const updateWindow = useCallback((id: string, updates: Partial<WindowType>) => {
+    setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, ...updates } : w)));
+  }, []);
 
-  const updateWindow = (id: string, updates: Partial<WindowType>) => {
-    setWindows(prev => prev.map(w => 
-      w.id === id ? { ...w, ...updates } : w
-    ));
-  };
+  const closeWindow = useCallback((id: string) => {
+    setWindows((prev) => prev.filter((w) => w.id !== id));
+  }, []);
 
-  const closeWindow = (id: string) => {
-    setWindows(prev => prev.filter(w => w.id !== id));
-  };
+  // Removed openWindowAt (was unused and tripping no-unused-vars)
 
-  // Helper function to open windows with custom positioning
-  const openWindowAt = (type: WindowType['type'], title: string, x: number, y: number, width: number, height: number) => {
-    openWindow(type, title, { x, y }, { width, height });
-  };
-
-  // Function to open blog posts
-  const openBlogPost = (slug: string, title: string) => {
-    openWindow('blog-post', title, undefined, undefined, slug);
-  };
-
-  // Examples of custom window positioning:
-  // openWindowAt('blog', 'Blog', 10, 10, 80, 70); // Top-left, large
-  // openWindowAt('about', 'About', 50, 50, 40, 30); // Center, medium
-  // openWindow('terminal', 'Terminal', { x: 5, y: 5 }, { width: 90, height: 80 }); // Custom position/size
+  const openBlogPost = useCallback(
+    (slug: string, title: string) => {
+      openWindow("blog-post", title, undefined, undefined, slug);
+    },
+    [openWindow]
+  );
 
   const icons: DesktopIcon[] = useMemo(
     () => [
-      { id: "about", label: "About", icon: "👤", onClick: () => openWindow('about', 'About') },
-      { id: "projects", label: "Projects", icon: "💼", onClick: () => openWindow('projects', 'Projects') },
-      { id: "blog", label: "Blog", icon: "📝", onClick: () => openWindow('blog', 'Blog') },
-      { id: "contact", label: "Contact", icon: "📧", onClick: () => openWindow('contact', 'Contact') },
-      { id: "resume", label: "Resume.pdf", icon: "📄", onClick: () => openWindow('resume', 'Resume') },
+      { id: "about", label: "About", icon: "👤", onClick: () => openWindow("about", "About") },
+      { id: "projects", label: "Projects", icon: "💼", onClick: () => openWindow("projects", "Projects") },
+      { id: "blog", label: "Blog", icon: "📝", onClick: () => openWindow("blog", "Blog") },
+      { id: "contact", label: "Contact", icon: "📧", onClick: () => openWindow("contact", "Contact") },
+      { id: "resume", label: "Resume.pdf", icon: "📄", onClick: () => openWindow("resume", "Resume") },
     ],
     [openWindow]
   );
@@ -153,29 +169,24 @@ export default function HomePage() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
-      if (hash.startsWith('#blog-post-')) {
-        const slug = hash.replace('#blog-post-', '');
-        // Find the post title from the blog data or use slug as fallback
-        const postTitle = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      if (hash.startsWith("#blog-post-")) {
+        const slug = hash.replace("#blog-post-", "");
+        const postTitle = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
         openBlogPost(slug, postTitle);
-        // Clear the hash
-        window.history.replaceState(null, '', window.location.pathname);
+        window.history.replaceState(null, "", window.location.pathname);
       }
     };
 
-    // Check initial hash
     handleHashChange();
-
-    // Listen for hash changes
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, [openBlogPost]);
 
   return (
     <div className="fixed inset-0 w-full h-full select-none overflow-hidden text-slate-100">
       {/* Clean gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-950" />
-      
+
       {/* Single subtle accent */}
       <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-cyan-400/10 rounded-full blur-3xl" />
 
@@ -187,44 +198,48 @@ export default function HomePage() {
       </div>
 
       {/* All windows */}
-      {windows.map((window) => (
-        window.state !== 'minimized' && (
-          <Window
-            key={window.id}
-            window={window}
-            onUpdate={(updates) => updateWindow(window.id, updates)}
-            onClose={() => closeWindow(window.id)}
-            onFocus={() => updateWindow(window.id, { zIndex: nextZIndex })}
-            onOpenBlogPost={openBlogPost}
-          />
-        )
-      ))}
+      {windows.map(
+        (window) =>
+          window.state !== "minimized" && (
+            <Window
+              key={window.id}
+              window={window}
+              onUpdate={(updates) => updateWindow(window.id, updates)}
+              onClose={() => closeWindow(window.id)}
+              onFocus={() => updateWindow(window.id, { zIndex: zRef.current++ })}
+              onOpenBlogPost={openBlogPost}
+            />
+          )
+      )}
 
       {/* Taskbar */}
       <Taskbar
         onStartToggle={() => setShowStart((v) => !v)}
         windows={windows}
         onWindowToggle={(windowId) => {
-          const window = windows.find(w => w.id === windowId);
-          if (window) {
-            updateWindow(windowId, { 
-              state: window.state === 'minimized' ? 'normal' : 'minimized',
-              zIndex: nextZIndex
-            });
-            setNextZIndex(prev => prev + 1);
-          }
+          setWindows((prev) =>
+            prev.map((w) =>
+              w.id === windowId
+                ? {
+                    ...w,
+                    state: w.state === "minimized" ? "normal" : "minimized",
+                    zIndex: zRef.current++,
+                  }
+                : w
+            )
+          );
         }}
       />
 
       {/* Start menu */}
       {showStart && (
-            <StartMenu
-              onOpenTerminal={() => openWindow('terminal', 'Terminal')}
-              onOpenLogin={() => openWindow('login', 'Login')}
-              onOpenPrivacy={() => openWindow('privacy', 'Privacy Policy')}
-              onOpenTerms={() => openWindow('terms', 'Terms of Service')}
-              items={[]}
-            />
+        <StartMenu
+          onOpenTerminal={() => openWindow("terminal", "Terminal")}
+          onOpenLogin={() => openWindow("login", "Login")}
+          onOpenPrivacy={() => openWindow("privacy", "Privacy Policy")}
+          onOpenTerms={() => openWindow("terms", "Terms of Service")}
+          items={[]}
+        />
       )}
     </div>
   );
@@ -241,12 +256,7 @@ function DesktopIconItem({ label, icon, href, onClick }: DesktopIcon) {
   );
 
   return href ? (
-    <a
-      href={href}
-      className="group"
-      draggable={false}
-      onClick={(e) => e.stopPropagation()}
-    >
+    <a href={href} className="group" draggable={false} onClick={(e) => e.stopPropagation()}>
       {content}
     </a>
   ) : (
@@ -263,16 +273,16 @@ function DesktopIconItem({ label, icon, href, onClick }: DesktopIcon) {
   );
 }
 
-function Window({ 
-  window, 
-  onUpdate, 
-  onClose, 
+function Window({
+  window,
+  onUpdate,
+  onClose,
   onFocus,
-  onOpenBlogPost
-}: { 
-  window: WindowType; 
-  onUpdate: (updates: Partial<WindowType>) => void; 
-  onClose: () => void; 
+  onOpenBlogPost,
+}: {
+  window: WindowType;
+  onUpdate: (updates: Partial<WindowType>) => void;
+  onClose: () => void;
   onFocus: () => void;
   onOpenBlogPost: (slug: string, title: string) => void;
 }) {
@@ -280,65 +290,68 @@ function Window({
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget || (e.target as HTMLElement).closest('.window-bar')) {
+    if (e.target === e.currentTarget || (e.target as HTMLElement).closest(".window-bar")) {
       setIsDragging(true);
       setDragStart({ x: e.clientX, y: e.clientY });
       onFocus();
     }
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging) {
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!isDragging) return;
       const deltaX = e.clientX - dragStart.x;
       const deltaY = e.clientY - dragStart.y;
       const newX = Math.max(0, Math.min(90, window.position.x + (deltaX / globalThis.innerWidth) * 100));
       const newY = Math.max(0, Math.min(80, window.position.y + (deltaY / globalThis.innerHeight) * 100));
       onUpdate({ position: { x: newX, y: newY } });
-    }
-  };
+    },
+    [isDragging, dragStart.x, dragStart.y, window.position.x, window.position.y, onUpdate]
+  );
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
   useEffect(() => {
-    if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-      return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-      };
-    }
-  }, [isDragging, dragStart]);
+    if (!isDragging) return;
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging, handleMouseMove, handleMouseUp]);
 
   const getWindowContent = () => {
     switch (window.type) {
-      case 'terminal':
-        return <TerminalConsole 
-          windowState={window.state}
-          onStateChange={(state) => onUpdate({ state })}
-          onPositionChange={(pos) => onUpdate({ position: pos })}
-          onSizeChange={(size) => onUpdate({ size })}
-        />;
-      case 'about':
+      case "terminal":
+        return (
+          <TerminalConsole
+            windowState={window.state}
+            onStateChange={(state) => onUpdate({ state })}
+            onPositionChange={(pos) => onUpdate({ position: pos })}
+            onSizeChange={(size) => onUpdate({ size })}
+          />
+        );
+      case "about":
         return <About />;
-      case 'projects':
+      case "projects":
         return <Projects />;
-      case 'blog':
+      case "blog":
         return <Blog onOpenPost={onOpenBlogPost} />;
-      case 'contact':
+      case "contact":
         return <Contact />;
-      case 'login':
+      case "login":
         return <LoginWindow />;
-      case 'privacy':
+      case "privacy":
         return <Privacy />;
-      case 'terms':
+      case "terms":
         return <Terms />;
-      case 'blog-post':
-        return <BlogPost slug={window.slug || ''} />;
-      case 'resume':
-        return <div className="p-4 text-white">Resume content here</div>;
+      case "blog-post":
+        return <BlogPost slug={window.slug || ""} />;
+      case "resume":
+        return <Resume />;
       default:
         return <div className="p-4 text-white">Unknown window type</div>;
     }
@@ -347,21 +360,25 @@ function Window({
   return (
     <div
       className="fixed z-40"
-      style={window.state === 'maximized' ? {
-        left: '20px',
-        top: '50px',
-        right: '20px',
-        bottom: '60px',
-        width: 'auto',
-        height: 'auto',
-        zIndex: window.zIndex,
-      } : {
-        left: `${window.position.x}%`,
-        top: `${window.position.y}%`,
-        width: `${window.size.width}%`,
-        height: `${window.size.height}%`,
-        zIndex: window.zIndex,
-      }}
+      style={
+        window.state === "maximized"
+          ? {
+              left: "20px",
+              top: "50px",
+              right: "20px",
+              bottom: "60px",
+              width: "auto",
+              height: "auto",
+              zIndex: window.zIndex,
+            }
+          : {
+              left: `${window.position.x}%`,
+              top: `${window.position.y}%`,
+              width: `${window.size.width}%`,
+              height: `${window.size.height}%`,
+              zIndex: window.zIndex,
+            }
+      }
       onClick={(e) => e.stopPropagation()}
       onMouseDown={handleMouseDown}
     >
@@ -370,24 +387,22 @@ function Window({
         <div className="window-bar flex items-center justify-between border-b border-neutral-800 px-4 py-2 cursor-move">
           <div className="flex gap-2">
             <button onClick={onClose} title="Close" className="h-3 w-3 rounded-full bg-red-500/80 hover:bg-red-500" />
-            <button 
-              onClick={() => onUpdate({ state: window.state === 'minimized' ? 'normal' : 'minimized' })} 
-              title="Minimize" 
-              className="h-3 w-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500" 
+            <button
+              onClick={() => onUpdate({ state: window.state === "minimized" ? "normal" : "minimized" })}
+              title="Minimize"
+              className="h-3 w-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500"
             />
-            <button 
-              onClick={() => onUpdate({ state: window.state === 'maximized' ? 'normal' : 'maximized' })} 
-              title="Maximize" 
-              className="h-3 w-3 rounded-full bg-green-500/80 hover:bg-green-500" 
+            <button
+              onClick={() => onUpdate({ state: window.state === "maximized" ? "normal" : "maximized" })}
+              title="Maximize"
+              className="h-3 w-3 rounded-full bg-green-500/80 hover:bg-green-500"
             />
           </div>
           <div className="text-xs text-neutral-500">{window.title}</div>
         </div>
-        
+
         {/* Window content */}
-        <div className="flex-1 min-h-0 overflow-hidden">
-          {getWindowContent()}
-        </div>
+        <div className="flex-1 min-h-0 overflow-hidden">{getWindowContent()}</div>
       </div>
     </div>
   );
@@ -406,9 +421,7 @@ function Taskbar({
 
   useEffect(() => {
     const tick = () =>
-      setTime(
-        new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-      );
+      setTime(new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
     tick();
     const id = setInterval(tick, 1000 * 30);
     return () => clearInterval(id);
@@ -436,12 +449,10 @@ function Taskbar({
             onWindowToggle(window.id);
           }}
           className={`rounded-md border border-cyan-400/30 px-3 py-1 text-sm hover:bg-slate-800 ${
-            window.state === 'minimized' 
-              ? 'bg-cyan-400/20 text-cyan-200' 
-              : 'bg-slate-900/60'
+            window.state === "minimized" ? "bg-cyan-400/20 text-cyan-200" : "bg-slate-900/60"
           }`}
         >
-          {window.title} {window.state === 'minimized' && '(minimized)'}
+          {window.title} {window.state === "minimized" && "(minimized)"}
         </button>
       ))}
       <div className="ml-auto rounded-md border border-cyan-400/20 bg-slate-900/50 px-2 py-1 text-xs text-slate-300">
@@ -465,21 +476,9 @@ function StartMenu({
   onOpenTerms: () => void;
 }) {
   const socialLinks = [
-    {
-      label: 'GitHub',
-      href: 'https://github.com/jason-allen-oneal',
-      icon: '🐙'
-    },
-    {
-      label: 'LinkedIn', 
-      href: 'https://linkedin.com/in/jason-allen-oneal',
-      icon: '💼'
-    },
-    {
-      label: 'Twitter',
-      href: 'https://twitter.com/jason_allen_oneal', 
-      icon: '🐦'
-    }
+    { label: "GitHub", href: "https://github.com/jason-allen-oneal", icon: "🐙" },
+    { label: "LinkedIn", href: "https://linkedin.com/in/jason-allen-oneal", icon: "💼" },
+    { label: "Twitter", href: "https://twitter.com/jason_allen_oneal", icon: "🐦" },
   ];
 
   return (
@@ -490,7 +489,7 @@ function StartMenu({
       <div className="border-b border-cyan-400/20 p-3 text-sm font-semibold tracking-wide text-cyan-200">
         bluedot • menu
       </div>
-      
+
       {/* Applications Section */}
       <div className="p-3">
         <div className="mb-2 text-xs font-medium text-cyan-300 uppercase tracking-wide">Applications</div>
@@ -509,9 +508,7 @@ function StartMenu({
               className="rounded-lg border border-cyan-400/30 bg-slate-900/60 p-3 text-left text-sm hover:bg-slate-800"
             >
               <div className="mb-1 font-medium">{it.label}</div>
-              <div className="text-xs text-slate-400">
-                {it.href.startsWith("/") ? "Internal" : "External"}
-              </div>
+              <div className="text-xs text-slate-400">{it.href.startsWith("/") ? "Internal" : "External"}</div>
             </a>
           ))}
         </div>
@@ -577,7 +574,7 @@ function StartMenu({
             <span className="text-lg">🔐</span>
             <div>
               <div className="font-medium">Login / Register</div>
-              <div className="text-xs text-slate-400">Admin access</div>
+              <div className="text-xs text-slate-400">Authentication</div>
             </div>
           </button>
         </div>
