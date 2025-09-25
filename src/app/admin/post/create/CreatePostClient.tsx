@@ -5,6 +5,15 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Background from "@/components/Background";
 import Nav from "@/components/Nav";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { 
+  ArrowLeft, 
+  FileText, 
+  Wand2,
+  Save,
+  Eye
+} from "lucide-react";
 
 type Category = {
   id: number;
@@ -106,22 +115,40 @@ export default function CreatePostClient() {
     <div className="min-h-screen">
       <Background />
       <Nav />
-      <div className="relative mx-auto max-w-[1100px] px-6 pt-28 pb-10 md:pt-36 md:pb-20">
-        <div className="card p-8">
-          <div className="flex justify-between items-center mb-8">
+      <div className="relative mx-auto max-w-4xl px-6 pt-28 pb-10 md:pt-36 md:pb-20">
+        <div className="mb-8">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-3xl font-bold">Create New Post</h1>
-              <p className="text-muted mt-2">Add a new blog post</p>
+              <h1 className="text-3xl font-bold tracking-tight">Create New Post</h1>
+              <p className="text-muted-foreground mt-2">
+                Write and publish a new blog post
+              </p>
             </div>
-            <button
+            <Button
               onClick={() => router.push("/admin")}
-              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+              variant="outline"
+              className="gap-2"
             >
+              <ArrowLeft className="h-4 w-4" />
               Back to Dashboard
-            </button>
+            </Button>
           </div>
+        </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <FileText className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <CardTitle>Blog Post Details</CardTitle>
+                <CardDescription>
+                  Fill out the form below to create your new blog post
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="title" className="block text-sm font-medium mb-2">
@@ -156,13 +183,15 @@ export default function CreatePostClient() {
                     required
                   />
                   {errors.slug && <p className="text-red-500 text-sm">{errors.slug}</p>}
-                  <button
+                  <Button
                     type="button"
                     onClick={generateSlug}
-                    className="px-4 py-3 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+                    variant="outline"
+                    className="gap-2"
                   >
+                    <Wand2 className="h-4 w-4" />
                     Generate
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -237,17 +266,19 @@ export default function CreatePostClient() {
               </select>
             </div>
 
-            <div className="flex justify-end">
-              <button 
-                type="submit" 
-                className="px-6 py-3 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            <div className="flex gap-4 justify-end">
+              <Button
+                type="submit"
                 disabled={isLoading}
+                className="gap-2"
               >
+                <Save className="h-4 w-4" />
                 {isLoading ? "Creating..." : "Create Post"}
-              </button>
+              </Button>
             </div>
-          </form>
-        </div>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
