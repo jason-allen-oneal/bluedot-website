@@ -12,6 +12,7 @@ import LoginWindow from "@/components/LoginWindow";
 import Privacy from "@/components/Privacy";
 import Terms from "@/components/Terms";
 import Resume from "@/components/Resume";
+import Welcome from "@/components/Welcome";
 import bluedot from "@/assets/img/bluedot-logo.png";
 
 type DesktopIcon = {
@@ -35,7 +36,8 @@ type WindowType = {
     | "login"
     | "privacy"
     | "terms"
-    | "blog-post";
+    | "blog-post"
+    | "welcome";
   state: "normal" | "minimized" | "maximized";
   position: { x: number; y: number };
   size: { width: number; height: number };
@@ -56,6 +58,7 @@ function getDefaultPosition(type: WindowType["type"]) {
     privacy: { x: 10, y: 10 },
     terms: { x: 15, y: 15 },
     "blog-post": { x: 20, y: 20 },
+    welcome: { x: 30, y: 20 },
   };
   return positions[type] || { x: 20, y: 20 };
 }
@@ -72,6 +75,7 @@ function getDefaultSize(type: WindowType["type"]) {
     privacy: { width: 80, height: 80 },
     terms: { width: 80, height: 80 },
     "blog-post": { width: 80, height: 80 },
+    welcome: { width: 50, height: 60 },
   };
   return sizes[type] || { width: 50, height: 40 };
 }
@@ -81,10 +85,19 @@ export default function HomePage() {
   const [showStart, setShowStart] = useState(false);
   const [windows, setWindows] = useState<WindowType[]>([
     {
+      id: "welcome",
+      title: "Welcome",
+      type: "welcome",
+      state: "normal",
+      position: { x: 30, y: 20 },
+      size: { width: 50, height: 60 },
+      zIndex: 2,
+    },
+    {
       id: "terminal",
       title: "Terminal",
       type: "terminal",
-      state: "normal",
+      state: "minimized",
       position: { x: 25, y: 30 },
       size: { width: 60, height: 50 },
       zIndex: 1,
@@ -92,7 +105,7 @@ export default function HomePage() {
   ]);
 
   // z-index counter as a ref so using it doesn't trigger re-renders or deps churn
-  const zRef = useRef(2);
+  const zRef = useRef(3);
 
   const openWindow = useCallback(
     (
@@ -140,11 +153,11 @@ export default function HomePage() {
 
   const icons: DesktopIcon[] = useMemo(
     () => [
+      { id: "resume", label: "Resume.pdf", icon: "📄", onClick: () => openWindow("resume", "Resume") },
       { id: "about", label: "About", icon: "👤", onClick: () => openWindow("about", "About") },
       { id: "projects", label: "Projects", icon: "💼", onClick: () => openWindow("projects", "Projects") },
       { id: "blog", label: "Blog", icon: "📝", onClick: () => openWindow("blog", "Blog") },
       { id: "contact", label: "Contact", icon: "📧", onClick: () => openWindow("contact", "Contact") },
-      { id: "resume", label: "Resume.pdf", icon: "📄", onClick: () => openWindow("resume", "Resume") },
     ],
     [openWindow]
   );
@@ -189,6 +202,9 @@ export default function HomePage() {
               onUpdate={(updates) => updateWindow(window.id, updates)}
               onClose={() => closeWindow(window.id)}
               onFocus={() => updateWindow(window.id, { zIndex: zRef.current++ })}
+              onOpenWindow={openWindow}
+              setWindows={setWindows}
+              zRef={zRef}
             />
           )
       )}
@@ -259,11 +275,23 @@ function Window({
   onUpdate,
   onClose,
   onFocus,
+  onOpenWindow,
+  setWindows,
+  zRef,
 }: {
   window: WindowType;
   onUpdate: (updates: Partial<WindowType>) => void;
   onClose: () => void;
   onFocus: () => void;
+  onOpenWindow: (
+    type: WindowType["type"],
+    title: string,
+    customPosition?: { x: number; y: number },
+    customSize?: { width: number; height: number },
+    slug?: string
+  ) => void;
+  setWindows: React.Dispatch<React.SetStateAction<WindowType[]>>;
+  zRef: React.MutableRefObject<number>;
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
@@ -331,6 +359,20 @@ function Window({
         return <BlogPost slug={window.slug || ""} />;
       case "resume":
         return <Resume />;
+      case "welcome":
+        return (
+          <Welcome
+            onOpenProjects={() => onOpenWindow("projects", "Projects")}
+            onOpenResume={() => onOpenWindow("resume", "Resume")}
+            onOpenTerminal={() => {
+              setWindows((prev) =>
+                prev.map((w) =>
+                  w.type === "terminal" ? { ...w, state: "normal", zIndex: zRef.current++ } : w
+                )
+              );
+            }}
+          />
+        );
       default:
         return <div className="p-4 text-white">Unknown window type</div>;
     }
