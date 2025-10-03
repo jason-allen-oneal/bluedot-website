@@ -210,15 +210,6 @@ The easiest deployment option:
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/jason-allen-oneal/bluedot-website)
 
-## 💡 About the Developer
-
-**Jason O'Neal** is a cybersecurity student specializing in IoT security and a versatile full-stack developer. With expertise spanning TypeScript, Python, PHP, Linux systems, and cloud platforms, Jason builds AI-powered cybersecurity tools and engineers infrastructure for rapid development iteration.
-
-Beyond technical work, Jason is also a creative professional involved in:
-- Music arrangement and composition with focus on guitar performance
-- Fantasy fiction writing and D&D campaign development
-- Mechanical projects and hands-on problem solving
-
 ## 🤝 Connect & Collaborate
 
 - **Portfolio**: [bluedot.it.com](https://bluedot.it.com)
