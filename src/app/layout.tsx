@@ -7,6 +7,15 @@ import Providers from "@/components/Providers";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const jet = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
+export const viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    themeColor: [
+        { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+        { media: '(prefers-color-scheme: dark)', color: '#000000' },
+    ],
+};
 
 export const metadata = {
     metadataBase: new URL("https://bluedot.it.com"),
