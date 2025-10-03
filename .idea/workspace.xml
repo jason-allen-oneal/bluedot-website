@@ -10,6 +10,9 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -26,7 +29,7 @@
     "js.debugger.nextJs.config.created.client": "true",
     "js.debugger.nextJs.config.created.server": "true",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/home/rev/Desktop/projects/bluedot/bluedot-website",
+    "last_opened_file_path": "/home/rev/projects/node-security-module",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -68,6 +71,7 @@
       <updated>1758587404072</updated>
       <workItem from="1758587405663" duration="72000" />
       <workItem from="1758587486430" duration="2676000" />
+      <workItem from="1759449156736" duration="42000" />
     </task>
     <servers />
   </component>

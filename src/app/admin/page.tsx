@@ -12,16 +12,13 @@ import {
   Plus, 
   MessageSquare, 
   FileText, 
-  Settings, 
   LogOut, 
   Eye, 
   Edit, 
   Trash2, 
   Calendar,
   User,
-  BarChart3,
-  Search,
-  Filter
+  BarChart3
 } from "lucide-react";
 
 interface Post {
@@ -125,7 +122,7 @@ export default function AdminPage() {
             <div>
               <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
               <p className="text-muted-foreground mt-2">
-                Welcome back! Here's what's happening with your blog.
+                Welcome back! Here&apos;s what&apos;s happening with your blog.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">

@@ -11,8 +11,7 @@ import {
   ArrowLeft, 
   FileText, 
   Wand2,
-  Save,
-  Eye
+  Save
 } from "lucide-react";
 
 type Category = {
