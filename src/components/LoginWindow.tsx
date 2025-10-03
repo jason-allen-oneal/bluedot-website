@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-export default function LoginWindow() {
+export default function LoginWindow({ onClose }: { onClose?: () => void }) {
   const router = useRouter();
   const [mode, setMode] = useState<"login" | "register">("login");
   
@@ -36,7 +36,9 @@ export default function LoginWindow() {
     
     if (!res?.error) {
       // Close the login window and redirect to admin
-      window.close();
+      if (onClose) {
+        onClose();
+      }
       router.push("/admin");
     } else {
       setError("Invalid username or password");

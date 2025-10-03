@@ -350,7 +350,7 @@ function Window({
       case "contact":
         return <Contact />;
       case "login":
-        return <LoginWindow />;
+        return <LoginWindow onClose={onClose} />;
       case "privacy":
         return <Privacy />;
       case "terms":
