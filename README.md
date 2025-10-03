@@ -2,7 +2,7 @@
 
 > **A modern portfolio website with a unique desktop-inspired interface showcasing cybersecurity expertise, full-stack development skills, and creative projects.**
 
-This is the professional portfolio and self-marketing website for **Jason O'Neal**, a cybersecurity student specializing in IoT and full-stack developer. The site features an innovative desktop-style interface that provides an engaging, interactive experience while showcasing technical skills, projects, and professional background.
+This is the professional portfolio and self-marketing website. The site features an innovative desktop-style interface that provides an engaging, interactive experience while showcasing technical skills, projects, and professional background.
 
 ## 🌟 Key Features
 
