@@ -24,6 +24,20 @@ This is the professional portfolio and self-marketing website for **Jason O'Neal
 - **Performance Optimized**: Server-side rendering, automatic code splitting, and optimized assets
 - **Database-Driven**: MySQL with Prisma ORM for dynamic content management
 - **Admin Panel**: Content management system for blog posts and site updates
+- **SEO Optimized**: Comprehensive metadata, sitemap, robots.txt, and structured data for search engines
+
+## 🔍 SEO Features
+
+This website is fully optimized for search engines with:
+
+- **Comprehensive Metadata**: Open Graph, Twitter Cards, and rich metadata on all pages
+- **Dynamic Sitemap**: Automatically generated sitemap.xml with blog posts
+- **Robots.txt**: Properly configured for search engine crawling
+- **Structured Data**: JSON-LD schema markup for better search results
+- **PWA Manifest**: Progressive Web App support with manifest.json
+- **Semantic HTML**: Proper use of article, header, time, and other semantic elements
+- **Mobile Optimized**: Responsive viewport configuration for all devices
+- **Blog Routes**: Dedicated SEO-friendly routes for blog posts (/blog/[slug])
 
 ## 🚀 Technology Stack
 

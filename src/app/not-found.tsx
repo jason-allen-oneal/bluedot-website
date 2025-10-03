@@ -1,6 +1,16 @@
 import Background from '@/components/Background';
 import Nav from '@/components/Nav';
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Page Not Found',
+  description: 'The page you\'re looking for doesn\'t exist or has been moved.',
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function NotFound() {
   return (
