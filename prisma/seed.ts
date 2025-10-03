@@ -30,7 +30,8 @@ async function main() {
 
 When I set out to create this portfolio website, I wanted to build something that would **immediately capture attention** while showcasing both technical skills and creative vision. Instead of following conventional web design patterns, I chose to create a **desktop operating system experience** right in the browser.
 
-> "The most interesting interfaces are the ones that break expectations while remaining intuitive." - This principle guided every design decision.
+> "The most interesting interfaces are the ones that break expectations while remaining intuitive."  
+> *This principle guided every design decision.*
 
 ## The Desktop Experience
 
@@ -50,12 +51,13 @@ type WindowType = {
 };
 \`\`\`
 
-**Key Features:**
-- **Draggable Windows**: Click and drag any window around the desktop
-- **Window Controls**: Minimize, maximize, and close buttons that actually work
-- **Z-index Management**: Proper window layering and focus handling
-- **State Persistence**: Windows remember their size and position
-- **Multi-window Support**: Open multiple sections simultaneously
+#### Key Features
+
+- **Draggable Windows** — Click and drag any window around the desktop
+- **Window Controls** — Minimize, maximize, and close buttons that actually work
+- **Z-index Management** — Proper window layering and focus handling
+- **State Persistence** — Windows remember their size and position
+- **Multi-window Support** — Open multiple sections simultaneously
 
 ### Interactive Terminal Console
 
@@ -73,21 +75,24 @@ const commands = {
 };
 \`\`\`
 
-**Terminal Features:**
-- **Command History**: Arrow keys to navigate previous commands
-- **Tab Completion**: Intelligent command suggestions
-- **Real Functionality**: Commands actually perform actions
-- **Typewriter Effects**: Realistic terminal animations
-- **Current Directory**: Simulated file system navigation
+#### Terminal Features
+
+- **Command History** — Arrow keys to navigate previous commands
+- **Tab Completion** — Intelligent command suggestions
+- **Real Functionality** — Commands actually perform actions
+- **Typewriter Effects** — Realistic terminal animations
+- **Current Directory** — Simulated file system navigation
 
 ### Desktop Environment
 
 The complete desktop experience includes:
 
-- **Desktop Icons**: Clickable shortcuts to open different sections
-- **Taskbar**: Shows currently open windows and system time
-- **Start Menu**: Organized access to all features and external links
-- **Window Overlays**: Proper modal and dialog handling
+- **Desktop Icons** — Clickable shortcuts to open different sections
+- **Taskbar** — Shows currently open windows and system time
+- **Start Menu** — Organized access to all features and external links
+- **Window Overlays** — Proper modal and dialog handling
+
+---
 
 ## Technical Architecture
 
@@ -137,11 +142,14 @@ const openWindow = useCallback((type, title, position?, size?) => {
 
 ### Modern Tech Stack
 
-**Frontend Framework**: Next.js 15 with App Router for optimal performance and SEO
+#### Frontend Framework
+**Next.js 15** with App Router for optimal performance and SEO
 
-**TypeScript Integration**: Full type safety across the entire application
+#### TypeScript Integration
+Full type safety across the entire application
 
-**Styling**: Tailwind CSS with custom design system for the desktop theme:
+#### Styling
+**Tailwind CSS** with custom design system for the desktop theme:
 
 \`\`\`css
 .desktop-gradient {
@@ -158,7 +166,10 @@ const openWindow = useCallback((type, title, position?, size?) => {
 }
 \`\`\`
 
-**Database**: MySQL with Prisma ORM for the blog system and user management
+#### Database
+**MySQL** with Prisma ORM for the blog system and user management
+
+---
 
 ## Unique Features
 
@@ -182,9 +193,10 @@ const handleMouseMove = useCallback((e: MouseEvent) => {
 ### 2. Responsive Desktop Design
 
 The desktop experience **adapts beautifully** to different screen sizes:
-- **Desktop**: Full window management with drag-and-drop
-- **Tablet**: Touch-friendly windows with gesture support
-- **Mobile**: Simplified interface while maintaining the desktop aesthetic
+
+- **Desktop** — Full window management with drag-and-drop
+- **Tablet** — Touch-friendly windows with gesture support
+- **Mobile** — Simplified interface while maintaining the desktop aesthetic
 
 ### 3. Blog System with Admin Panel
 
@@ -200,18 +212,20 @@ A **complete content management system** built into the desktop environment:
 
 Despite the complex interface, the site remains **lightning fast**:
 
-- **Code Splitting**: Each window component loads only when needed
-- **Lazy Loading**: Images and content load on demand
-- **Memoization**: Expensive calculations are cached
-- **Optimistic Updates**: UI responds immediately to user actions
+- **Code Splitting** — Each window component loads only when needed
+- **Lazy Loading** — Images and content load on demand
+- **Memoization** — Expensive calculations are cached
+- **Optimistic Updates** — UI responds immediately to user actions
+
+---
 
 ## Technical Challenges Solved
 
 ### Challenge 1: Window Management Performance
 
-**Problem**: Managing multiple draggable windows without performance degradation.
+**Problem:** Managing multiple draggable windows without performance degradation.
 
-**Solution**: Used **React.memo** and **useCallback** extensively, plus a ref-based z-index system:
+**Solution:** Used **React.memo** and **useCallback** extensively, plus a ref-based z-index system:
 
 \`\`\`typescript
 const Window = React.memo(({ window, onUpdate, onClose, onFocus }) => {
@@ -224,9 +238,9 @@ const Window = React.memo(({ window, onUpdate, onClose, onFocus }) => {
 
 ### Challenge 2: State Synchronization
 
-**Problem**: Keeping window state synchronized across the entire desktop.
+**Problem:** Keeping window state synchronized across the entire desktop.
 
-**Solution**: Centralized state management with functional updates:
+**Solution:** Centralized state management with functional updates:
 
 \`\`\`typescript
 const updateWindow = useCallback((id: string, updates: Partial<WindowType>) => {
@@ -238,9 +252,9 @@ const updateWindow = useCallback((id: string, updates: Partial<WindowType>) => {
 
 ### Challenge 3: Mobile Experience
 
-**Problem**: Making a desktop interface work on touch devices.
+**Problem:** Making a desktop interface work on touch devices.
 
-**Solution**: **Progressive enhancement** with touch-specific interactions:
+**Solution:** **Progressive enhancement** with touch-specific interactions:
 
 \`\`\`typescript
 const handleTouchStart = (e: TouchEvent) => {
@@ -249,6 +263,8 @@ const handleTouchStart = (e: TouchEvent) => {
   setIsDragging(true);
 };
 \`\`\`
+
+---
 
 ## What Makes This Special
 
@@ -264,39 +280,47 @@ Every element serves a purpose. The terminal has real commands, windows can be r
 
 Despite the complexity, everything works together seamlessly. Opening a blog post from the terminal creates a new window. The admin panel integrates naturally with the desktop environment.
 
+---
+
 ## Future Enhancements
 
 The desktop environment continues to evolve:
 
-- [✅] **Multi-monitor Support**: Virtual desktops and workspace switching
-- [✅] **Desktop Widgets**: Live data displays and interactive elements
-- [✅] **File System Simulation**: Browseable folder structure
-- [ ] **Desktop Themes**: Customizable color schemes and wallpapers
-- [ ] **Window Snapping**: Grid-based window positioning
-- [ ] **Keyboard Shortcuts**: Full desktop-style hotkey support
+- [x] **Multi-monitor Support** — Virtual desktops and workspace switching
+- [x] **Desktop Widgets** — Live data displays and interactive elements
+- [x] **File System Simulation** — Browseable folder structure
+- [ ] **Desktop Themes** — Customizable color schemes and wallpapers
+- [ ] **Window Snapping** — Grid-based window positioning
+- [ ] **Keyboard Shortcuts** — Full desktop-style hotkey support
+
+---
 
 ## Technical Insights
 
 ### Performance Metrics
-- **First Contentful Paint**: < 1.2s
-- **Largest Contentful Paint**: < 2.5s
-- **Cumulative Layout Shift**: < 0.1
-- **First Input Delay**: < 100ms
+
+- **First Contentful Paint:** < 1.2s
+- **Largest Contentful Paint:** < 2.5s
+- **Cumulative Layout Shift:** < 0.1
+- **First Input Delay:** < 100ms
 
 ### Code Quality
-- **TypeScript Coverage**: 100%
-- **Component Architecture**: Fully modular and reusable
-- **Bundle Size**: Optimized with tree-shaking and code splitting
-- **Accessibility**: Full keyboard navigation and screen reader support
+
+- **TypeScript Coverage:** 100%
+- **Component Architecture:** Fully modular and reusable
+- **Bundle Size:** Optimized with tree-shaking and code splitting
+- **Accessibility:** Full keyboard navigation and screen reader support
+
+---
 
 ## Conclusion
 
 Building this desktop-inspired web experience has been one of the most **challenging and rewarding** projects I've undertaken. It demonstrates:
 
-- **Creative Problem-Solving**: Finding innovative solutions to complex UX challenges
-- **Technical Excellence**: Building performant, maintainable code at scale
-- **User Experience Focus**: Creating intuitive interactions that delight users
-- **Modern Development Practices**: Leveraging cutting-edge tools and techniques
+- **Creative Problem-Solving** — Finding innovative solutions to complex UX challenges
+- **Technical Excellence** — Building performant, maintainable code at scale
+- **User Experience Focus** — Creating intuitive interactions that delight users
+- **Modern Development Practices** — Leveraging cutting-edge tools and techniques
 
 The result is a portfolio that doesn't just **show** my work—it **is** my work. Every interaction, every animation, every component showcases the attention to detail and technical expertise that I bring to all my projects.
 
