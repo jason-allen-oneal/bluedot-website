@@ -1,4 +1,3 @@
-// src/app/page.tsx
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -6,7 +5,6 @@ import TerminalConsole from "@/components/TerminalConsole";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
 import Blog from "@/components/Blog";
-import BlogPost from "@/components/BlogPost";
 import Contact from "@/components/Contact";
 import LoginWindow from "@/components/LoginWindow";
 import Privacy from "@/components/Privacy";
@@ -356,7 +354,7 @@ function Window({
       case "terms":
         return <Terms />;
       case "blog-post":
-        return <BlogPost slug={window.slug || ""} />;
+        return <Blog />;
       case "resume":
         return <Resume />;
       case "welcome":
