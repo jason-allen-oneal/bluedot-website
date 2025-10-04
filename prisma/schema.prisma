@@ -33,7 +33,7 @@ model Post {
   title       String
   slug        String     @unique
   excerpt     String?    @db.Text
-  content     String     @db.Text
+  content     String     @db.LongText
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 

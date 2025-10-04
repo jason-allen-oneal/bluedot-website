@@ -38,6 +38,7 @@ export default function AdminPage() {
   const [isDeleting, setIsDeleting] = useState<number | null>(null);
 
   useEffect(() => {
+    console.log('session', session);
     if (session) {
       fetchPosts();
     }

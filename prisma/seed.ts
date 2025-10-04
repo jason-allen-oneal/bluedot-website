@@ -21,25 +21,99 @@ async function main() {
   });
   console.log("✅ Admin user created");
 
+  // Create sample categories
+  const categories = await Promise.all([
+    prisma.category.upsert({
+      where: { name: "Technology" },
+      update: {},
+      create: { name: "Technology" }
+    }),
+    prisma.category.upsert({
+      where: { name: "Web Development" },
+      update: {},
+      create: { name: "Web Development" }
+    }),
+    prisma.category.upsert({
+      where: { name: "Programming" },
+      update: {},
+      create: { name: "Programming" }
+    }),
+    prisma.category.upsert({
+      where: { name: "Tutorials" },
+      update: {},
+      create: { name: "Tutorials" }
+    }),
+    prisma.category.upsert({
+      where: { name: "Personal" },
+      update: {},
+      create: { name: "Personal" }
+    })
+  ]);
+  console.log("✅ Categories created");
+
+  // Create sample tags
+  const tags = await Promise.all([
+    prisma.tag.upsert({
+      where: { name: "Next.js" },
+      update: {},
+      create: { name: "Next.js" }
+    }),
+    prisma.tag.upsert({
+      where: { name: "React" },
+      update: {},
+      create: { name: "React" }
+    }),
+    prisma.tag.upsert({
+      where: { name: "TypeScript" },
+      update: {},
+      create: { name: "TypeScript" }
+    }),
+    prisma.tag.upsert({
+      where: { name: "JavaScript" },
+      update: {},
+      create: { name: "JavaScript" }
+    }),
+    prisma.tag.upsert({
+      where: { name: "CSS" },
+      update: {},
+      create: { name: "CSS" }
+    }),
+    prisma.tag.upsert({
+      where: { name: "Web Design" },
+      update: {},
+      create: { name: "Web Design" }
+    }),
+    prisma.tag.upsert({
+      where: { name: "UI/UX" },
+      update: {},
+      create: { name: "UI/UX" }
+    }),
+    prisma.tag.upsert({
+      where: { name: "Tutorial" },
+      update: {},
+      create: { name: "Tutorial" }
+    })
+  ]);
+  console.log("✅ Tags created");
+
   await prisma.post.create({
     data: {
       title: "Building a Desktop-Inspired Web Experience: The bluedot.it Architecture",
       slug: "desktop-architecture",
       excerpt: "Explore the unique desktop-inspired architecture behind this portfolio website, featuring draggable windows, an interactive terminal, and a window management system built with Next.js 15 and modern web technologies.",
-      content: `## The Concept
-
-When I set out to create this portfolio website, I wanted to build something that would **immediately capture attention** while showcasing both technical skills and creative vision. Instead of following conventional web design patterns, I chose to create a **desktop operating system experience** right in the browser.
+      content: `## The Concept  
+When I set out to create this portfolio website, I wanted to build something that would **immediately capture attention** while showcasing both technical skills and creative vision. Instead of following conventional web design patterns, I chose to create a **desktop operating system experience** right in the browser.  
 
 > "The most interesting interfaces are the ones that break expectations while remaining intuitive."  
-> *This principle guided every design decision.*
+> *This principle guided every design decision.*  
 
-## The Desktop Experience
+## The Desktop Experience  
 
-### Window Management System
+### Window Management System  
 
-The heart of this application is a **fully functional window management system** that recreates the familiar desktop experience:
-
-\`\`\`typescript
+The heart of this application is a **fully functional window management system** that recreates the familiar desktop experience:  
+  
+~~~typescript
 type WindowType = {
   id: string;
   title: string;
@@ -49,21 +123,21 @@ type WindowType = {
   size: { width: number; height: number };
   zIndex: number;
 };
-\`\`\`
+~~~
+  
+#### Key Features  
+  
+- **Draggable Windows** — Click and drag any window around the desktop  
+- **Window Controls** — Minimize, maximize, and close buttons that actually work  
+- **Z-index Management** — Proper window layering and focus handling  
+- **State Persistence** — Windows remember their size and position  
+- **Multi-window Support** — Open multiple sections simultaneously  
 
-#### Key Features
-
-- **Draggable Windows** — Click and drag any window around the desktop
-- **Window Controls** — Minimize, maximize, and close buttons that actually work
-- **Z-index Management** — Proper window layering and focus handling
-- **State Persistence** — Windows remember their size and position
-- **Multi-window Support** — Open multiple sections simultaneously
-
-### Interactive Terminal Console
+### Interactive Terminal Console  
 
 The terminal isn't just for show—it's a **fully functional command-line interface** with real commands:
 
-\`\`\`typescript
+~~~typescript
 const commands = {
   help: () => showAvailableCommands(),
   about: () => openWindow("about", "About Me"),
@@ -73,7 +147,7 @@ const commands = {
   uname: () => showSystemInfo(),
   // ... and many more
 };
-\`\`\`
+~~~
 
 #### Terminal Features
 
@@ -100,7 +174,7 @@ The complete desktop experience includes:
 
 The application follows a **clean component architecture**:
 
-\`\`\`
+~~~
 src/
 ├── app/
 │   ├── page.tsx           # Main desktop interface
@@ -113,13 +187,13 @@ src/
 │   ├── Projects.tsx          # Projects showcase
 │   └── ui/                   # Reusable UI components
 └── lib/                      # Utility functions
-\`\`\`
+~~~
 
 ### State Management
 
 The desktop state is managed through **React hooks** with careful attention to performance:
 
-\`\`\`typescript
+~~~typescript
 const [windows, setWindows] = useState<WindowType[]>([]);
 const zRef = useRef<number>(2); // Z-index counter
 
@@ -138,7 +212,7 @@ const openWindow = useCallback((type, title, position?, size?) => {
     return [...prev, newWindow];
   });
 }, []);
-\`\`\`
+~~~
 
 ### Modern Tech Stack
 
@@ -151,7 +225,7 @@ Full type safety across the entire application
 #### Styling
 **Tailwind CSS** with custom design system for the desktop theme:
 
-\`\`\`css
+~~~css
 .desktop-gradient {
   background: linear-gradient(135deg, 
     rgb(30, 58, 138) 0%, 
@@ -164,7 +238,7 @@ Full type safety across the entire application
   backdrop-filter: blur(12px);
   border: 1px solid rgba(34, 211, 238, 0.3);
 }
-\`\`\`
+~~~
 
 #### Database
 **MySQL** with Prisma ORM for the blog system and user management
@@ -177,7 +251,7 @@ Full type safety across the entire application
 
 Every window can be **dragged around the desktop** with smooth animations:
 
-\`\`\`typescript
+~~~typescript
 const handleMouseMove = useCallback((e: MouseEvent) => {
   if (!isDragging) return;
   const deltaX = e.clientX - dragStart.x;
@@ -188,7 +262,7 @@ const handleMouseMove = useCallback((e: MouseEvent) => {
     window.position.y + (deltaY / window.innerHeight) * 100));
   onUpdate({ position: { x: newX, y: newY } });
 }, [isDragging, dragStart, window.position]);
-\`\`\`
+~~~
 
 ### 2. Responsive Desktop Design
 
@@ -227,14 +301,14 @@ Despite the complex interface, the site remains **lightning fast**:
 
 **Solution:** Used **React.memo** and **useCallback** extensively, plus a ref-based z-index system:
 
-\`\`\`typescript
+~~~typescript
 const Window = React.memo(({ window, onUpdate, onClose, onFocus }) => {
   // Memoized window component prevents unnecessary re-renders
   const handleDrag = useCallback((delta) => {
     // Only update position when actually dragging
   }, [isDragging]);
 });
-\`\`\`
+~~~
 
 ### Challenge 2: State Synchronization
 
@@ -242,13 +316,13 @@ const Window = React.memo(({ window, onUpdate, onClose, onFocus }) => {
 
 **Solution:** Centralized state management with functional updates:
 
-\`\`\`typescript
+~~~typescript
 const updateWindow = useCallback((id: string, updates: Partial<WindowType>) => {
   setWindows(prev => prev.map(w => 
     w.id === id ? { ...w, ...updates } : w
   ));
 }, []);
-\`\`\`
+~~~
 
 ### Challenge 3: Mobile Experience
 
@@ -256,13 +330,13 @@ const updateWindow = useCallback((id: string, updates: Partial<WindowType>) => {
 
 **Solution:** **Progressive enhancement** with touch-specific interactions:
 
-\`\`\`typescript
+~~~typescript
 const handleTouchStart = (e: TouchEvent) => {
   const touch = e.touches[0];
   setDragStart({ x: touch.clientX, y: touch.clientY });
   setIsDragging(true);
 };
-\`\`\`
+~~~
 
 ---
 
@@ -331,6 +405,15 @@ Whether you're here to explore my background, check out my projects, or just exp
 *Experience the full desktop interface by clicking the icons, opening multiple windows, and trying out the terminal commands. The code is open source and available on GitHub for those interested in the technical implementation.*
 
 **Welcome to the desktop web! 🖥️**`,
+      categoryId: categories[0].id, // Technology category
+      tags: {
+        create: [
+          { tag: { connect: { id: tags[0].id } } }, // Next.js
+          { tag: { connect: { id: tags[1].id } } }, // React
+          { tag: { connect: { id: tags[2].id } } }, // TypeScript
+          { tag: { connect: { id: tags[6].id } } }, // UI/UX
+        ]
+      }
     },
   });
   console.log("✅ Sample blog post created");

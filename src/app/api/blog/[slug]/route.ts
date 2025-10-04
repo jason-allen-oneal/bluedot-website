@@ -20,6 +20,7 @@ export async function GET(
         updatedAt: true,
       }
     });
+    console.log("raw post", post);
 
     if (!post) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });

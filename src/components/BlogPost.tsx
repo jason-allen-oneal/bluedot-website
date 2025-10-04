@@ -80,6 +80,7 @@ export default function BlogPost({ slug }: BlogPostProps) {
         const response = await fetch(`/api/blog/${slug}`);
         if (response.ok) {
           const data = await response.json();
+          console.log("fetched post", data);
           setPost(data);
           const processed = await processMarkdown(data.content);
           setProcessedContent(processed);
@@ -133,8 +134,8 @@ export default function BlogPost({ slug }: BlogPostProps) {
           </div>
         </header>
 
-        <div 
-          className="prose prose-invert prose-tech max-w-none"
+        <div
+          className="max-w-none"
           dangerouslySetInnerHTML={{ __html: processedContent }}
         />
       </div>
