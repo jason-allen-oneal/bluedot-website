@@ -1,147 +1,57 @@
-"use client";
-
-/**
- * BlogPost component with full markdown rendering using unified + rehype pipeline.
- * - Uses the same markdown processing as Blog.tsx for consistency
- * - Supports code blocks, blockquotes, tables, and all GFM features
- * - Applies prose-tech styling for proper theme integration
- */
-
-import { useEffect, useState } from "react";
-import { unified } from "unified";
-import remarkParse from "remark-parse";
+// Server Component by default
+import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
-import remarkRehype from "remark-rehype";
-import rehypeStringify from "rehype-stringify";
-import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import remarkBreaks from "remark-breaks";
-import rehypeRaw from "rehype-raw";
-import { decodeHtmlEntities } from "@/lib/utils";
+import React from "react";
 
-interface Post {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-}
+// Optional: map HTML tags to styled components
+const components = {
+  a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
+    <a {...props} className="underline decoration-dotted hover:decoration-solid" />
+  ),
+  img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
+    // Tailwind Typography already makes images responsive; keep max width safe
+    <img {...props} className="mx-auto h-auto max-w-full" />
+  ),
+  code: (props: React.HTMLAttributes<HTMLElement>) => (
+    <code {...props} className="whitespace-pre-wrap" />
+  ),
+  pre: (props: React.HTMLAttributes<HTMLPreElement>) => (
+    <pre {...props} className="overflow-x-auto whitespace-pre" />
+  ),
+};
 
-export default function BlogPost({ slug }: { slug: string }) {
-  const [post, setPost] = useState<Post | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [processedContent, setProcessedContent] = useState<string>("");
-
-  const processMarkdown = async (content: string) => {
-    try {
-      // Decode HTML entities before parsing markdown
-      const decodedContent = decodeHtmlEntities(content);
-      
-      const processor = unified()
-        .use(remarkParse)
-        .use(remarkGfm)
-        .use(remarkBreaks)
-        .use(remarkRehype, { allowDangerousHtml: true })
-        .use(rehypeRaw)
-        .use(rehypeSanitize, {
-          ...defaultSchema,
-          tagNames: [
-            ...(defaultSchema.tagNames || []),
-            "figure",
-            "figcaption",
-            "caption",
-            "details",
-            "summary",
-            "input",
-          ],
-          attributes: {
-            ...(defaultSchema.attributes || {}),
-            a: [
-              ...(defaultSchema.attributes?.a || []),
-              ["target", "string"],
-              ["rel", "space-separated"],
-            ],
-            img: [
-              ...(defaultSchema.attributes?.img || []),
-              ["loading", "string"],
-              ["decoding", "string"],
-              ["width", "number"],
-              ["height", "number"],
-            ],
-            input: [["type", "checkbox"], ["checked", "checked"], ["disabled", "disabled"]],
-            code: [...(defaultSchema.attributes?.code || []), ["className", "token list"]],
-          },
-        })
-        .use(rehypeStringify);
-
-      const file = await processor.process(decodedContent);
-      return String(file);
-    } catch (error) {
-      console.error("Error processing markdown:", error);
-      return content;
-    }
+type BlogPostProps = {
+  post: {
+    title: string;
+    content: string; // MD/MDX from your database
+    // ...anything else you store
   };
+};
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(`/api/blog/${slug}`);
-        if (!res.ok) return;
-        const data = await res.json();
-        setPost(data);
-        // Process markdown content
-        const processed = await processMarkdown(data.content);
-        setProcessedContent(processed);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [slug]);
-
-  if (loading) {
-    return (
-      <div className="p-6 h-full overflow-y-auto overflow-x-hidden">
-        <div className="flex items-center justify-center h-full">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400 mx-auto mb-4" />
-            <p className="text-neutral-400">Loading post...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!post) {
-    return (
-      <div className="p-6 h-full overflow-y-auto overflow-x-hidden">
-        <div className="flex items-center justify-center h-full">
-          <p className="text-neutral-400">Post not found.</p>
-        </div>
-      </div>
-    );
-  }
+export default async function BlogPost({ post }: BlogPostProps) {
+  // Compile MDX from a *string* (from your DB) on the server
+  const { content } = await compileMDX({
+    source: post.content,
+    components,
+    options: {
+      // MDX options
+      mdxOptions: {
+        // Keep behavior consistent with your old ReactMarkdown setup
+        remarkPlugins: [remarkGfm, remarkBreaks],
+        // add rehype plugins here if needed (e.g., syntax highlighting)
+      },
+      // parseFrontmatter: true, // enable if you embed frontmatter in the DB string
+    },
+  });
 
   return (
-    <div className="h-full overflow-y-auto overflow-x-hidden p-6 text-slate-100">
-      <div className="mx-auto w-full max-w-3xl">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold mb-4 text-cyan-200">{post.title}</h1>
-          <div className="text-slate-400 mb-6">
-            {new Date(post.createdAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </div>
-        </header>
-
-        {/* Rendered markdown content with prose-tech styling */}
-        <div 
-          className="prose prose-invert prose-tech max-w-none"
-          dangerouslySetInnerHTML={{ __html: processedContent }}
-        />
-      </div>
-    </div>
+    <article className="markdown prose prose-invert max-w-full w-full break-words
+      prose-a:break-words prose-img:mx-auto prose-img:max-w-full prose-img:h-auto
+      prose-pre:overflow-x-auto prose-pre:whitespace-pre
+      prose-table:block prose-table:w-full prose-table:overflow-x-auto">
+      <h1>{post.title}</h1>
+      {content}
+    </article>
   );
 }
