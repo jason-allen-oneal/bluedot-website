@@ -1,16 +1,21 @@
 "use client";
 
 /**
- * Minimal Markdown renderer (no rehype).
- * - remarkGfm + remarkBreaks only.
- * - Styles applied to a wrapper div to avoid TS prop issues.
- * - Horizontal overflow contained to code/tables; modal never scrolls sideways.
+ * BlogPost component with full markdown rendering using unified + rehype pipeline.
+ * - Uses the same markdown processing as Blog.tsx for consistency
+ * - Supports code blocks, blockquotes, tables, and all GFM features
+ * - Applies prose-tech styling for proper theme integration
  */
 
 import { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import remarkBreaks from "remark-breaks";
+import rehypeRaw from "rehype-raw";
 import { decodeHtmlEntities } from "@/lib/utils";
 
 interface Post {
@@ -26,7 +31,57 @@ interface Post {
 export default function BlogPost({ slug }: { slug: string }) {
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
-  const [decodedContent, setDecodedContent] = useState("");
+  const [processedContent, setProcessedContent] = useState<string>("");
+
+  const processMarkdown = async (content: string) => {
+    try {
+      // Decode HTML entities before parsing markdown
+      const decodedContent = decodeHtmlEntities(content);
+      
+      const processor = unified()
+        .use(remarkParse)
+        .use(remarkGfm)
+        .use(remarkBreaks)
+        .use(remarkRehype, { allowDangerousHtml: true })
+        .use(rehypeRaw)
+        .use(rehypeSanitize, {
+          ...defaultSchema,
+          tagNames: [
+            ...(defaultSchema.tagNames || []),
+            "figure",
+            "figcaption",
+            "caption",
+            "details",
+            "summary",
+            "input",
+          ],
+          attributes: {
+            ...(defaultSchema.attributes || {}),
+            a: [
+              ...(defaultSchema.attributes?.a || []),
+              ["target", "string"],
+              ["rel", "space-separated"],
+            ],
+            img: [
+              ...(defaultSchema.attributes?.img || []),
+              ["loading", "string"],
+              ["decoding", "string"],
+              ["width", "number"],
+              ["height", "number"],
+            ],
+            input: [["type", "checkbox"], ["checked", "checked"], ["disabled", "disabled"]],
+            code: [...(defaultSchema.attributes?.code || []), ["className", "token list"]],
+          },
+        })
+        .use(rehypeStringify);
+
+      const file = await processor.process(decodedContent);
+      return String(file);
+    } catch (error) {
+      console.error("Error processing markdown:", error);
+      return content;
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -35,8 +90,9 @@ export default function BlogPost({ slug }: { slug: string }) {
         if (!res.ok) return;
         const data = await res.json();
         setPost(data);
-        // Decode HTML entities before rendering
-        setDecodedContent(decodeHtmlEntities(data.content));
+        // Process markdown content
+        const processed = await processMarkdown(data.content);
+        setProcessedContent(processed);
       } finally {
         setLoading(false);
       }
@@ -80,29 +136,12 @@ export default function BlogPost({ slug }: { slug: string }) {
           </div>
         </header>
 
-        {/* Wrapper gets all styling; ReactMarkdown stays prop-simple */}
-        <div
-          className="
-            markdown
-            prose prose-invert
-            max-w-full w-full
-            break-words
-            prose-a:break-words
-            prose-img:mx-auto prose-img:max-w-full prose-img:h-auto
-            prose-pre:overflow-x-auto prose-pre:whitespace-pre
-            prose-table:block prose-table:w-full prose-table:overflow-x-auto
-          "
-        >
-          <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
-            {decodedContent}
-          </ReactMarkdown>
-        </div>
+        {/* Rendered markdown content with prose-tech styling */}
+        <div 
+          className="prose prose-invert prose-tech max-w-none"
+          dangerouslySetInnerHTML={{ __html: processedContent }}
+        />
       </div>
     </div>
   );
 }
-
-/* OPTIONAL (globals.css)
-.markdown * { max-width: 100%; min-width: 0; }
-.markdown iframe, .markdown video { width: 100%; height: auto; }
-*/
