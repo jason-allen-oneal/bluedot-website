@@ -1,14 +1,16 @@
 "use client";
 
+/**
+ * Minimal Markdown renderer (no rehype).
+ * - remarkGfm + remarkBreaks only.
+ * - Styles applied to a wrapper div to avoid TS prop issues.
+ * - Horizontal overflow contained to code/tables; modal never scrolls sideways.
+ */
+
 import { useEffect, useState } from "react";
-import { unified } from "unified";
-import remarkParse from "remark-parse";
+import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import remarkRehype from "remark-rehype";
-import rehypeStringify from "rehype-stringify";
-import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import remarkBreaks from "remark-breaks";
-import rehypeRaw from "rehype-raw";
 
 interface Post {
   id: string;
@@ -20,87 +22,29 @@ interface Post {
   updatedAt: string;
 }
 
-interface BlogPostProps {
-  slug: string;
-}
-
-export default function BlogPost({ slug }: BlogPostProps) {
+export default function BlogPost({ slug }: { slug: string }) {
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
-  const [processedContent, setProcessedContent] = useState<string>("");
-
-  const processMarkdown = async (content: string) => {
-    try {
-      const processor = unified()
-        .use(remarkParse)
-        .use(remarkGfm)
-        .use(remarkBreaks)
-        .use(remarkRehype, { allowDangerousHtml: true })
-        .use(rehypeRaw)
-        .use(rehypeSanitize, {
-          ...defaultSchema,
-          tagNames: [
-            ...(defaultSchema.tagNames || []),
-            'figure', 'figcaption', 'caption', 'details', 'summary', 'input'
-          ],
-          attributes: {
-            ...(defaultSchema.attributes || {}),
-            a: [
-              ...(defaultSchema.attributes?.a || []),
-              ['target', 'string'],
-              ['rel', 'space-separated']
-            ],
-            img: [
-              ...(defaultSchema.attributes?.img || []),
-              ['loading', 'string'], ['decoding', 'string'],
-              ['width', 'number'], ['height', 'number']
-            ],
-            input: [
-              ['type', 'checkbox'], ['checked', 'checked'], ['disabled', 'disabled']
-            ],
-            code: [
-              ...(defaultSchema.attributes?.code || []),
-              ['className', 'token list']
-            ]
-          }
-        })
-        .use(rehypeStringify);
-
-      const file = await processor.process(content);
-      return String(file);
-    } catch (error) {
-      console.error('Error processing markdown:', error);
-      return content;
-    }
-  };
 
   useEffect(() => {
-    const fetchPost = async () => {
+    (async () => {
       try {
-        const response = await fetch(`/api/blog/${slug}`);
-        if (response.ok) {
-          const data = await response.json();
-          console.log("fetched post", data);
-          setPost(data);
-          const processed = await processMarkdown(data.content);
-          setProcessedContent(processed);
-        }
-      } catch (error) {
-        console.error('Failed to fetch post:', error);
+        const res = await fetch(`/api/blog/${slug}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        setPost(data);
       } finally {
         setLoading(false);
       }
-    };
-
-    fetchPost();
+    })();
   }, [slug]);
 
   if (loading) {
     return (
-      <div className="p-6 h-full overflow-y-auto">
+      <div className="p-6 h-full overflow-y-auto overflow-x-hidden">
         <div className="flex items-center justify-center h-full">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400 mx-auto mb-4" />
             <p className="text-neutral-400">Loading post...</p>
           </div>
         </div>
@@ -110,35 +54,51 @@ export default function BlogPost({ slug }: BlogPostProps) {
 
   if (!post) {
     return (
-      <div className="p-6 h-full overflow-y-auto">
+      <div className="p-6 h-full overflow-y-auto overflow-x-hidden">
         <div className="flex items-center justify-center h-full">
-          <div className="text-center">
-            <p className="text-neutral-400">Post not found.</p>
-          </div>
+          <p className="text-neutral-400">Post not found.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="h-full overflow-auto p-6 text-slate-100">
-      <div className="max-w-4xl mx-auto">
+    <div className="h-full overflow-y-auto overflow-x-hidden p-6 text-slate-100">
+      <div className="mx-auto w-full max-w-3xl">
         <header className="mb-8">
           <h1 className="text-3xl font-bold mb-4 text-cyan-200">{post.title}</h1>
           <div className="text-slate-400 mb-6">
-            {new Date(post.createdAt).toLocaleDateString('en-US', { 
-              year: 'numeric', 
-              month: 'long', 
-              day: 'numeric' 
+            {new Date(post.createdAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
             })}
           </div>
         </header>
 
+        {/* Wrapper gets all styling; ReactMarkdown stays prop-simple */}
         <div
-          className="max-w-none"
-          dangerouslySetInnerHTML={{ __html: processedContent }}
-        />
+          className="
+            markdown
+            prose prose-invert
+            max-w-full w-full
+            break-words
+            prose-a:break-words
+            prose-img:mx-auto prose-img:max-w-full prose-img:h-auto
+            prose-pre:overflow-x-auto prose-pre:whitespace-pre
+            prose-table:block prose-table:w-full prose-table:overflow-x-auto
+          "
+        >
+          <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+            {post.content}
+          </ReactMarkdown>
+        </div>
       </div>
     </div>
   );
 }
+
+/* OPTIONAL (globals.css)
+.markdown * { max-width: 100%; min-width: 0; }
+.markdown iframe, .markdown video { width: 100%; height: auto; }
+*/
