@@ -2,6 +2,7 @@
 
 import { marked } from "marked";
 import { useState, useEffect } from "react";
+import { decodeHtmlEntities } from "@/lib/utils";
 
 interface MarkdownContentProps {
   content: string;
@@ -27,7 +28,9 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
 
     const processContent = async () => {
       try {
-        const htmlContent = await marked(content);
+        // Decode HTML entities before processing markdown
+        const decodedContent = decodeHtmlEntities(content);
+        const htmlContent = await marked(decodedContent);
         
         // Simple client-side sanitization (basic approach)
         // For production, consider using a more robust sanitization library

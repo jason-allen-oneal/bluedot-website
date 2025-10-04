@@ -11,6 +11,7 @@ import remarkBreaks from "remark-breaks";
 import rehypeRaw from "rehype-raw";
 import Background from "@/components/Background";
 import Nav from "@/components/Nav";
+import { decodeHtmlEntities } from "@/lib/utils";
 
 interface Post {
   id: string;
@@ -31,6 +32,9 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
 
   const processMarkdown = async (content: string) => {
     try {
+      // Decode HTML entities before parsing markdown
+      const decodedContent = decodeHtmlEntities(content);
+      
       const processor = unified()
         .use(remarkParse)
         .use(remarkGfm)
@@ -59,7 +63,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
         })
         .use(rehypeStringify);
 
-      const result = await processor.process(content);
+      const result = await processor.process(decodedContent);
       return String(result);
     } catch (error) {
       console.error("Error processing markdown:", error);

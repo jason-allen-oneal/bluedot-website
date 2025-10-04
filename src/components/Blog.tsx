@@ -9,6 +9,7 @@ import rehypeStringify from "rehype-stringify";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import remarkBreaks from "remark-breaks";
 import rehypeRaw from "rehype-raw";
+import { decodeHtmlEntities } from "@/lib/utils";
 
 interface Post {
   id: string;
@@ -31,6 +32,9 @@ export default function Blog() {
 
   const processMarkdown = async (content: string) => {
     try {
+      // Decode HTML entities before parsing markdown
+      const decodedContent = decodeHtmlEntities(content);
+      
       const processor = unified()
         .use(remarkParse)
         .use(remarkGfm)
@@ -68,7 +72,7 @@ export default function Blog() {
         })
         .use(rehypeStringify);
 
-      const file = await processor.process(content);
+      const file = await processor.process(decodedContent);
       return String(file);
     } catch (error) {
       console.error("Error processing markdown:", error);
