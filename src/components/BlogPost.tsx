@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
+import { decodeHtmlEntities } from "@/lib/utils";
 
 interface Post {
   id: string;
@@ -25,6 +26,7 @@ interface Post {
 export default function BlogPost({ slug }: { slug: string }) {
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
+  const [decodedContent, setDecodedContent] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -33,6 +35,8 @@ export default function BlogPost({ slug }: { slug: string }) {
         if (!res.ok) return;
         const data = await res.json();
         setPost(data);
+        // Decode HTML entities before rendering
+        setDecodedContent(decodeHtmlEntities(data.content));
       } finally {
         setLoading(false);
       }
@@ -90,7 +94,7 @@ export default function BlogPost({ slug }: { slug: string }) {
           "
         >
           <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
-            {post.content}
+            {decodedContent}
           </ReactMarkdown>
         </div>
       </div>
