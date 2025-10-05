@@ -1,9 +1,8 @@
-"use client";
 
-export default function Terms() {
-  return (
-    <div className="h-full overflow-auto p-6 text-slate-100">
-      <div className="max-w-4xl mx-auto">
+export default async function Terms() {
+    return (
+        <div className="mx-auto max-w-7xl px-6 py-16">
+            <div className="max-w-4xl mx-auto">
         <header className="mb-8">
           <h1 className="text-3xl font-bold mb-4 text-cyan-200">Terms of Service</h1>
           <p className="text-slate-400">
@@ -168,6 +167,6 @@ export default function Terms() {
           </section>
         </div>
       </div>
-    </div>
-  );
+        </div>
+    );
 }

@@ -1,8 +1,10 @@
-import NextAuth from "next-auth";
+// src/app/api/auth/[...nextauth]/route.ts
+import NextAuth from "next-auth/next"
 import { authOptions } from "@/lib/auth";
 
-// Create the NextAuth handler
 const handler = NextAuth(authOptions);
 
-// Export the handler directly for NextAuth v4 with App Router
 export { handler as GET, handler as POST };
+
+// bcrypt requires Node runtime (not edge)
+export const runtime = "nodejs";

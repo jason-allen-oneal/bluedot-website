@@ -5,25 +5,31 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-/**
- * Decode HTML entities in a string.
- * This is needed when markdown content from the database contains HTML entities
- * that need to be converted back to their original characters before markdown parsing.
- */
-export function decodeHtmlEntities(text: string): string {
-  if (typeof window === 'undefined') {
-    // Server-side: use basic replacements
-    return text
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-      .replace(/&apos;/g, "'");
-  }
-  
-  // Client-side: use DOM API for comprehensive decoding
-  const textarea = document.createElement('textarea');
-  textarea.innerHTML = text;
-  return textarea.value;
+export function getLanguageColor(language: string | null): string {
+    if (!language) return 'bg-gray-500';
+    
+    const colors: { [key: string]: string } = {
+        'TypeScript': 'bg-blue-500',
+        'JavaScript': 'bg-yellow-500',
+        'Python': 'bg-green-500',
+        'Java': 'bg-red-500',
+        'PHP': 'bg-purple-500',
+        'Go': 'bg-cyan-500',
+        'Rust': 'bg-orange-500',
+        'C++': 'bg-pink-500',
+        'C#': 'bg-indigo-500',
+        'Ruby': 'bg-red-600',
+        'Swift': 'bg-orange-400',
+        'Kotlin': 'bg-purple-600',
+        'Dart': 'bg-blue-400',
+        'HTML': 'bg-orange-600',
+        'CSS': 'bg-blue-600',
+        'Shell': 'bg-gray-600',
+        'Dockerfile': 'bg-blue-700',
+        'Vue': 'bg-green-400',
+        'React': 'bg-cyan-400',
+        'Svelte': 'bg-orange-500',
+    };
+    
+    return colors[language] || 'bg-gray-500';
 }

@@ -1,8 +1,9 @@
 import type { MDXComponents } from "mdx/types";
+import { mdxComponents } from "@/components/mdx";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    // Example: h1: (props) => <h1 className="text-3xl" {...props} />,
+    ...mdxComponents,
     ...components,
   };
 }
