@@ -12,12 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  ArrowLeft,
-  FileText,
-  Wand2,
-  Save,
-} from "lucide-react";
+import { ArrowLeft, FileText, Wand2, Save } from "lucide-react";
 
 export default function CreatePostPage() {
   const { data: session } = useSession();
@@ -30,13 +25,31 @@ export default function CreatePostPage() {
     slug: "",
     excerpt: "",
     content: "",
+    categoryId: "",
+    tagIds: [] as number[],
   });
 
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const [tags, setTags] = useState<{ id: number; name: string }[]>([]);
   const [errors, setErrors] = useState({ title: "", slug: "", content: "" });
 
   useEffect(() => {
     setIsMounted(true);
+    fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const [catRes, tagRes] = await Promise.all([
+        fetch("/api/categories"),
+        fetch("/api/tags"),
+      ]);
+      if (catRes.ok) setCategories(await catRes.json());
+      if (tagRes.ok) setTags(await tagRes.json());
+    } catch (error) {
+      console.error("Failed to load categories/tags:", error);
+    }
+  };
 
   if (!isMounted) return null;
   if (!session) {
@@ -56,10 +69,20 @@ export default function CreatePostPage() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleTagToggle = (tagId: number) => {
+    setForm((prev) => {
+      const exists = prev.tagIds.includes(tagId);
+      const tagIds = exists
+        ? prev.tagIds.filter((id) => id !== tagId)
+        : [...prev.tagIds, tagId];
+      return { ...prev, tagIds };
+    });
   };
 
   const generateSlug = () => {
@@ -73,13 +96,12 @@ export default function CreatePostPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
-      const res = await fetch("/api/admin/posts", {
+      const res = await fetch("/api/admin/posts/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
-      });
+      });      
       if (res.ok) router.push("/admin");
       else alert("Failed to create post");
     } catch (err) {
@@ -91,7 +113,6 @@ export default function CreatePostPage() {
 
   return (
     <div className="container py-12 space-y-10">
-      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-primary">Create New Post</h1>
@@ -99,16 +120,11 @@ export default function CreatePostPage() {
             Write and publish a new blog article.
           </p>
         </div>
-        <Button
-          onClick={() => router.push("/admin")}
-          variant="outline"
-          className="gap-2"
-        >
+        <Button onClick={() => router.push("/admin")} variant="outline" className="gap-2">
           <ArrowLeft className="h-4 w-4" /> Back to Dashboard
         </Button>
       </div>
 
-      {/* Form Card */}
       <Card className="bg-gray-950/60 backdrop-blur-md border border-white/90">
         <CardHeader>
           <div className="flex items-center gap-3">
@@ -123,7 +139,7 @@ export default function CreatePostPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Title + Slug */}
+            {/* Title and Slug */}
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <Label htmlFor="title">Title</Label>
@@ -134,11 +150,9 @@ export default function CreatePostPage() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   placeholder="Enter post title"
-                  className="w-full p-3 mt-1 rounded-md border border-white/30 bg-gray-900/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 mt-1 rounded-md border border-white/30 bg-gray-900/50 text-white"
                 />
-                {errors.title && (
-                  <p className="text-red-500 text-sm mt-1">{errors.title}</p>
-                )}
+                {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
               </div>
 
               <div>
@@ -151,20 +165,49 @@ export default function CreatePostPage() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder="auto-generated slug"
-                    className="flex-1 p-3 rounded-md border border-white/30 bg-gray-900/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 p-3 rounded-md border border-white/30 bg-gray-900/50 text-white"
                   />
-                  <Button
-                    type="button"
-                    onClick={generateSlug}
-                    variant="outline"
-                    className="gap-2"
-                  >
+                  <Button type="button" onClick={generateSlug} variant="outline" className="gap-2">
                     <Wand2 className="h-4 w-4" /> Generate
                   </Button>
                 </div>
-                {errors.slug && (
-                  <p className="text-red-500 text-sm mt-1">{errors.slug}</p>
-                )}
+                {errors.slug && <p className="text-red-500 text-sm">{errors.slug}</p>}
+              </div>
+            </div>
+
+            {/* Category */}
+            <div>
+              <Label htmlFor="categoryId">Category</Label>
+              <select
+                id="categoryId"
+                name="categoryId"
+                value={form.categoryId}
+                onChange={handleChange}
+                className="w-full mt-1 p-3 rounded-md border border-white/30 bg-gray-900/50 text-white"
+              >
+                <option value="">Select category...</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Tags */}
+            <div>
+              <Label>Tags</Label>
+              <div className="flex flex-wrap gap-3 mt-2">
+                {tags.map((tag) => (
+                  <label key={tag.id} className="flex items-center gap-2 text-white">
+                    <input
+                      type="checkbox"
+                      checked={form.tagIds.includes(tag.id)}
+                      onChange={() => handleTagToggle(tag.id)}
+                    />
+                    {tag.name}
+                  </label>
+                ))}
               </div>
             </div>
 
@@ -178,7 +221,7 @@ export default function CreatePostPage() {
                 onChange={handleChange}
                 placeholder="Short summary of your post..."
                 rows={3}
-                className="w-full p-3 mt-1 rounded-md border border-white/30 bg-gray-900/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 mt-1 rounded-md border border-white/30 bg-gray-900/50 text-white"
               />
             </div>
 
@@ -193,14 +236,13 @@ export default function CreatePostPage() {
                 onBlur={handleBlur}
                 placeholder="Write your post here..."
                 rows={10}
-                className="w-full p-3 mt-1 rounded-md border border-white/30 bg-gray-900/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 mt-1 rounded-md border border-white/30 bg-gray-900/50 text-white"
               />
               {errors.content && (
                 <p className="text-red-500 text-sm mt-1">{errors.content}</p>
               )}
             </div>
 
-            {/* Submit */}
             <div className="flex justify-end">
               <Button type="submit" disabled={isLoading} className="gap-2">
                 <Save className="h-4 w-4" />

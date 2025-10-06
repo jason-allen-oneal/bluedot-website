@@ -42,7 +42,7 @@ export default function LoginPage() {
     });
 
     setIsSubmitting(false);
-
+console.log('result', result);
     if (result?.error) {
       setError("Invalid username or password.");
     } else {

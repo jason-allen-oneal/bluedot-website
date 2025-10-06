@@ -24,6 +24,7 @@ import {
   User,
   BarChart3,
 } from "lucide-react";
+import { DeletePostModal } from "@/components/DeletePostModal";
 
 interface Post {
   id: number;
@@ -39,7 +40,7 @@ export default function AdminPage() {
   const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isDeleting, setIsDeleting] = useState<number | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Post | null>(null);
 
   useEffect(() => {
     if (session) fetchPosts();
@@ -51,20 +52,16 @@ export default function AdminPage() {
       if (res.ok) {
         setPosts(await res.json());
       }
+    } catch (err) {
+      console.error("Failed to fetch posts:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Delete this post?")) return;
-    setIsDeleting(id);
-    try {
-      const res = await fetch(`/api/admin/posts/${id}`, { method: "DELETE" });
-      if (res.ok) setPosts((prev) => prev.filter((p) => p.id !== id));
-    } finally {
-      setIsDeleting(null);
-    }
+  const handleDeleted = (id: number) => {
+    setPosts((prev) => prev.filter((p) => p.id !== id));
+    setDeleteTarget(null);
   };
 
   if (!session) {
@@ -106,7 +103,7 @@ export default function AdminPage() {
 
       {/* Controls */}
       <div className="flex flex-wrap gap-3 justify-center md:justify-end">
-        <Button onClick={() => router.push("/admin/create")} className="gap-2">
+        <Button onClick={() => router.push("/admin/posts/create")} className="gap-2">
           <Plus className="h-4 w-4" /> New Post
         </Button>
         <Button
@@ -188,7 +185,7 @@ export default function AdminPage() {
               </CardDescription>
             </div>
             <Button
-              onClick={() => router.push("/admin/create")}
+              onClick={() => router.push("/admin/posts/create")}
               className="gap-2"
             >
               <Plus className="h-4 w-4" /> Create New
@@ -210,7 +207,7 @@ export default function AdminPage() {
               <p className="text-gray-400 mb-6 text-center max-w-sm">
                 Create your first post to get started.
               </p>
-              <Button onClick={() => router.push("/admin/create")}>
+              <Button onClick={() => router.push("/admin/posts/create")}>
                 <Plus className="h-4 w-4 mr-2" /> New Post
               </Button>
             </div>
@@ -241,6 +238,7 @@ export default function AdminPage() {
                       <span>/{post.slug}</span>
                     </div>
                   </div>
+
                   <div className="flex items-center gap-2 ml-4">
                     <Button
                       size="sm"
@@ -253,7 +251,7 @@ export default function AdminPage() {
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() => router.push(`/admin/edit/${post.id}`)}
+                      onClick={() => router.push(`/admin/posts/edit/${post.id}`)}
                       className="gap-2 text-cyan-400 hover:text-cyan-300"
                     >
                       <Edit className="h-4 w-4" /> Edit
@@ -261,12 +259,11 @@ export default function AdminPage() {
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() => handleDelete(post.id)}
-                      disabled={isDeleting === post.id}
+                      onClick={() => setDeleteTarget(post)}
                       className="gap-2 text-red-500 hover:text-red-400"
                     >
                       <Trash2 className="h-4 w-4" />
-                      {isDeleting === post.id ? "Deleting..." : "Delete"}
+                      Delete
                     </Button>
                   </div>
                 </div>
@@ -275,6 +272,14 @@ export default function AdminPage() {
           )}
         </CardContent>
       </Card>
+
+      {deleteTarget && (
+        <DeletePostModal
+          postId={deleteTarget.id}
+          title={deleteTarget.title}
+          onDeleted={() => handleDeleted(deleteTarget.id)}
+        />
+      )}
     </div>
   );
 }

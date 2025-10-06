@@ -69,7 +69,7 @@ export default async function BlogPage() {
         <Card className="bg-gray-950/60 backdrop-blur-md border border-white/90 p-12 text-center">
           <h2 className="text-2xl font-bold text-white mb-4">No posts yet</h2>
           <p className="text-gray-400 mb-6">
-            I'm working on some interesting content. Check back soon!
+            I&apos;m working on some interesting content. Check back soon!
           </p>
         </Card>
       )}

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface MenuItem {
   title: string;
   links: {
@@ -48,7 +50,13 @@ export default function Footer({
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
             <div className="col-span-2 mb-8 lg:mb-0">
               <div className="flex items-center gap-2 lg:justify-start">
-                <img height={128} width={128} src="/bluedot-logo.png" />
+                <Image
+                  src="/bluedot-logo.png"
+                  alt="Logo"
+                  width={128}
+                  height={128}
+                  className="h-8 w-auto"
+                />
               </div>
               <p className="mt-4 font-bold">{tagline}</p>
             </div>

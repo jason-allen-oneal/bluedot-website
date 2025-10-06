@@ -1,5 +1,6 @@
-import { MDXComponents } from 'mdx/types'
-import { ReactNode } from 'react'
+import { MDXComponents } from 'mdx/types';
+import { ReactNode } from 'react';
+import Image from 'next/image';
 
 interface ProseProps {
   children: ReactNode
@@ -78,7 +79,7 @@ export const mdxComponents: MDXComponents = {
     <hr className="border-gray-600 my-8" {...props} />
   ),
   img: ({ src, alt, ...props }) => (
-    <img 
+    <Image 
       src={src} 
       alt={alt} 
       className="max-w-full h-auto rounded-lg my-4" 

@@ -1,6 +1,6 @@
 import Link from "next/link"
 import type { Repo } from "@/lib/github"
-import { getLanguageColor } from "@/lib/utils"
+import { getLanguageColor } from "@/lib/utility"
 import { Card, CardContent } from "@/components/ui/card"
 
 export default function RepoCard({ repo }: { repo: Repo }) {
