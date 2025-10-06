@@ -103,7 +103,7 @@ export default function AdminPage() {
 
       {/* Controls */}
       <div className="flex flex-wrap gap-3 justify-center md:justify-end">
-        <Button onClick={() => router.push("/admin/posts/create")} className="gap-2">
+        <Button onClick={() => router.push("/admin/post/create")} className="gap-2">
           <Plus className="h-4 w-4" /> New Post
         </Button>
         <Button
@@ -185,7 +185,7 @@ export default function AdminPage() {
               </CardDescription>
             </div>
             <Button
-              onClick={() => router.push("/admin/posts/create")}
+              onClick={() => router.push("/admin/post/create")}
               className="gap-2"
             >
               <Plus className="h-4 w-4" /> Create New
@@ -207,7 +207,7 @@ export default function AdminPage() {
               <p className="text-gray-400 mb-6 text-center max-w-sm">
                 Create your first post to get started.
               </p>
-              <Button onClick={() => router.push("/admin/posts/create")}>
+              <Button onClick={() => router.push("/admin/post/create")}>
                 <Plus className="h-4 w-4 mr-2" /> New Post
               </Button>
             </div>
@@ -251,7 +251,7 @@ export default function AdminPage() {
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() => router.push(`/admin/posts/edit/${post.id}`)}
+                      onClick={() => router.push(`/admin/post/edit/${post.id}`)}
                       className="gap-2 text-cyan-400 hover:text-cyan-300"
                     >
                       <Edit className="h-4 w-4" /> Edit
@@ -278,6 +278,7 @@ export default function AdminPage() {
           postId={deleteTarget.id}
           title={deleteTarget.title}
           onDeleted={() => handleDeleted(deleteTarget.id)}
+          onClose={() => setDeleteTarget(null)}
         />
       )}
     </div>
