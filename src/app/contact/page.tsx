@@ -64,8 +64,8 @@ export default function Contact() {
     {
       icon: Mail,
       label: "Email",
-      value: "jason.allen.oneal@gmail.com",
-      href: "mailto:jason.allen.oneal@gmail.com",
+      value: "jason@bluedot.it.com",
+      href: "mailto:jason@bluedot.it.com",
       color: "text-blue-500",
     },
     {
