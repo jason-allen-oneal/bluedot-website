@@ -2,7 +2,7 @@
 set -e
 
 APP_DIR="/var/www/bluedot"
-REPO_DIR="$APP_DIR/repo"
+REPO_DIR="$APP_DIR"
 
 # If repo doesn’t exist, clone it
 if [ ! -d "$REPO_DIR/.git" ]; then
