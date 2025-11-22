@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Mail, Phone, MapPin, Github, Send } from "lucide-react";
 import {
   Card,
@@ -33,6 +33,10 @@ export default function Contact() {
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">(
     "idle"
   );
+  const [serverMessage, setServerMessage] = useState<string | null>(null);
+
+  const [hp, setHp] = useState("");
+  const startedAtRef = useRef<number>(Date.now());
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -48,13 +52,45 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus("idle");
+    setServerMessage(null);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // POST to our Next.js API route at /api/contact
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          startedAt: startedAtRef.current,
+          hp,
+        }),
+      });
+
+      let payload: any = null;
+      try {
+        payload = await res.json();
+      } catch {
+        // ignore JSON parse errors; we'll use status text
+      }
+
+      if (!res.ok || (payload && payload.ok === false)) {
+        const msg =
+          (payload && (payload.error || payload.message)) ||
+          `Request failed (${res.status})`;
+        throw new Error(msg);
+      }
+
       setFormData({ name: "", email: "", subject: "", message: "" });
       setSubmitStatus("success");
-    } catch {
+      setServerMessage(
+        payload?.id ? `Message ID: ${payload.id}` : "Message sent."
+      );
+    } catch (err: any) {
       setSubmitStatus("error");
+      setServerMessage(err?.message || "Unexpected error.");
     } finally {
       setIsSubmitting(false);
     }
@@ -208,6 +244,17 @@ export default function Contact() {
                   placeholder="Tell me about your project, idea, or just say hello!"
                 />
               </div>
+
+              <input
+                type="text"
+                name="company"
+                value={hp}
+                onChange={(e) => setHp(e.target.value)}
+                autoComplete="off"
+                tabIndex={-1}
+                className="hidden"
+              />
+              <input type="hidden" name="startedAt" value={startedAtRef.current} />
 
               <Button
                 type="submit"
