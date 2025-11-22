@@ -16,7 +16,5 @@ git reset --hard origin/main
 # Optional: build, install deps, restart services
 npm install --production || true
 npm run build || true
-
 sudo pm2 restart bluedot || true
-
 echo "Deployment complete."
