@@ -20,6 +20,8 @@ type HuggingFaceResponse = {
   likes?: number
   pipeline_tag?: string
   lastModified?: string
+  updatedAt?: string
+  createdAt?: string
 }[]
 
 function buildHeaders(): HeadersInit {
@@ -59,6 +61,12 @@ async function fetchHubItems(
         ? `https://huggingface.co/${name}`
         : `https://huggingface.co/spaces/${name}`
 
+    const lastModified =
+      item.lastModified ||
+      item.updatedAt ||
+      item.createdAt ||
+      new Date().toISOString()
+
     return {
       id: `${type}:${name}`,
       name,
@@ -67,7 +75,7 @@ async function fetchHubItems(
       likes: item.likes ?? 0,
       pipeline_tag: item.pipeline_tag ?? null,
       type,
-      lastModified: item.lastModified ?? null,
+      lastModified,
     }
   })
 }
