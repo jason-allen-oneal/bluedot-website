@@ -1,20 +1,53 @@
-import { fetchRepos } from "@/lib/github"
 import RepoCard from "@/components/RepoCard"
+import { fetchRepos } from "@/lib/github"
+import { fetchHuggingFaceItems } from "@/lib/huggingface"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import type { Project } from "@/types/project"
 
 export const revalidate = 3600 // SSR w/ revalidation on server
 
 export default async function Projects() {
-  const username = process.env.GITHUB_USERNAME || "jason-allen-oneal"
-  const repos = await fetchRepos(username)
+  const githubUsername = process.env.GITHUB_USERNAME || "jason-allen-oneal"
+  const huggingfaceUsername =
+    process.env.HUGGINGFACE_USERNAME || githubUsername
 
-  const totalStars = repos.reduce((sum, repo) => sum + repo.stargazers_count, 0)
-  const totalLangs = new Set(repos.map((r) => r.language).filter(Boolean)).size
+  const [repos, hfItems] = await Promise.all([
+    fetchRepos(githubUsername),
+    fetchHuggingFaceItems(huggingfaceUsername),
+  ])
+
+  const projects: Project[] = [
+    ...repos.map((repo) => ({
+      id: `github:${repo.id}`,
+      name: repo.name,
+      description: repo.description,
+      url: repo.html_url,
+      stars: repo.stargazers_count,
+      language: repo.language,
+      source: "github" as const,
+      subtype: "repo" as const,
+    })),
+    ...hfItems.map((item) => ({
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      url: item.url,
+      stars: item.likes,
+      language: item.pipeline_tag || "Model",
+      source: "huggingface" as const,
+      subtype: item.type,
+    })),
+  ].sort((a, b) => b.stars - a.stars)
+
+  const totalStars = projects.reduce((sum, repo) => sum + repo.stars, 0)
+  const totalLangs = new Set(
+    projects.map((r) => r.language).filter(Boolean)
+  ).size
 
   const stats = [
-    { label: "Total Projects", value: repos.length },
-    { label: "Total Stars", value: totalStars },
-    { label: "Languages Used", value: totalLangs },
+    { label: "Total Projects", value: projects.length },
+    { label: "Stars / Likes", value: totalStars },
+    { label: "Tech / Pipelines", value: totalLangs },
   ]
 
   return (
@@ -48,7 +81,7 @@ export default async function Projects() {
 
       {/* Projects Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {repos.map((repo) => (
+        {projects.map((repo) => (
           <RepoCard key={repo.id} repo={repo} />
         ))}
       </div>

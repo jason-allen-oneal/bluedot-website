@@ -126,11 +126,10 @@ export default function Hero() {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center text-primary">
               <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4">
-                Engineer. Security-minded. Playfully Dangerous.
+                Reliable. Professional. Performance-driven.
               </h1>
               <p className="text-lg opacity-80 max-w-2xl mx-auto mb-8">
-                I build resilient systems, sharp UIs, and useful tools. 
-                This site is server-rendered, fast, and a little weird on purpose.
+                Crafting enterprise-grade systems, hardened security layers, and sleek front-ends.
               </p>
       
               <div className="flex justify-center">

@@ -3,6 +3,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Metadata } from 'next'
 import Providers from '@/components/Providers'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <Header />
                     <main className="flex-1">{children}</main>
                     <Footer />
+                    <GoogleAnalytics gaId="G-41SSBBDE6V" />
                 </Providers>
                 </body>
             </html>
