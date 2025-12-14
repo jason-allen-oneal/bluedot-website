@@ -7,6 +7,7 @@ export type Repo = {
   forks_count: number
   language: string | null
   topics?: string[]
+  updated_at: string
 }
   
   
@@ -25,5 +26,7 @@ export async function fetchRepos(username: string): Promise<Repo[]> {
   const repos = await res.json() as Repo[]
   // filter out forks/archived noise
   
-  return repos.filter((r: any) => !r.fork).sort((a,b) => b.stargazers_count - a.stargazers_count)
+  return repos
+    .filter((r: any) => !r.fork)
+    .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
 }

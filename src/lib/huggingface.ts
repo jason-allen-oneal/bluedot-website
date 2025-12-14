@@ -6,6 +6,7 @@ export type HuggingFaceItem = {
   likes: number
   pipeline_tag: string | null
   type: "model" | "space"
+  lastModified: string | null
 }
 
 type HuggingFaceResponse = {
@@ -18,6 +19,7 @@ type HuggingFaceResponse = {
   }
   likes?: number
   pipeline_tag?: string
+  lastModified?: string
 }[]
 
 function buildHeaders(): HeadersInit {
@@ -65,6 +67,7 @@ async function fetchHubItems(
       likes: item.likes ?? 0,
       pipeline_tag: item.pipeline_tag ?? null,
       type,
+      lastModified: item.lastModified ?? null,
     }
   })
 }
@@ -72,10 +75,15 @@ async function fetchHubItems(
 export async function fetchHuggingFaceItems(
   author: string
 ): Promise<HuggingFaceItem[]> {
-  const [models, spaces] = await Promise.all([
-    fetchHubItems("models", author, "model"),
-    fetchHubItems("spaces", author, "space"),
-  ])
+  try {
+    const [models, spaces] = await Promise.all([
+      fetchHubItems("models", author, "model"),
+      fetchHubItems("spaces", author, "space"),
+    ])
 
-  return [...models, ...spaces]
+    return [...models, ...spaces]
+  } catch (error) {
+    console.error("Hugging Face fetch failed", error)
+    return []
+  }
 }

@@ -7,4 +7,5 @@ export type Project = {
   language: string | null
   source: "github" | "huggingface"
   subtype?: "repo" | "model" | "space"
+  updatedAt: string | null
 }
