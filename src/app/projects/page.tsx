@@ -44,8 +44,7 @@ export default async function Projects() {
   ].sort((a, b) => {
     const aDate = a.updatedAt ? new Date(a.updatedAt).getTime() : 0
     const bDate = b.updatedAt ? new Date(b.updatedAt).getTime() : 0
-    if (aDate !== bDate) return bDate - aDate
-    return b.stars - a.stars
+    return bDate - aDate
   })
 
   const totalStars = projects.reduce((sum, repo) => sum + repo.stars, 0)
