@@ -10,7 +10,6 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/typescript"),
   {
     ignores: [
       "node_modules/**",
