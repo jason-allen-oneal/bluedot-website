@@ -69,8 +69,13 @@ export default function CommentsPage() {
     setComments((prev) => prev.filter((c) => c.id !== id));
   };
 
+  useEffect(() => {
+    if (!session) {
+      router.push("/login");
+    }
+  }, [session, router]);
+
   if (!session) {
-    router.push("/login");
     return null;
   }
 

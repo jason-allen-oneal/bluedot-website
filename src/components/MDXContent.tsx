@@ -9,13 +9,8 @@ interface MDXContentProps {
 }
 
 export default function MDXContent({ source }: MDXContentProps) {
-    const [isClient, setIsClient] = useState(false);
-
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    if (!isClient) {
+    // Only render on client
+    if (typeof window === 'undefined') {
         return <div>Loading...</div>;
     }
 

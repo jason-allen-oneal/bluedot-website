@@ -1,9 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { apiRateLimit } from "@/lib/rateLimit";
-import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {

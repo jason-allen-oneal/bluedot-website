@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import {
@@ -38,12 +38,8 @@ export default function EditPostPage() {
   const [tags, setTags] = useState<{ id: number; name: string }[]>([]);
   const [errors, setErrors] = useState({ title: "", slug: "", content: "" });
 
-  useEffect(() => {
-    setIsMounted(true);
-    if (session) fetchData();
-  }, [session]);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setIsLoading(true);
       const [postRes, catRes, tagRes] = await Promise.all([
@@ -71,7 +67,12 @@ export default function EditPostPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [postId]);
+
+  useEffect(() => {
+    setIsMounted(true);
+    if (session) fetchData();
+  }, [session, fetchData]);
 
   if (!isMounted) return null;
   if (!session) {
