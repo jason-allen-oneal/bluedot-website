@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-export default {
+const config = {
     content: [
         "./src/**/*.{ts,tsx}",
         "./content/**/*.{md,mdx}"
@@ -45,4 +45,6 @@ export default {
     ],
     theme: { extend: {} },
     plugins: [require('@tailwindcss/typography')]
-} satisfies Config
+} satisfies Config & { safelist: string[] }
+
+export default config
