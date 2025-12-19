@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
@@ -88,14 +89,6 @@ const faqs = [
   },
 ];
 
-function Badge({ children }: { children: any }) {
-  return (
-    <span className="inline-flex items-center rounded-full border border-blue-700 bg-slate-900 px-3 py-1 text-xs font-medium text-white shadow-sm">
-      {children}
-    </span>
-  );
-}
-
 function Panel({ header, content }: { header: string; content: string }) {
   return (
     <div className="rounded-2xl border border-blue-700 bg-slate-900 p-4 shadow-sm">
@@ -113,14 +106,7 @@ export default function ServicesPage() {
     }
 
 	return (
-    	<div className="mx-auto max-w-5xl px-6 py-16 space-y-16">
-     		{/* Header */}
-      		<div className="text-center space-y-4">
-        		<h1 className="text-4xl md:text-5xl font-bold text-white">Services</h1>
-        		<p className="text-lg text-gray-400 max-w-2xl mx-auto">
-          			Services that ship outcomes, not noise.
-        		</p>
-      		</div>
+    	<>
     		<section className="mx-auto max-w-6xl px-6 pb-10 pt-16">
         		<div className="grid gap-8 lg:grid-cols-2 lg:items-center">
           			<div>
@@ -128,6 +114,10 @@ export default function ServicesPage() {
               				<Badge>Security-first engineering</Badge>
               				<Badge>Pentesting and tooling</Badge>
             			</div>
+
+            			<h1 className="mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl">
+              				Services that ship outcomes, not noise.
+            			</h1>
 
             			<p className="mt-4 max-w-xl text-base leading-relaxed text-gray-400">
               				I help teams find and fix real security risk, harden delivery
@@ -149,7 +139,7 @@ export default function ServicesPage() {
             			</dl>
           			</div>
 
-          			<div>
+          			<Card>
             			<div className="p-6 sm:p-8">
               				<h2 className="text-lg font-bold">How I work</h2>
               				<ol className="mt-4 space-y-3 text-sm text-white">
@@ -209,7 +199,7 @@ export default function ServicesPage() {
                 				</ul>
               				</div>
             			</div>
-          			</div>
+          			</Card>
         		</div>
       		</section>
 
@@ -352,6 +342,6 @@ export default function ServicesPage() {
         			</div>
     			</div>
   			</section>
-    	</div>
+    	</>
   	);
 }
