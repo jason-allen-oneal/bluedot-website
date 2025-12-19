@@ -129,7 +129,7 @@ export default function Hero() {
                 Reliable. Professional. Performance-driven.
               </h1>
               <p className="text-lg opacity-80 max-w-2xl mx-auto mb-8">
-                Crafting enterprise-grade systems, hardened security layers, and sleek front-ends.
+                Crafting enterprise-grade systems, hardened security layers, clean AI solutions, and sleek front-ends.
               </p>
       
               <div className="flex justify-center">
