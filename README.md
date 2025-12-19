@@ -1,79 +1,81 @@
-# bluedot.it.com
+# BluEdot — Personal Portfolio Website
 
-> **A modern portfolio website with a unique desktop-inspired interface showcasing cybersecurity expertise, full-stack development skills, and creative projects.**
+Repo: [https://github.com/jason-allen-oneal/bluedot-website](https://github.com/jason-allen-oneal/bluedot-website)
 
-This is the professional portfolio and self-marketing website. The site features an innovative desktop-style interface that provides an engaging, interactive experience while showcasing technical skills, projects, and professional background.
+A modern personal portfolio website built to showcase cybersecurity expertise, full‑stack development projects, writing, and professional experience. The site focuses on accessibility, SEO, performance, and a clean, responsive presentation of projects and posts.
 
-## 🌟 Key Features
+Table of contents
 
-### Unique Desktop Experience
-- **Windows-like Desktop Interface**: Complete with taskbar, desktop icons, and draggable windows
-- **Interactive Terminal**: Fully functional terminal emulator with custom commands
-- **Multi-Window System**: Browse different sections simultaneously in separate windows
-- **Responsive Design**: Seamlessly adapts from desktop to mobile experiences
+- About
+- Features
+- Tech stack
+- Demo / Screenshots
+- Quick start (local)
+- Environment variables
+- Database & Prisma
+- Admin panel
+- Available scripts
+- Deployment
+- Project structure
+- Contributing & tests
+- Suggested improvements
+- License
 
-### Professional Showcase
-- **About Section**: Comprehensive background in cybersecurity, development, and creative pursuits
-- **Projects Portfolio**: Interactive showcase of development projects and technical work
-- **Blog Platform**: Technical writing and insights with Markdown support
-- **Resume Access**: Downloadable PDF resume and detailed experience overview
-- **Contact Integration**: Multiple ways to connect and collaborate
+About
+-----;
+Bluedot is a professional portfolio and personal site that highlights technical work, security knowledge, and creative projects. It provides a blog platform for technical writing, a projects portfolio, a downloadable resume, and an admin panel for content management.
 
-### Technical Excellence
-- **Modern Tech Stack**: Built with Next.js 15, TypeScript, and cutting-edge web technologies
-- **Performance Optimized**: Server-side rendering, automatic code splitting, and optimized assets
-- **Database-Driven**: MySQL with Prisma ORM for dynamic content management
-- **Admin Panel**: Content management system for blog posts and site updates
-- **SEO Optimized**: Comprehensive metadata, sitemap, robots.txt, and structured data for search engines
+Features
+--------;
+Features include:
 
-## 🔍 SEO Features
+- Clean, responsive website layout optimized for desktop and mobile
+- Projects portfolio with project pages and rich media support
+- Blog with Markdown/MDX support and SEO-friendly routes (/blog/[slug])
+- Resume download and structured experience section
+- Admin panel for creating and managing blog posts and projects
+- SEO-first setup: comprehensive metadata, sitemap, robots, and JSON-LD
+- PWA manifest and basic offline support
+- TypeScript-first codebase with linting and tooling to maintain quality
 
-This website is fully optimized for search engines with:
+Tech stack
+----------;
+The framework:
 
-- **Comprehensive Metadata**: Open Graph, Twitter Cards, and rich metadata on all pages
-- **Dynamic Sitemap**: Automatically generated sitemap.xml with blog posts
-- **Robots.txt**: Properly configured for search engine crawling
-- **Structured Data**: JSON-LD schema markup for better search results
-- **PWA Manifest**: Progressive Web App support with manifest.json
-- **Semantic HTML**: Proper use of article, header, time, and other semantic elements
-- **Mobile Optimized**: Responsive viewport configuration for all devices
-- **Blog Routes**: Dedicated SEO-friendly routes for blog posts (/blog/[slug])
+- Next.js 15 (App Router)
+- React + TypeScript
+- Tailwind CSS
+- Framer Motion (animations)
+- Radix UI (accessible primitives)
+- NextAuth.js (authentication)
+- Prisma ORM + MySQL
+- ESLint, PostCSS
+- Vercel for hosted deployments (supported)
+- PM2 for self-hosted process management
 
-## 🚀 Technology Stack
+Demo
+------------------;
+See it live:
 
-### Frontend
-- **[Next.js 15](https://nextjs.org/)** - React framework with App Router
-- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript
-- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
-- **[Framer Motion](https://www.framer.com/motion/)** - Animation library
-- **[Radix UI](https://www.radix-ui.com/)** - Accessible component primitives
+- [https://bluedot.it.com](https://bluedot.it.com)
 
-### Backend & Database
-- **[Prisma](https://www.prisma.io/)** - Next-generation ORM
-- **[MySQL](https://www.mysql.com/)** - Reliable relational database
-- **[NextAuth.js](https://next-auth.js.org/)** - Authentication solution
+Quick start — local development
+-------------------------------;
+Requirements
 
-### Development & Deployment
-- **[ESLint](https://eslint.org/)** - Code linting and quality
-- **[PM2](https://pm2.keymetrics.io/)** - Production process management
-- **[Vercel](https://vercel.com/)** - Optimal deployment platform
+- Node.js 18+
+- MySQL (local or remote)
+- npm, yarn, or pnpm
 
-## 🛠️ Getting Started
+1. Clone
 
-### Prerequisites
-- Node.js 18+ 
-- npm, yarn, pnpm, or bun
-- MySQL database (local or remote)
-
-### Installation
-
-1. **Clone the repository**
    ```bash
    git clone https://github.com/jason-allen-oneal/bluedot-website.git
    cd bluedot-website
    ```
 
-2. **Install dependencies**
+2. Install
+
    ```bash
    npm install
    # or
@@ -82,32 +84,20 @@ This website is fully optimized for search engines with:
    pnpm install
    ```
 
-3. **Environment Setup**
+3. Environment
+
+   Create `.env.local` (copy from `.env.example` if present) and set required variables (see next section).
+
+4. Database & Prisma
+
    ```bash
-   # Copy environment template
-   cp .env.example .env.local
-   ```
-   
-   Configure the following environment variables:
-   ```env
-   DATABASE_URL="mysql://user:password@localhost:3306/bluedot"
-   NEXTAUTH_URL="http://localhost:3000"
-   NEXTAUTH_SECRET="your-secret-key"
-   ADMIN_EMAIL="your-admin@email.com"
-   ADMIN_USER="admin"
-   ADMIN_PASS="secure-password"
+   npx prisma generate
+   npx prisma migrate dev --name init
+   npx prisma db seed   # if a seed script exists
    ```
 
-4. **Database Setup**
-   ```bash
-   # Run database migrations
-   npx prisma migrate dev
-   
-   # Seed with initial data
-   npx prisma db seed
-   ```
+5. Start dev server
 
-5. **Development Server**
    ```bash
    npm run dev
    # or
@@ -116,111 +106,123 @@ This website is fully optimized for search engines with:
    pnpm dev
    ```
 
-   Open [http://localhost:3000](http://localhost:3000) to view the application.
+Open [http://localhost:3000](http://localhost:3000)
 
-## 📁 Project Structure
+Environment variables
+---------------------;
+Create `.env.local` with the following values (example values shown — do not commit secrets):
 
-```
-bluedot-website/
-├── src/
-│   ├── app/                    # Next.js App Router pages
-│   │   ├── admin/             # Admin panel for content management
-│   │   └── api/               # API routes
-│   ├── components/            # Reusable UI components
-│   │   ├── ui/               # Base UI components
-│   │   ├── About.tsx         # About section component
-│   │   ├── Blog.tsx          # Blog listing component
-│   │   ├── Projects.tsx      # Projects showcase
-│   │   ├── TerminalConsole.tsx # Interactive terminal
-│   │   └── Resume.tsx        # Resume display
-│   └── lib/                   # Utility functions and configurations
-├── prisma/
-│   ├── schema.prisma         # Database schema
-│   ├── migrations/           # Database migrations
-│   └── seed.ts               # Database seeding script
-├── public/                    # Static assets
-└── ecosystem.config.js        # PM2 deployment configuration
+```text
+DATABASE_URL="mysql://user:password@localhost:3306/bluedot"
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-nextauth-secret"
+ADMIN_EMAIL="admin@example.com"
+ADMIN_USER="admin"
+ADMIN_PASS="secure-password"
+# Add any NEXT_PUBLIC_ keys or third-party API keys as required
 ```
 
-## 🎯 Key Interactions
+If `.env.example` is missing, add one with sanitized keys to help contributors.
 
-### Terminal Commands
-The interactive terminal supports various commands:
-- `help` - Show available commands
-- `about` - Display personal information  
-- `projects` - List featured projects
-- `contact` - Show contact information
-- `open <section>` - Navigate to different sections
-- `clear` - Clear terminal output
-- `uname` - System information
+Database & Prisma
+-----------------;
 
-### Desktop Interface
-- **Desktop Icons**: Click to open different sections in windows
-- **Taskbar**: Access start menu and manage open windows
-- **Window Management**: Drag, resize, minimize, and close windows
-- **Start Menu**: Quick access to all sections and external links
+- Prisma schema lives in `prisma/` (ensure `schema.prisma` is committed).
+- Typical workflow:
+  - `npx prisma generate`
+  - `npx prisma migrate dev` (local migrations)
+  - `npx prisma db seed` (if seed script exists)
+- Confirm models for posts, projects, users, and comments are present and documented.
 
-## 🔧 Development
+Admin panel
+-----------;
 
-### Available Scripts
+- Admin UI available at `/admin`
+- Admin/author accounts managed via NextAuth or environment-backed default admin credentials (ADMIN_USER / ADMIN_PASS)
+- Admin features: create/edit blog posts and projects, moderate comments, manage metadata
 
-```bash
-# Development
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
+Available scripts
+-----------------;
 
-# Database
-npx prisma studio    # Open Prisma Studio
-npx prisma migrate   # Run database migrations
-npx prisma generate  # Generate Prisma client
-```
+- `npm run dev` — start dev server
+- `npm run build` — build for production
+- `npm run start` — start production server
+- `npm run lint` — run ESLint
+- Prisma helpers:
+  - `npx prisma studio`
+  - `npx prisma migrate`
+  - `npx prisma generate`
 
-### Content Management
+Deployment
+----------;
+Vercel (recommended)
 
-Access the admin panel at `/admin` to:
-- Create and edit blog posts
-- Manage content and metadata
-- Review and moderate comments
-- Update project information
+- Connect the repo to Vercel and set environment variables in project settings.
+- Vercel will run `npm run build` and deploy the site.
 
-## 🌐 Deployment
+Self-host (PM2)
 
-### Production Deployment
+1. Build
 
-1. **Build the application**
    ```bash
    npm run build
    ```
 
-2. **Configure PM2** (production process management)
+2. Start with PM2
+
    ```bash
    pm2 start ecosystem.config.js
    ```
 
-3. **Database Migration**
+3. Run migrations:
+
    ```bash
    npx prisma migrate deploy
    ```
 
-### Vercel Deployment
+Project structure
+-----------------;
+Top-level (simplified)
 
-The easiest deployment option:
+```text
+bluedot-website/
+├── src/
+│   ├── app/            # Next.js App Router pages
+│   ├── components/     # UI components
+│   └── lib/            # utilities and configs
+├── prisma/             # schema, migrations, seed
+├── public/             # static assets and images
+├── package.json
+├── next.config.ts
+├── tailwind.config.ts
+└── README.md
+```
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/jason-allen-oneal/bluedot-website)
+Contributing & tests
+--------------------;
 
-## 🤝 Connect & Collaborate
+- Add a `CONTRIBUTING.md` to document the development workflow, code style, and PR guidelines.
+- Add Github Actions for linting and build checks (CI).
+- Consider adding unit/integration tests for critical components and API routes.
 
-- **Portfolio**: [bluedot.it.com](https://bluedot.it.com)
-- **GitHub**: [@jason-allen-oneal](https://github.com/jason-allen-oneal)
-- **LinkedIn**: [jason-allen-oneal](https://linkedin.com/in/jason-allen-oneal)
-- **Email**: jason.allen.oneal@gmail.com
+Suggested improvements
+----------------------;
 
-## 📄 License
+- Add `.env.example` with required variables (non-sensitive).
+- Add screenshots/GIFs to README and the `public/` folder.
+- Add `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and a simple issue/PR template.
+- Document admin usage and any RBAC or manual admin creation steps.
+- Add automated CI (GitHub Actions) that runs lint and build on PRs.
+- Provide a short developer onboarding doc (how to run seed data, create admin accounts, etc.).
+- Add accessibility checks and Lighthouse CI for performance monitoring.
 
-This project is open source and available under the [MIT License](LICENSE).
+License
+-------;
+This project is licensed under the MIT License. See the LICENSE file for details.
 
----
+Contact
+-------;
 
-**Built with ❤️ and modern web technologies • Showcasing the intersection of cybersecurity expertise and creative development**
+- Site: [https://bluedot.it.com](https://bluedot.it.com)
+- GitHub: [https://github.com/jason-allen-oneal](https://github.com/jason-allen-oneal)
+- Email: [jason.allen.oneal@gmail.com](mailto:jason.allen.oneal@gmail.com)
