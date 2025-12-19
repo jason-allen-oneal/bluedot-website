@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
-import { Card, CardHeader, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardContent } from "@/components/ui/Card"
+import Button from "@/components/ui/Button"
 
 export const dynamic = "force-dynamic"
 
@@ -21,10 +21,10 @@ export default async function BlogPage() {
     <div className="mx-auto max-w-6xl px-6 py-16">
       {/* Header */}
       <div className="text-center mb-16 space-y-3">
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent">
+        <h1 className="text-4xl md:text-5xl font-bold text-accent">
           Blog
         </h1>
-        <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+        <p className="text-lg text-base-400 max-w-2xl mx-auto">
           Thoughts on technology, cybersecurity, and creative problem-solving
         </p>
       </div>
@@ -35,10 +35,10 @@ export default async function BlogPage() {
           {posts.map((post: any) => (
             <Card
               key={post.id}
-              className="bg-gray-950/60 backdrop-blur-md border border-white/90 transition-all duration-300 hover:border-blue-400/80 hover:-translate-y-1"
+              className="transition-all duration-300 hover:border-primary/80 hover:-translate-y-1"
             >
               <CardHeader>
-                <time className="text-sm text-gray-500">
+                <time className="text-sm text-accent">
                   {new Date(post.createdAt).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
@@ -47,17 +47,17 @@ export default async function BlogPage() {
                 </time>
               </CardHeader>
               <CardContent>
-                <h2 className="text-xl font-bold text-white hover:text-blue-400 transition-colors mb-3">
+                <h2 className="text-xl font-bold text-secondary hover:text-accent transition-colors mb-3">
                   <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                 </h2>
                 {post.excerpt && (
-                  <p className="text-gray-300 leading-relaxed mb-4 line-clamp-3">
+                  <p className="text-base-content leading-relaxed mb-4 line-clamp-3">
                     {post.excerpt}
                   </p>
                 )}
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+                  className="text-primary hover:text-accent text-sm font-medium"
                 >
                   Read more →
                 </Link>
@@ -66,26 +66,23 @@ export default async function BlogPage() {
           ))}
         </div>
       ) : (
-        <Card className="bg-gray-950/60 backdrop-blur-md border border-white/90 p-12 text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">No posts yet</h2>
-          <p className="text-gray-400 mb-6">
+        <Card className="p-12 text-center">
+          <h2 className="text-2xl font-bold text-accent mb-4">No posts yet</h2>
+          <p className="text-base-content mb-6">
             I&apos;m working on some interesting content. Check back soon!
           </p>
         </Card>
       )}
 
       {/* CTA */}
-      <Card className="mt-16 bg-gray-950/60 backdrop-blur-md border border-white/90 p-8 text-center">
-        <h2 className="text-2xl font-bold text-white mb-4">Stay Updated</h2>
-        <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
+      <Card className="mt-16 p-8 text-center">
+        <h2 className="text-2xl font-bold text-secondary mb-4">Stay Updated</h2>
+        <p className="text-base-content mb-6 max-w-2xl mx-auto">
           Follow my blog for insights on cybersecurity, development, and
           creative projects. I share practical tips and behind-the-scenes looks
           at my work.
         </p>
-        <Button
-          asChild
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl"
-        >
+        <Button>
           <Link href="/contact">Subscribe to Updates</Link>
         </Button>
       </Card>

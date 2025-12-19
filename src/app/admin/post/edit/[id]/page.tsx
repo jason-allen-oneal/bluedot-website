@@ -6,12 +6,10 @@ import { useSession } from "next-auth/react";
 import {
   Card,
   CardHeader,
-  CardContent,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+  CardContent
+} from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+import Label from "@/components/ui/Label";
 import { ArrowLeft, Save, FileText } from "lucide-react";
 
 export default function EditPostPage() {
@@ -122,32 +120,31 @@ export default function EditPostPage() {
     <div className="container py-12 space-y-10">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-primary">Edit Post</h1>
-          <p className="text-muted-foreground">Update and manage your blog post.</p>
+          <h1 className="text-3xl font-bold text-accent">Edit Post</h1>
+          <p className="text-base-400">Update and manage your blog post.</p>
         </div>
         <Button
           onClick={() => router.push("/admin")}
-          variant="outline"
-          className="gap-2"
+          style="outline"
         >
           <ArrowLeft className="h-4 w-4" /> Back to Dashboard
         </Button>
       </div>
 
-      <Card className="bg-gray-950/60 backdrop-blur-md border border-white/90">
+      <Card>
         <CardHeader>
           <div className="flex items-center gap-3">
-            <FileText className="h-5 w-5 text-muted-foreground" />
+            <FileText className="h-5 w-5 text-base-400" />
             <div>
-              <CardTitle className="text-white">Post Details</CardTitle>
-              <CardDescription>Edit the fields and save your changes.</CardDescription>
+              <span className="text-secondary">Post Details</span>
+              <p className="text-base-400">Edit the fields and save your changes.</p>
             </div>
           </div>
         </CardHeader>
 
         <CardContent>
           {isLoading ? (
-            <p className="text-white">Loading post...</p>
+            <p className="text-secondary">Loading post...</p>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Title */}
@@ -158,7 +155,7 @@ export default function EditPostPage() {
                   name="title"
                   value={form.title}
                   onChange={handleChange}
-                  className="w-full p-3 mt-1 rounded-md border border-white/30 bg-gray-900/50 text-white"
+                  className="w-full p-3 mt-1 rounded-md border border-accent/60 bg-secondary/20 text-secondary"
                 />
                 {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
               </div>
@@ -171,7 +168,7 @@ export default function EditPostPage() {
                   name="slug"
                   value={form.slug}
                   onChange={handleChange}
-                  className="w-full p-3 mt-1 rounded-md border border-white/30 bg-gray-900/50 text-white"
+                  className="w-full p-3 mt-1 rounded-md border border-accent/60 bg-secondary/20 text-secondary"
                 />
                 {errors.slug && <p className="text-red-500 text-sm">{errors.slug}</p>}
               </div>
@@ -180,16 +177,16 @@ export default function EditPostPage() {
               <div>
                 <Label htmlFor="categoryId">Category</Label>
                 <select
-                  id="categoryId"
-                  name="categoryId"
-                  value={form.categoryId}
-                  onChange={handleChange}
-                  className="w-full mt-1 p-3 rounded-md border border-white/30 bg-gray-900/50 text-white"
-                >
-                  <option value="">Select category...</option>
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.name}
+                id="categoryId"
+                name="categoryId"
+                value={form.categoryId}
+                onChange={handleChange}
+                className="w-full mt-1 p-3 rounded-md border border-accent/60 bg-secondary/20 text-secondary"
+              >
+                <option value="">Select category...</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
                     </option>
                   ))}
                 </select>
@@ -200,7 +197,7 @@ export default function EditPostPage() {
                 <Label>Tags</Label>
                 <div className="flex flex-wrap gap-3 mt-2">
                   {tags.map((tag) => (
-                    <label key={tag.id} className="flex items-center gap-2 text-white">
+                    <label key={tag.id} className="flex items-center gap-2 text-secondary">
                       <input
                         type="checkbox"
                         checked={form.tagIds.includes(tag.id)}
@@ -217,12 +214,12 @@ export default function EditPostPage() {
                 <Label htmlFor="excerpt">Excerpt</Label>
                 <textarea
                   id="excerpt"
-                  name="excerpt"
-                  value={form.excerpt}
-                  onChange={handleChange}
-                  rows={3}
-                  className="w-full p-3 mt-1 rounded-md border border-white/30 bg-gray-900/50 text-white"
-                />
+                name="excerpt"
+                value={form.excerpt}
+                onChange={handleChange}
+                rows={3}
+                className="w-full p-3 mt-1 rounded-md border border-accent/60 bg-secondary/20 text-secondary"
+              />
               </div>
 
               {/* Content */}
@@ -230,19 +227,19 @@ export default function EditPostPage() {
                 <Label htmlFor="content">Content</Label>
                 <textarea
                   id="content"
-                  name="content"
-                  value={form.content}
-                  onChange={handleChange}
-                  rows={10}
-                  className="w-full p-3 mt-1 rounded-md border border-white/30 bg-gray-900/50 text-white"
-                />
+                name="content"
+                value={form.content}
+                onChange={handleChange}
+                rows={10}
+                className="w-full p-3 mt-1 rounded-md border border-accent/60 bg-secondary/20 text-secondary"
+              />
                 {errors.content && (
                   <p className="text-red-500 text-sm mt-1">{errors.content}</p>
                 )}
               </div>
 
               <div className="flex justify-end">
-                <Button type="submit" disabled={isSaving} className="gap-2">
+                <Button>
                   <Save className="h-4 w-4" />
                   {isSaving ? "Saving..." : "Save Changes"}
                 </Button>

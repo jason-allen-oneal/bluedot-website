@@ -9,7 +9,7 @@ interface ProseProps {
 
 export function Prose({ children, className = '' }: ProseProps) {
   return (
-    <div className={`prose prose-invert max-w-none ${className}`}>
+    <div className={`prose max-w-none prose-headings:text-secondary prose-p:text-secondary-content prose-strong:text-secondary prose-a:text-primary prose-li:text-secondary-content ${className}`}>
       {children}
     </div>
   )
@@ -17,29 +17,29 @@ export function Prose({ children, className = '' }: ProseProps) {
 
 export const mdxComponents: MDXComponents = {
   h1: ({ children, ...props }) => (
-    <h1 className="text-3xl font-bold mb-4 mt-8 first:mt-0" {...props}>
+    <h1 className="text-3xl text-secondary font-bold mb-4 mt-8 first:mt-0" {...props}>
       {children}
     </h1>
   ),
   h2: ({ children, ...props }) => (
-    <h2 className="text-2xl font-semibold mb-3 mt-6" {...props}>
+    <h2 className="text-2xl text-secondary font-semibold mb-3 mt-6" {...props}>
       {children}
     </h2>
   ),
   h3: ({ children, ...props }) => (
-    <h3 className="text-xl font-semibold mb-2 mt-4" {...props}>
+    <h3 className="text-xl text-secondary font-semibold mb-2 mt-4" {...props}>
       {children}
     </h3>
   ),
   p: ({ children, ...props }) => (
-    <p className="mb-4 leading-relaxed" {...props}>
+    <p className="text-base-content mb-4 leading-relaxed" {...props}>
       {children}
     </p>
   ),
   a: ({ children, href, ...props }) => (
     <a 
       href={href} 
-      className="text-blue-400 hover:text-blue-300 underline" 
+      className="text-primary hover:text-accent underline" 
       {...props}
     >
       {children}
@@ -56,27 +56,27 @@ export const mdxComponents: MDXComponents = {
     </ol>
   ),
   li: ({ children, ...props }) => (
-    <li className="ml-4" {...props}>
+    <li className="text-secondary ml-4" {...props}>
       {children}
     </li>
   ),
   blockquote: ({ children, ...props }) => (
-    <blockquote className="border-l-4 border-gray-600 pl-4 italic my-4" {...props}>
+    <blockquote className="border-l-4 border-accent/60 bg-secondary/40 pl-4 italic my-4 rounded-md" {...props}>
       {children}
     </blockquote>
   ),
   code: ({ children, ...props }) => (
-    <code className="bg-gray-800 px-1 py-0.5 rounded text-sm font-mono" {...props}>
+    <code className="bg-secondary/60 border border-accent/60 px-1 py-0.5 rounded text-sm font-mono" {...props}>
       {children}
     </code>
   ),
   pre: ({ children, ...props }) => (
-    <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto mb-4" {...props}>
+    <pre className="bg-secondary/60 border border-accent/60 p-4 rounded-lg overflow-x-auto mb-4" {...props}>
       {children}
     </pre>
   ),
   hr: ({ ...props }) => (
-    <hr className="border-gray-600 my-8" {...props} />
+    <hr className="border-primary/80 my-8" {...props} />
   ),
   img: ({ src, alt, ...props }) => (
     <Image 

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import { ButtonGroup } from './ui/button-group';
-import { Button } from './ui/button';
+import ButtonGroup from './ui/ButtonGroup';
+import Button from './ui/Button';
 import { useRouter } from 'next/navigation';
 
 export default function Hero() {
@@ -121,23 +121,23 @@ export default function Hero() {
         <div className="relative h-[60svh] w-full">
           <canvas
             ref={canvasRef}
-            className="h-full w-full rounded-b-[2rem] border-b border-white/10 pointer-events-none"
+            className="h-full w-full border-b border-accent/50 bg-secondary/40 pointer-events-none"
           />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center text-primary">
-              <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4">
+            <div className="text-center">
+              <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-secondary">
                 Reliable. Professional. Performance-driven.
               </h1>
-              <p className="text-lg opacity-80 max-w-2xl mx-auto mb-8">
+              <p className="text-lg opacity-90 max-w-2xl mx-auto mb-8 text-base-400">
                 Crafting enterprise-grade systems, hardened security layers, clean AI solutions, and sleek front-ends.
               </p>
       
               <div className="flex justify-center">
                 <ButtonGroup>
-                  <Button variant="outline" onClick={() => view("projects")}>
+                  <Button style="outline" onClick={() => view("projects")}>
                     View Projects
                   </Button>
-                  <Button variant="outline" onClick={() => view("blog")}>
+                  <Button style="outline" onClick={() => view("blog")}>
                     Read Blog
                   </Button>
                 </ButtonGroup>

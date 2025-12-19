@@ -6,12 +6,10 @@ import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+  CardHeader
+} from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+import Label from "@/components/ui/Label";
 import { ArrowLeft, FileText, Wand2, Save } from "lucide-react";
 
 export default function CreatePostPage() {
@@ -115,25 +113,25 @@ export default function CreatePostPage() {
     <div className="container py-12 space-y-10">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-primary">Create New Post</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold text-accent">Create New Post</h1>
+          <p className="text-base-400">
             Write and publish a new blog article.
           </p>
         </div>
-        <Button onClick={() => router.push("/admin")} variant="outline" className="gap-2">
+        <Button onClick={() => router.push("/admin")} style="outline">
           <ArrowLeft className="h-4 w-4" /> Back to Dashboard
         </Button>
       </div>
 
-      <Card className="bg-gray-950/60 backdrop-blur-md border border-white/90">
+      <Card>
         <CardHeader>
           <div className="flex items-center gap-3">
-            <FileText className="h-5 w-5 text-muted-foreground" />
+            <FileText className="h-5 w-5 text-base-400" />
             <div>
-              <CardTitle className="text-white">Post Details</CardTitle>
-              <CardDescription>
+              <span className="text-secondary">Post Details</span>
+              <p className="text-base-400">
                 Fill out the form to publish your new post.
-              </CardDescription>
+              </p>
             </div>
           </div>
         </CardHeader>
@@ -150,7 +148,7 @@ export default function CreatePostPage() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   placeholder="Enter post title"
-                  className="w-full p-3 mt-1 rounded-md border border-white/30 bg-gray-900/50 text-white"
+                  className="w-full p-3 mt-1 rounded-md border border-accent/60 bg-secondary/20 text-secondary"
                 />
                 {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
               </div>
@@ -165,9 +163,9 @@ export default function CreatePostPage() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder="auto-generated slug"
-                    className="flex-1 p-3 rounded-md border border-white/30 bg-gray-900/50 text-white"
+                    className="flex-1 p-3 rounded-md border border-accent/60 bg-secondary/20 text-secondary"
                   />
-                  <Button type="button" onClick={generateSlug} variant="outline" className="gap-2">
+                  <Button onClick={generateSlug} style="outline">
                     <Wand2 className="h-4 w-4" /> Generate
                   </Button>
                 </div>
@@ -183,7 +181,7 @@ export default function CreatePostPage() {
                 name="categoryId"
                 value={form.categoryId}
                 onChange={handleChange}
-                className="w-full mt-1 p-3 rounded-md border border-white/30 bg-gray-900/50 text-white"
+                className="w-full mt-1 p-3 rounded-md border border-accent/60 bg-secondary/20 text-secondary"
               >
                 <option value="">Select category...</option>
                 {categories.map((cat) => (
@@ -199,7 +197,7 @@ export default function CreatePostPage() {
               <Label>Tags</Label>
               <div className="flex flex-wrap gap-3 mt-2">
                 {tags.map((tag) => (
-                  <label key={tag.id} className="flex items-center gap-2 text-white">
+                  <label key={tag.id} className="flex items-center gap-2 text-secondary">
                     <input
                       type="checkbox"
                       checked={form.tagIds.includes(tag.id)}
@@ -221,7 +219,7 @@ export default function CreatePostPage() {
                 onChange={handleChange}
                 placeholder="Short summary of your post..."
                 rows={3}
-                className="w-full p-3 mt-1 rounded-md border border-white/30 bg-gray-900/50 text-white"
+                className="w-full p-3 mt-1 rounded-md border border-accent/60 bg-secondary/20 text-secondary"
               />
             </div>
 
@@ -236,7 +234,7 @@ export default function CreatePostPage() {
                 onBlur={handleBlur}
                 placeholder="Write your post here..."
                 rows={10}
-                className="w-full p-3 mt-1 rounded-md border border-white/30 bg-gray-900/50 text-white"
+                className="w-full p-3 mt-1 rounded-md border border-accent/60 bg-secondary/20 text-secondary"
               />
               {errors.content && (
                 <p className="text-red-500 text-sm mt-1">{errors.content}</p>
@@ -244,7 +242,7 @@ export default function CreatePostPage() {
             </div>
 
             <div className="flex justify-end">
-              <Button type="submit" disabled={isLoading} className="gap-2">
+              <Button>
                 <Save className="h-4 w-4" />
                 {isLoading ? "Publishing..." : "Publish Post"}
               </Button>

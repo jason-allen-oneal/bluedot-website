@@ -2,9 +2,9 @@
 
 import { useRef } from "react"
 import { useReactToPrint } from "react-to-print"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
+import Button from "@/components/ui/Button"
+import { Card, CardContent } from "@/components/ui/Card"
+import { Separator } from "@/components/ui/Separator"
 import { Download } from "lucide-react"
 
 export default function ResumePage() {
@@ -12,15 +12,15 @@ export default function ResumePage() {
   const handlePrint = useReactToPrint({ contentRef: resumeRef })
 
   return (
-    <div className="min-h-screen p-8 text-slate-100">
+    <div className="min-h-screen p-8 text-secondary-content">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header */}
         <header className="flex flex-wrap items-start justify-between gap-4 print:hidden">
           <div>
-            <h1 className="text-4xl font-bold text-white">Resume</h1>
+            <h1 className="text-4xl font-bold text-accent">Resume</h1>
           </div>
           <div className="text-right">
-            <p className="text-xs uppercase tracking-widest text-gray-400">
+            <p className="text-xs uppercase tracking-widest text-base-400">
               Last updated:{" "}
               {new Date().toLocaleDateString("en-US", {
                 year: "numeric",
@@ -29,9 +29,7 @@ export default function ResumePage() {
               })}
             </p>
             <Button
-              variant="default"
               size="sm"
-              className="mt-2 flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
               onClick={handlePrint}
             >
               <Download className="w-4 h-4" />
@@ -43,28 +41,28 @@ export default function ResumePage() {
         {/* Resume Card */}
         <Card
           ref={resumeRef}
-          className="bg-gray-950/60 backdrop-blur-md border border-white/90 rounded-2xl p-8 shadow-lg ring-1 ring-white/10"
+          className="rounded-2xl p-8 shadow-lg ring-1 ring-accent/10"
         >
           <CardContent className="p-0 space-y-10">
             {/* Contact Header */}
             <section>
-              <h2 className="text-2xl font-semibold text-white">Jason O’Neal</h2>
-              <p className="mt-1 text-sm text-gray-300">
+              <h2 className="text-2xl font-semibold text-secondary">Jason O’Neal</h2>
+              <p className="mt-1 text-sm text-secondary-content">
                 Cybersecurity Student • Full-Stack Developer • Systems Builder
               </p>
-              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-400">
+              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-base-400">
                 <span>📍 Lenoir, NC</span>
-                <a href="mailto:jason.allen.oneal@gmail.com" className="hover:text-blue-400 hover:underline">
+                <a href="mailto:jason.allen.oneal@gmail.com" className="hover:text-primary hover:underline">
                   jason.allen.oneal@gmail.com
                 </a>
-                <a href="tel:+18282156403" className="hover:text-blue-400 hover:underline">
+                <a href="tel:+18282156403" className="hover:text-primary hover:underline">
                   +1 (828) 215-6403
                 </a>
                 <a
                   href="https://github.com/jason-allen-oneal"
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:text-blue-400 hover:underline"
+                  className="hover:text-primary hover:underline"
                 >
                   GitHub
                 </a>
@@ -72,7 +70,7 @@ export default function ResumePage() {
                   href="https://bluedot.it.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:text-blue-400 hover:underline"
+                  className="hover:text-primary hover:underline"
                 >
                   Portfolio
                 </a>
@@ -81,10 +79,10 @@ export default function ResumePage() {
 
             {/* Summary */}
             <section>
-              <h3 className="mb-2 border-b border-white/30 pb-1 text-sm font-semibold uppercase tracking-widest text-gray-300">
+              <h3 className="mb-2 border-b border-accent/50 pb-1 text-sm font-semibold uppercase tracking-widest text-secondary">
                 Summary
               </h3>
-              <p className="text-gray-200 leading-relaxed">
+              <p className="text-secondary-content leading-relaxed">
                 Aspiring cybersecurity professional and full-stack developer with over 15 years of freelance
                 experience designing and deploying secure, scalable applications. Currently completing a degree in
                 Cybersecurity while developing IoT security, pentesting, and AI-powered tools. Skilled across
@@ -95,7 +93,7 @@ export default function ResumePage() {
 
             {/* Technical Skills */}
             <section>
-              <h3 className="mb-3 border-b border-white/30 pb-1 text-sm font-semibold uppercase tracking-widest text-gray-300">
+              <h3 className="mb-3 border-b border-accent/50 pb-1 text-sm font-semibold uppercase tracking-widest text-secondary">
                 Technical Skills
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
@@ -108,8 +106,8 @@ export default function ResumePage() {
                   ["Other", "UI/UX design, debugging, software deployment, e-commerce systems"],
                 ].map(([title, content]) => (
                   <div key={title}>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">{title}</p>
-                    <p className="mt-1 text-gray-200">{content}</p>
+                    <p className="text-xs font-semibold uppercase tracking-widest text-base-400">{title}</p>
+                    <p className="mt-1 text-secondary-content">{content}</p>
                   </div>
                 ))}
               </div>
@@ -117,7 +115,7 @@ export default function ResumePage() {
 
             {/* Experience */}
             <section>
-              <h3 className="mb-3 border-b border-white/30 pb-1 text-sm font-semibold uppercase tracking-widest text-gray-300">
+              <h3 className="mb-3 border-b border-accent/50 pb-1 text-sm font-semibold uppercase tracking-widest text-secondary">
                 Experience
               </h3>
               <div className="space-y-6">
@@ -154,21 +152,21 @@ export default function ResumePage() {
                 ].map((job) => (
                   <div key={job.role}>
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
-                      <p className="text-base font-semibold text-white">{job.role}</p>
-                      <p className="text-sm text-gray-400">{job.years}</p>
+                      <p className="text-base font-semibold text-secondary">{job.role}</p>
+                      <p className="text-sm text-base-400">{job.years}</p>
                     </div>
-                    <p className="text-sm italic text-gray-400">{job.company}</p>
-                    <ul className="mt-2 list-disc space-y-1 pl-5 text-gray-200">
+                    <p className="text-sm italic text-base-400">{job.company}</p>
+                    <ul className="mt-2 list-disc space-y-1 pl-5 text-secondary-content">
                       {job.bullets.map((b) => (
                         <li key={b}>{b}</li>
                       ))}
                     </ul>
                     {job.stack && (
-                      <p className="mt-2 text-sm text-gray-300">
+                      <p className="mt-2 text-sm text-secondary-content">
                         <span className="font-semibold">Stack:</span> {job.stack}
                       </p>
                     )}
-                    <Separator className="my-4 bg-white/10" />
+                    <Separator className="my-4 bg-accent/40" />
                   </div>
                 ))}
               </div>
@@ -176,20 +174,20 @@ export default function ResumePage() {
 
             {/* Education */}
             <section>
-              <h3 className="mb-3 border-b border-white/30 pb-1 text-sm font-semibold uppercase tracking-widest text-gray-300">
+              <h3 className="mb-3 border-b border-accent/50 pb-1 text-sm font-semibold uppercase tracking-widest text-secondary">
                 Education
               </h3>
               <div className="space-y-3">
                 <div>
-                  <p className="text-base font-semibold text-white">
+                  <p className="text-base font-semibold text-secondary">
                     Bachelor of Science, Cybersecurity{" "}
-                    <span className="text-sm font-normal text-gray-400">(in progress)</span>
+                    <span className="text-sm font-normal text-base-400">(in progress)</span>
                   </p>
-                  <p className="text-sm text-gray-400">DeVry University Online</p>
+                  <p className="text-sm text-base-400">DeVry University Online</p>
                 </div>
                 <div>
-                  <p className="text-base font-semibold text-white">High School Diploma</p>
-                  <p className="text-sm text-gray-400">Normangee High School — Normangee, TX</p>
+                  <p className="text-base font-semibold text-secondary">High School Diploma</p>
+                  <p className="text-sm text-base-400">Normangee High School — Normangee, TX</p>
                 </div>
               </div>
             </section>
@@ -206,22 +204,24 @@ export default function ResumePage() {
             .print\\:hidden {
               display: none !important;
             }
-            .bg-gray-950\\/60,
-            .bg-gray-950 {
+            .bg-secondary\\/60,
+            .bg-secondary\\/40,
+            .bg-secondary\\/30,
+            .bg-secondary\\/20 {
               background: #ffffff !important;
             }
-            .border-white\\/90 {
+            .border-accent\\/80,
+            .border-accent\\/60,
+            .border-accent\\/50 {
               border-color: #94a3b8 !important;
             }
-            .text-slate-100,
-            .text-white {
+            .text-secondary,
+            .text-secondary-content,
+            .text-base-400 {
               color: #0f172a !important;
             }
-            .text-gray-300,
-            .text-gray-400 {
-              color: #334155 !important;
-            }
-            .text-blue-400 {
+            .text-accent,
+            .text-primary {
               color: #0e7490 !important;
             }
           }

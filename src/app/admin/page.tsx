@@ -6,12 +6,10 @@ import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+  CardHeader
+} from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+import Badge from "@/components/ui/Badge";
 import {
   Plus,
   MessageSquare,
@@ -67,20 +65,20 @@ export default function AdminPage() {
   if (!session) {
     return (
       <div className="container py-20 flex flex-col items-center justify-center">
-        <Card className="w-full max-w-md bg-gray-950/60 backdrop-blur-md border border-white/90">
+        <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
               <User className="h-10 w-10 text-primary" />
             </div>
-            <CardTitle className="text-2xl text-white">
+            <span>
               Admin Access Required
-            </CardTitle>
-            <CardDescription className="text-gray-400">
+            </span>
+            <p className="text-base-400">
               Please sign in to access the admin dashboard.
-            </CardDescription>
+            </p>
           </CardHeader>
           <CardContent>
-            <Button onClick={() => router.push("/login")} className="w-full">
+            <Button onClick={() => router.push("/login")}>
               <User className="mr-2 h-4 w-4" /> Sign In
             </Button>
           </CardContent>
@@ -93,30 +91,28 @@ export default function AdminPage() {
     <div className="container py-12 space-y-10">
       {/* Header */}
       <div className="text-center space-y-2">
-        <h1 className="text-3xl md:text-4xl font-bold text-primary">
+        <h1 className="text-3xl md:text-4xl font-bold text-accent">
           Admin Dashboard
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-base-400">
           Manage posts, comments, and analytics in one place.
         </p>
       </div>
 
       {/* Controls */}
       <div className="flex flex-wrap gap-3 justify-center md:justify-end">
-        <Button onClick={() => router.push("/admin/post/create")} className="gap-2">
+        <Button onClick={() => router.push("/admin/post/create")}>
           <Plus className="h-4 w-4" /> New Post
         </Button>
         <Button
           onClick={() => router.push("/admin/comments")}
-          variant="outline"
-          className="gap-2"
+          style="outline"
         >
           <MessageSquare className="h-4 w-4" /> Comments
         </Button>
         <Button
           onClick={() => signOut()}
-          variant="outline"
-          className="gap-2 text-destructive hover:text-destructive"
+          style="outline"
         >
           <LogOut className="h-4 w-4" /> Sign Out
         </Button>
@@ -156,37 +152,35 @@ export default function AdminPage() {
         ].map((item, idx) => (
           <Card
             key={idx}
-            className="bg-gray-950/60 backdrop-blur-md border border-white/90"
           >
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-200">
+              <span className="text-sm font-medium text-secondary">
                 {item.label}
-              </CardTitle>
-              <item.icon className="h-4 w-4 text-muted-foreground" />
+              </span>
+              <item.icon className="h-4 w-4 text-base-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-secondary">
                 {item.value}
               </div>
-              <p className="text-xs text-muted-foreground">{item.detail}</p>
+              <p className="text-xs text-base-400">{item.detail}</p>
             </CardContent>
           </Card>
         ))}
       </div>
 
       {/* Posts Management */}
-      <Card className="bg-gray-950/60 backdrop-blur-md border border-white/90">
+      <Card>
         <CardHeader>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div>
-              <CardTitle className="text-xl text-white">Blog Posts</CardTitle>
-              <CardDescription className="text-gray-400">
+              <span className="text-xl text-secondary">Blog Posts</span>
+              <p className="text-base-400">
                 Manage and organize your blog content
-              </CardDescription>
+              </p>
             </div>
             <Button
               onClick={() => router.push("/admin/post/create")}
-              className="gap-2"
             >
               <Plus className="h-4 w-4" /> Create New
             </Button>
@@ -196,15 +190,15 @@ export default function AdminPage() {
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4" />
-              <p className="text-muted-foreground">Loading posts...</p>
+              <p className="text-base-400">Loading posts...</p>
             </div>
           ) : posts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12">
-              <FileText className="h-12 w-12 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">
+              <FileText className="h-12 w-12 text-base-400 mb-4" />
+              <h3 className="text-lg font-semibold text-secondary mb-2">
                 No posts yet
               </h3>
-              <p className="text-gray-400 mb-6 text-center max-w-sm">
+              <p className="text-base-400 mb-6 text-center max-w-sm">
                 Create your first post to get started.
               </p>
               <Button onClick={() => router.push("/admin/post/create")}>
@@ -212,25 +206,25 @@ export default function AdminPage() {
               </Button>
             </div>
           ) : (
-            <div className="divide-y divide-white/10">
+            <div className="divide-y divide-accent/30">
               {posts.map((post) => (
                 <div
                   key={post.id}
-                  className="flex items-center justify-between p-5 hover:bg-muted/40 transition-colors"
+                  className="flex items-center justify-between p-5 hover:bg-secondary/30 transition-colors"
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-1">
-                      <h3 className="font-semibold text-white truncate">
+                      <h3 className="font-semibold text-secondary truncate">
                         {post.title}
                       </h3>
                       <Badge variant="secondary" className="text-xs">
                         Published
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-400 line-clamp-2 mb-2">
+                    <p className="text-sm text-base-400 line-clamp-2 mb-2">
                       {post.excerpt || "No excerpt available"}
                     </p>
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                    <div className="flex items-center gap-4 text-xs text-base-400">
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
                         {new Date(post.createdAt).toLocaleDateString()}
@@ -242,25 +236,22 @@ export default function AdminPage() {
                   <div className="flex items-center gap-2 ml-4">
                     <Button
                       size="sm"
-                      variant="ghost"
+                      style="ghost"
                       onClick={() => router.push(`/blog/${post.slug}`)}
-                      className="gap-2 text-blue-400 hover:text-blue-300"
                     >
                       <Eye className="h-4 w-4" /> View
                     </Button>
                     <Button
                       size="sm"
-                      variant="ghost"
+                      style="ghost"
                       onClick={() => router.push(`/admin/post/edit/${post.id}`)}
-                      className="gap-2 text-cyan-400 hover:text-cyan-300"
                     >
                       <Edit className="h-4 w-4" /> Edit
                     </Button>
                     <Button
                       size="sm"
-                      variant="ghost"
+                      style="ghost"
                       onClick={() => setDeleteTarget(post)}
-                      className="gap-2 text-red-500 hover:text-red-400"
                     >
                       <Trash2 className="h-4 w-4" />
                       Delete

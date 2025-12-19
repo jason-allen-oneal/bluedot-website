@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/Button";
 
 interface DeletePostModalProps {
   postId: number;
@@ -47,18 +47,18 @@ export function DeletePostModal({ postId, title, onDeleted, onClose }: DeletePos
       onClick={handleClose}
     >
       <div 
-        className="bg-gray-900 p-6 rounded-lg shadow-lg text-white max-w-sm"
+        className="bg-secondary/80 border border-accent/70 p-6 rounded-lg shadow-lg text-secondary max-w-sm"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-lg font-semibold mb-2">Confirm Deletion</h2>
-        <p className="text-gray-400 mb-6">
+        <p className="text-base-400 mb-6">
           Are you sure you want to permanently delete <span className="font-bold">{title}</span>?
         </p>
         <div className="flex justify-end gap-3">
-          <Button variant="outline" onClick={handleClose} disabled={isDeleting}>
+          <Button style="outline" onClick={handleClose} behavior={isDeleting ? "disabled" : "default"}>
             Cancel
           </Button>
-          <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
+          <Button onClick={handleDelete} behavior={isDeleting ? "disabled" : "default"}>
             {isDeleting ? "Deleting..." : "Delete"}
           </Button>
         </div>

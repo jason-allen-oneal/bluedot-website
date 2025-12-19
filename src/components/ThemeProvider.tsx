@@ -7,5 +7,18 @@ export function ThemeProvider({
   children,
   ...props
 }: React.ComponentProps<typeof NextThemesProvider>) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+  return (
+    <NextThemesProvider
+      attribute="data-theme"
+      value={{ light: "garden", dark: "forest" }}
+      themes={["garden", "forest"]}
+      defaultTheme="dark"
+      enableSystem={false}
+      disableTransitionOnChange
+      storageKey="bluedot-theme"
+      {...props}
+    >
+      {children}
+    </NextThemesProvider>
+  )
 }

@@ -1,19 +1,18 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Mail, Phone, MapPin, Github, Send } from "lucide-react";
+import { CheckCircle2, XCircle, Mail, Phone, MapPin, Github, Send } from "lucide-react";
 import {
   Card,
   CardHeader,
-  CardTitle,
   CardContent,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Separator } from "@/components/ui/separator";
+} from "@/components/ui/Card";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
+import Label from "@/components/ui/Label";
+import Button from "@/components/ui/Button";
+import Alert from "@/components/ui/Alert";
+import { Separator } from "@/components/ui/Separator";
 
 interface ContactForm {
   name: string;
@@ -102,21 +101,21 @@ export default function Contact() {
       label: "Email",
       value: "jason@bluedot.it.com",
       href: "mailto:jason@bluedot.it.com",
-      color: "text-blue-500",
+      color: "text-primary",
     },
     {
       icon: Phone,
       label: "Phone",
       value: "+1 (828) 215-6403",
       href: "tel:+18282156403",
-      color: "text-green-500",
+      color: "text-secondary",
     },
     {
       icon: MapPin,
       label: "Location",
       value: "Remote / Available Worldwide",
       href: "#",
-      color: "text-purple-500",
+      color: "text-accent",
     },
   ];
 
@@ -125,15 +124,15 @@ export default function Contact() {
       icon: Github,
       label: "GitHub",
       href: "https://github.com/jason-allen-oneal",
-      color: "text-muted-foreground hover:text-foreground",
+      color: "text-secondary-content hover:text-accent",
     },
   ];
 
   return (
     <div className="container py-12 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-primary">Get In Touch</h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">
+        <h2 className="text-3xl font-bold text-accent">Get In Touch</h2>
+        <p className="text-base-400 max-w-xl mx-auto">
           I&apos;m always open to new opportunities, collaborations, and
           discussions. Let&apos;s connect and build something meaningful.
         </p>
@@ -141,24 +140,24 @@ export default function Contact() {
 
       <div className="grid gap-8 lg:grid-cols-2">
         {/* Contact Info */}
-        <Card className="bg-gray-950/60 backdrop-blur-md border border-white/90">
+        <Card>
           <CardHeader>
-            <CardTitle>Contact Information</CardTitle>
+            <p>Contact Information</p>
           </CardHeader>
           <CardContent className="space-y-6">
             {contactMethods.map((method, i) => (
               <div
                 key={i}
-                className="flex items-center space-x-4 rounded-lg border p-4 hover:bg-muted/50 transition"
+                className="flex items-center space-x-4 rounded-lg border border-accent/50 p-4 hover:bg-secondary/40 transition"
               >
                 <method.icon className={`w-5 h-5 ${method.color}`} />
                 <div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-base-400">
                     {method.label}
                   </p>
                   <a
                     href={method.href}
-                    className="text-sm font-medium hover:underline"
+                    className="text-sm font-medium hover:underline text-secondary"
                   >
                     {method.value}
                   </a>
@@ -177,7 +176,7 @@ export default function Contact() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-md border p-2 hover:bg-muted transition"
+                    className="rounded-md border border-accent/50 p-2 hover:bg-secondary/40 transition"
                   >
                     <social.icon className="w-5 h-5" />
                   </a>
@@ -188,9 +187,9 @@ export default function Contact() {
         </Card>
 
         {/* Contact Form */}
-        <Card className="bg-gray-950/60 backdrop-blur-md border border-white/90">
+        <Card>
           <CardHeader>
-            <CardTitle>Send a Message</CardTitle>
+            <p>Send a Message</p>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -204,6 +203,7 @@ export default function Contact() {
                     onChange={handleInputChange}
                     required
                     placeholder="Your name"
+                    className="bg-secondary/20 border-accent/60 text-secondary"
                   />
                 </div>
                 <div>
@@ -216,6 +216,7 @@ export default function Contact() {
                     onChange={handleInputChange}
                     required
                     placeholder="your@email.com"
+                    className="bg-secondary/20 border-accent/60 text-secondary"
                   />
                 </div>
               </div>
@@ -229,6 +230,7 @@ export default function Contact() {
                   onChange={handleInputChange}
                   required
                   placeholder="What's this about?"
+                  className="bg-secondary/20 border-accent/60 text-secondary"
                 />
               </div>
 
@@ -242,6 +244,7 @@ export default function Contact() {
                   required
                   rows={4}
                   placeholder="Tell me about your project, idea, or just say hello!"
+                  className="bg-secondary/20 border-accent/60 text-secondary"
                 />
               </div>
 
@@ -256,11 +259,7 @@ export default function Contact() {
               />
               <input type="hidden" name="startedAt" value={startedAtRef.current} />
 
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isSubmitting}
-              >
+              <Button>
                 {isSubmitting ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
@@ -275,17 +274,13 @@ export default function Contact() {
               </Button>
 
               {submitStatus === "success" && (
-                <Alert variant="default">
-                  <AlertDescription>
-                    ✓ Message sent successfully! I&apos;ll get back to you soon.
-                  </AlertDescription>
+                <Alert variant="success" style="soft" icon={<CheckCircle2 className="h-5 w-5" />}>
+                  <span>Message sent successfully! I&apos;ll get back to you soon.</span>
                 </Alert>
               )}
               {submitStatus === "error" && (
-                <Alert variant="destructive">
-                  <AlertDescription>
-                    ✗ Failed to send message. Please try again later.
-                  </AlertDescription>
+                <Alert variant="error" style="soft" icon={<XCircle className="h-5 w-5" />}>
+                  <span>Failed to send message. Please try again later.</span>
                 </Alert>
               )}
             </form>
@@ -294,12 +289,12 @@ export default function Contact() {
       </div>
 
       {/* Footer Note */}
-      <Card className="bg-gray-950/60 backdrop-blur-md border border-white/90">
+      <Card>
         <CardHeader>
-          <CardTitle>Quick Response Times</CardTitle>
+          <p>Quick Response Times</p>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground text-sm leading-relaxed">
+          <p className="text-base-400 text-sm leading-relaxed">
             I typically respond to messages within 24 hours. For urgent
             inquiries, reach out via the social channels above. I&apos;m always
             eager to discuss new projects, cybersecurity ideas, or anything tech
