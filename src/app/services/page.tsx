@@ -112,9 +112,6 @@ export default function ServicesPage() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Button href="/contact" variant="primary">Book a scoping call</Button>
-              <Button href="#services" variant="secondary">
-                View offerings
-              </Button>
             </div>
 
             <dl className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -134,16 +131,16 @@ export default function ServicesPage() {
           </div>
 
           {/* Proof / process card */}
-          <Card>
+          <Card >
             <div className="p-6 sm:p-8">
               <h2 className="text-lg font-bold">How I work</h2>
-              <ol className="mt-4 space-y-3 text-sm text-slate-700">
+              <ol className="mt-4 space-y-3 text-sm text-white">
                 <li className="flex gap-3">
                   <span className="mt-0.5 inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">
                     1
                   </span>
                   <div>
-                    <p className="font-semibold text-slate-900">Scope and constraints</p>
+                    <p className="font-semibold text-gray-400">Scope and constraints</p>
                     <p>Targets, rules of engagement, success criteria, and safe testing boundaries.</p>
                   </div>
                 </li>
@@ -152,7 +149,7 @@ export default function ServicesPage() {
                     2
                   </span>
                   <div>
-                    <p className="font-semibold text-slate-900">Execution and evidence</p>
+                    <p className="font-semibold text-gray-400">Execution and evidence</p>
                     <p>Validated findings only. No speculative “may be vulnerable” filler.</p>
                   </div>
                 </li>
@@ -161,15 +158,15 @@ export default function ServicesPage() {
                     3
                   </span>
                   <div>
-                    <p className="font-semibold text-slate-900">Remediation support</p>
+                    <p className="font-semibold text-gray-400">Remediation support</p>
                     <p>Fix guidance, implementation help if desired, and optional retest.</p>
                   </div>
                 </li>
               </ol>
 
               <div className="mt-6 rounded-2xl bg-slate-50 p-4">
-                <p className="text-sm font-semibold text-slate-900">Typical outputs</p>
-                <ul className="mt-2 list-disc pl-5 text-sm text-slate-700">
+                <p className="text-sm font-semibold text-white">Typical outputs</p>
+                <ul className="mt-2 list-disc pl-5 text-sm text-gray-400">
                   <li>Risk-ranked findings and clear reproduction steps</li>
                   <li>Remediation guidance that matches your stack</li>
                   <li>Optional code changes and hardening diffs</li>
@@ -184,7 +181,7 @@ export default function ServicesPage() {
         <div className="flex items-end justify-between gap-6">
           <div>
             <h2 className="text-2xl font-extrabold tracking-tight">Offerings</h2>
-            <p className="mt-2 max-w-2xl text-sm text-slate-700">
+            <p className="mt-2 max-w-2xl text-sm text-gray-400">
               Pick a focused engagement, or combine services for a complete security and delivery uplift.
             </p>
           </div>
@@ -208,19 +205,19 @@ export default function ServicesPage() {
                   </div>
                 </div>
 
-                <p className="mt-2 text-sm text-slate-700">{s.subtitle}</p>
+                <p className="mt-2 text-sm text-white">{s.subtitle}</p>
 
-                <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                <ul className="mt-4 space-y-2 text-sm text-gray-400">
                   {s.bullets.map((b) => (
                     <li key={b} className="flex gap-2">
-                      <span className="mt-1.5 h-2 w-2 flex-none rounded-full bg-slate-900" />
+                      <span className="mt-1.5 h-2 w-2 flex-none rounded-full bg-white" />
                       <span>{b}</span>
                     </li>
                   ))}
                 </ul>
 
                 <div className="mt-6 rounded-2xl bg-slate-50 p-4">
-                  <p className="text-sm font-semibold text-slate-900">Deliverables</p>
+                  <p className="text-sm font-semibold text-white">Deliverables</p>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {s.deliverables.map((d) => (
                       <Badge key={d}>{d}</Badge>
