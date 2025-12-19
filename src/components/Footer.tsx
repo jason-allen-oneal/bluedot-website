@@ -25,6 +25,7 @@ export default function Footer({
       title: "Company",
       links: [
         { text: "About", url: "/about" },
+        { text: "Projects", url: "/projects" },
         { text: "Blog", url: "/blog" },
         { text: "Contact", url: "/contact" }
       ],
