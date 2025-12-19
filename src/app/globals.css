@@ -7,18 +7,23 @@
 
 @custom-variant dark (&:is([data-theme="forest"] *));
 
+:root {
+  --bg-light: url("/background-light.png");
+  --bg-dark: url("/background-dark.png");
+}
+
 @layer base {
   body {
     @apply bg-fixed bg-cover bg-center bg-no-repeat;
-    background-image: url("/background-light.png");
+    background-image: var(--bg-light);
     transition: background-image 150ms ease-in-out;
   }
 
   html[data-theme="forest"] body {
-    background-image: url("/background-dark.png");
+    background-image: var(--bg-dark);
   }
 
   html[data-theme="garden"] body {
-    background-image: url("/background-light.png");
+    background-image: var(--bg-light);
   }
 }
