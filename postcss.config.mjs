@@ -10,10 +10,11 @@ const stripPropertyAtRule = () => ({
 stripPropertyAtRule.postcss = true;
 
 const config = {
-  plugins: {
-    '@tailwindcss/postcss': {},
+  // Use array form for custom plugin so Next/PostCSS don't expect a config object.
+  plugins: [
+    '@tailwindcss/postcss',
     // LightningCSS warns on @property (used by daisyUI radial progress). Strip it to silence build warnings.
-    stripPropertyAtRule,
-  },
+    stripPropertyAtRule(),
+  ],
 };
 export default config;
