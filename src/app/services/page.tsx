@@ -287,30 +287,30 @@ export default function ServicesPage() {
           		))}
         		</div>
 
-        		<div className="mt-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+        		<div className="mt-10 rounded-2xl border border-blue-700 p-6 shadow-sm sm:p-8">
           			<h3 className="text-lg font-bold">Engagement options</h3>
           			<div className="mt-4 grid gap-4 md:grid-cols-3">
-            			<div className="rounded-2xl bg-slate-50 p-5">
-              				<p className="text-sm font-semibold text-slate-900">
+            			<div className="rounded-2xl bg-slate-900 p-5">
+              				<p className="text-sm font-semibold text-white">
                 				Discovery Sprint
               				</p>
-              				<p className="mt-1 text-sm text-slate-700">
+              				<p className="mt-1 text-sm text-gray-400">
                 				Short, focused sprint to define scope, confirm assumptions, and
                 				map risk.
               				</p>
             			</div>
-            			<div className="rounded-2xl bg-slate-50 p-5">
-              				<p className="text-sm font-semibold text-slate-900">
+            			<div className="rounded-2xl bg-slate-900 p-5">
+              				<p className="text-sm font-semibold text-white">
                 				Fixed-Scope Project
               				</p>
-              				<p className="mt-1 text-sm text-slate-700">
+              				<p className="mt-1 text-sm text-gray-400">
                 				Clear targets and deliverables. Best for pentests and hardening
                 				packages.
               				</p>
             			</div>
-            			<div className="rounded-2xl bg-slate-50 p-5">
-              				<p className="text-sm font-semibold text-slate-900">Retainer</p>
-              				<p className="mt-1 text-sm text-slate-700">
+            			<div className="rounded-2xl bg-slate-0 p-5">
+              				<p className="text-sm font-semibold text-white">Retainer</p>
+              				<p className="mt-1 text-sm text-gray-400">
                 				Ongoing support for security fixes, tooling, and secure delivery
                 				improvements.
               				</p>
