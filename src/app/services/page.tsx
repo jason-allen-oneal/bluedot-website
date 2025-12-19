@@ -92,8 +92,7 @@ function Button({ children, href, variant = "primary" }: { children: any, href: 
 
 export default function ServicesPage() {
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
-      {/* Hero */}
+    <>
       <section className="mx-auto max-w-6xl px-6 pb-10 pt-16">
         <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
           <div>
@@ -182,7 +181,6 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Services */}
       <section id="services" className="mx-auto max-w-6xl px-6 py-12">
         <div className="flex items-end justify-between gap-6">
           <div>
@@ -274,7 +272,6 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* FAQ */}
       <section className="mx-auto max-w-6xl px-6 pb-16 pt-6">
         <h2 className="text-2xl font-extrabold tracking-tight">FAQ</h2>
         <div className="mt-6 grid gap-6 lg:grid-cols-2">
@@ -305,14 +302,6 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
-
-      <footer className="border-t border-slate-200 bg-white">
-        <div className="mx-auto max-w-6xl px-6 py-8 text-sm text-slate-600">
-          <p>
-            © {new Date().getFullYear()} BlueDot IT. Security-first engineering, pentesting, and automation.
-          </p>
-        </div>
-      </footer>
-    </main>
+    </>
   );
 }
