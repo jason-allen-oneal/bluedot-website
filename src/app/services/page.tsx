@@ -111,8 +111,8 @@ export default function ServicesPage() {
         		<div className="grid gap-8 lg:grid-cols-2 lg:items-center">
           			<div>
             			<div className="flex flex-wrap gap-2">
-              				<Badge>Security-first engineering</Badge>
-              				<Badge>Pentesting and tooling</Badge>
+              				<Badge variant="secondary">Security-first engineering</Badge>
+              				<Badge variant="secondary">Pentesting and tooling</Badge>
             			</div>
 
             			<h1 className="mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl">
@@ -139,7 +139,7 @@ export default function ServicesPage() {
             			</dl>
           			</div>
 
-          			<Card>
+          			<div>
             			<div className="p-6 sm:p-8">
               				<h2 className="text-lg font-bold">How I work</h2>
               				<ol className="mt-4 space-y-3 text-sm text-white">
@@ -199,7 +199,7 @@ export default function ServicesPage() {
                 				</ul>
               				</div>
             			</div>
-          			</Card>
+          			</div>
         		</div>
       		</section>
 
@@ -229,7 +229,7 @@ export default function ServicesPage() {
                   				<h3 className="text-lg font-bold">{s.title}</h3>
                   				<div className="flex flex-wrap gap-2">
                     			{s.deliverables.slice(0, 2).map((d) => (
-                      				<Badge key={d}>{d}</Badge>
+                      				<Badge variant="secondary" key={d}>{d}</Badge>
                     			))}
                   				</div>
                 			</div>
@@ -251,7 +251,7 @@ export default function ServicesPage() {
 								</p>
 								<div className="mt-2 flex flex-wrap gap-2">
 								{s.deliverables.map((d) => (
-									<Badge key={d}>{d}</Badge>
+									<Badge variant="secondary" key={d}>{d}</Badge>
 								))}
 								</div>
 							</div>
