@@ -32,8 +32,10 @@ export default function Footer({
     {
       title: "Social",
       links: [
-        { text: "Twitter", url: "#" },
-        { text: "Instagram", url: "#" },
+        { text: "Facebook", url: "https://www.facebook.com/chaoskreator" },
+        { text: "Tiktok", url: "https://www.tiktok.com/@7h3.r3v3n4n7" },
+        { text: "Github", url: "https://github.com/jason-allen-oneal" },
+        { text: "HuggingFace", url: "https://huggingface.co/jason-oneal"}
       ],
     },
   ],
