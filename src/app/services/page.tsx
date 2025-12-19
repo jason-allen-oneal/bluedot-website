@@ -97,7 +97,6 @@ export default function ServicesPage() {
         <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
           <div>
             <div className="flex flex-wrap gap-2">
-              <Badge>BlueDot IT</Badge>
               <Badge>Security-first engineering</Badge>
               <Badge>Pentesting and tooling</Badge>
             </div>
@@ -106,13 +105,13 @@ export default function ServicesPage() {
               Services that ship outcomes, not noise.
             </h1>
 
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-700">
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-gray-400">
               I help teams find and fix real security risk, harden delivery pipelines, and build automation that saves time.
               You get clear scope, clean deliverables, and work that stands up to scrutiny.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button href="/contact">Book a scoping call</Button>
+              <Button href="/contact" variant="primary">Book a scoping call</Button>
               <Button href="#services" variant="secondary">
                 View offerings
               </Button>
