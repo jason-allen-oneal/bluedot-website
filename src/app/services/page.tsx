@@ -1,5 +1,6 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useRouter } from 'next/navigation';
 import React from "react";
 
 const services = [
@@ -102,29 +103,13 @@ function Panel({ header, content }: { header: string; content: string }) {
   );
 }
 
-function Button({
-  children,
-  href,
-  variant = "primary",
-}: {
-  children: any;
-  href: string;
-  variant?: string;
-}) {
-  const base =
-    "inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2";
-  const styles =
-    variant === "primary"
-      ? "bg-slate-900 text-white hover:bg-slate-800"
-      : "border border-slate-300 bg-white text-slate-900 hover:bg-slate-50";
-  return (
-    <a className={`${base} ${styles}`} href={href}>
-      {children}
-    </a>
-  );
-}
-
 export default function ServicesPage() {
+	const router = useRouter();
+
+	function view(p: string){
+        router.push("/"+p);
+    }
+
 	return (
     	<>
     		<section className="mx-auto max-w-6xl px-6 pb-10 pt-16">
@@ -146,7 +131,7 @@ export default function ServicesPage() {
             			</p>
 
             			<div className="mt-8 flex flex-wrap gap-3">
-              				<Button href="/contact" variant="primary">
+              				<Button onClick={() => view('contact')} variant="default">
                 				Book a scoping call
               				</Button>
             			</div>
@@ -208,7 +193,7 @@ export default function ServicesPage() {
               				</ol>
 
 
-              				<div className="mt-6 rounded-2xl bg-slate-900 p-4">
+              				<div className="mt-6 rounded-2xl border-blue-700 bg-slate-900 p-4">
                 				<p className="text-sm font-semibold text-white">
                   					Typical outputs
                 				</p>
@@ -235,7 +220,7 @@ export default function ServicesPage() {
             			</p>
           			</div>
           			<div className="hidden sm:block">
-            			<Button href="/contact" variant="secondary">
+            			<Button onClick={() => view('contact')} variant="secondary">
               				Get a quote
             			</Button>
           			</div>
@@ -265,7 +250,7 @@ export default function ServicesPage() {
 							))}
 							</ul>
 
-							<div className="mt-6 rounded-2xl bg-slate-900 p-4">
+							<div className="mt-6 rounded-2xl p-4">
 								<p className="text-sm font-semibold text-white">
 									Deliverables
 								</p>
@@ -277,8 +262,8 @@ export default function ServicesPage() {
 							</div>
 
 							<div className="mt-6 flex flex-wrap gap-3">
-								<Button href="/contact">Request this service</Button>
-								<Button href="/projects" variant="secondary">
+								<Button onClick={() => view('contact')} variant="default">Request this service</Button>
+								<Button onClick={() => view('projects')} variant="secondary">
 									See related work
 								</Button>
 							</div>
@@ -287,7 +272,7 @@ export default function ServicesPage() {
           		))}
         		</div>
 
-        		<div className="mt-10 rounded-2xl border border-blue-700 p-6 shadow-sm sm:p-8">
+        		<div className="mt-10 rounded-2xl border border-white p-6 shadow-sm sm:p-8">
           			<h3 className="text-lg font-bold">Engagement options</h3>
           			<div className="mt-4 grid gap-4 md:grid-cols-3">
             			<div className="rounded-2xl bg-slate-900 p-5">
@@ -308,7 +293,7 @@ export default function ServicesPage() {
                 				packages.
               				</p>
             			</div>
-            			<div className="rounded-2xl bg-slate-0 p-5">
+            			<div className="rounded-2xl bg-slate-900 p-5">
               				<p className="text-sm font-semibold text-white">Retainer</p>
               				<p className="mt-1 text-sm text-gray-400">
                 				Ongoing support for security fixes, tooling, and secure delivery
@@ -322,7 +307,7 @@ export default function ServicesPage() {
               				If you want a number, you need a scope. Book a call and I will
               				give you a real quote.
             			</p>
-            			<Button href="/contact">Book a scoping call</Button>
+            			<Button onClick={() => view('contact')}>Book a scoping call</Button>
           			</div>
         		</div>
       		</section>
@@ -354,10 +339,10 @@ export default function ServicesPage() {
             				</p>
         				</div>
         				<div className="flex flex-wrap gap-3 md:justify-end">
-              				<Button href="/contact" variant="secondary">
+              				<Button onClick={() => view('contact')} variant="secondary">
                 				Contact
               				</Button>
-              				<Button href="/resume">View resume</Button>
+              				<Button onClick={() => view('resume')}>View resume</Button>
             			</div>
         			</div>
     			</div>
