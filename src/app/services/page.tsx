@@ -111,7 +111,14 @@ export default function ServicesPage() {
     }
 
 	return (
-    	<>
+    	<div className="mx-auto max-w-5xl px-6 py-16 space-y-16">
+     		{/* Header */}
+      		<div className="text-center space-y-4">
+        		<h1 className="text-4xl md:text-5xl font-bold text-white">Services</h1>
+        		<p className="text-lg text-gray-400 max-w-2xl mx-auto">
+          			Services that ship outcomes, not noise.
+        		</p>
+      		</div>
     		<section className="mx-auto max-w-6xl px-6 pb-10 pt-16">
         		<div className="grid gap-8 lg:grid-cols-2 lg:items-center">
           			<div>
@@ -119,10 +126,6 @@ export default function ServicesPage() {
               				<Badge>Security-first engineering</Badge>
               				<Badge>Pentesting and tooling</Badge>
             			</div>
-
-            			<h1 className="mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl">
-              				Services that ship outcomes, not noise.
-            			</h1>
 
             			<p className="mt-4 max-w-xl text-base leading-relaxed text-gray-400">
               				I help teams find and fix real security risk, harden delivery
@@ -144,7 +147,7 @@ export default function ServicesPage() {
             			</dl>
           			</div>
 
-          			<Card>
+          			<div>
             			<div className="p-6 sm:p-8">
               				<h2 className="text-lg font-bold">How I work</h2>
               				<ol className="mt-4 space-y-3 text-sm text-white">
@@ -204,7 +207,7 @@ export default function ServicesPage() {
                 				</ul>
               				</div>
             			</div>
-          			</Card>
+          			</div>
         		</div>
       		</section>
 
@@ -347,6 +350,6 @@ export default function ServicesPage() {
         			</div>
     			</div>
   			</section>
-    	</>
+    	</div>
   	);
 }
