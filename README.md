@@ -1,6 +1,4 @@
-# BluEdot — Personal Portfolio Website
-
-Repo: [https://github.com/jason-allen-oneal/bluedot-website](https://github.com/jason-allen-oneal/bluedot-website)
+# Bluedot — Personal Portfolio Website
 
 A modern personal portfolio website built to showcase cybersecurity expertise, full‑stack development projects, writing, and professional experience. The site focuses on accessibility, SEO, performance, and a clean, responsive presentation of projects and posts.
 
@@ -21,12 +19,13 @@ Table of contents
 - Suggested improvements
 - License
 
-About
------;
+## About
+
 Bluedot is a professional portfolio and personal site that highlights technical work, security knowledge, and creative projects. It provides a blog platform for technical writing, a projects portfolio, a downloadable resume, and an admin panel for content management.
 
-Features
---------;
+
+## Features
+
 Features include:
 
 - Clean, responsive website layout optimized for desktop and mobile
@@ -38,8 +37,9 @@ Features include:
 - PWA manifest and basic offline support
 - TypeScript-first codebase with linting and tooling to maintain quality
 
-Tech stack
-----------;
+
+## Tech stack
+
 The framework:
 
 - Next.js 15 (App Router)
@@ -53,14 +53,16 @@ The framework:
 - Vercel for hosted deployments (supported)
 - PM2 for self-hosted process management
 
-Demo
-------------------;
+
+## Demo
+
 See it live:
 
 - [https://bluedot.it.com](https://bluedot.it.com)
 
-Quick start — local development
--------------------------------;
+
+## Quick start — local development
+
 Requirements
 
 - Node.js 18+
@@ -108,8 +110,8 @@ Requirements
 
 Open [http://localhost:3000](http://localhost:3000)
 
-Environment variables
----------------------;
+## Environment variables
+
 Create `.env.local` with the following values (example values shown — do not commit secrets):
 
 ```text
@@ -124,8 +126,8 @@ ADMIN_PASS="secure-password"
 
 If `.env.example` is missing, add one with sanitized keys to help contributors.
 
-Database & Prisma
------------------;
+
+## Database & Prisma
 
 - Prisma schema lives in `prisma/` (ensure `schema.prisma` is committed).
 - Typical workflow:
@@ -134,15 +136,14 @@ Database & Prisma
   - `npx prisma db seed` (if seed script exists)
 - Confirm models for posts, projects, users, and comments are present and documented.
 
-Admin panel
------------;
+
+## Admin panel
 
 - Admin UI available at `/admin`
 - Admin/author accounts managed via NextAuth or environment-backed default admin credentials (ADMIN_USER / ADMIN_PASS)
 - Admin features: create/edit blog posts and projects, moderate comments, manage metadata
 
-Available scripts
------------------;
+## Available scripts
 
 - `npm run dev` — start dev server
 - `npm run build` — build for production
@@ -153,8 +154,8 @@ Available scripts
   - `npx prisma migrate`
   - `npx prisma generate`
 
-Deployment
-----------;
+## Deployment
+
 Vercel (recommended)
 
 - Connect the repo to Vercel and set environment variables in project settings.
@@ -180,8 +181,8 @@ Self-host (PM2)
    npx prisma migrate deploy
    ```
 
-Project structure
------------------;
+## Project structure
+
 Top-level (simplified)
 
 ```text
@@ -198,30 +199,19 @@ bluedot-website/
 └── README.md
 ```
 
-Contributing & tests
---------------------;
+## Contributing & tests
 
 - Add a `CONTRIBUTING.md` to document the development workflow, code style, and PR guidelines.
 - Add Github Actions for linting and build checks (CI).
 - Consider adding unit/integration tests for critical components and API routes.
 
-Suggested improvements
-----------------------;
 
-- Add `.env.example` with required variables (non-sensitive).
-- Add screenshots/GIFs to README and the `public/` folder.
-- Add `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and a simple issue/PR template.
-- Document admin usage and any RBAC or manual admin creation steps.
-- Add automated CI (GitHub Actions) that runs lint and build on PRs.
-- Provide a short developer onboarding doc (how to run seed data, create admin accounts, etc.).
-- Add accessibility checks and Lighthouse CI for performance monitoring.
+## License
 
-License
--------;
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-Contact
--------;
+
+## Contact
 
 - Site: [https://bluedot.it.com](https://bluedot.it.com)
 - GitHub: [https://github.com/jason-allen-oneal](https://github.com/jason-allen-oneal)
