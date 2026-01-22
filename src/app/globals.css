@@ -1,29 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: garden --default, forest --prefersdark;
+  themes: bluedot-dawn --default, bluedot-aurora --prefersdark;
 }
 @plugin "tailwindcss-animate";
 @import "tw-animate-css";
+@import "../styles/design-tokens.css";
 
-@custom-variant dark (&:is([data-theme="forest"] *));
+@custom-variant dark (&:is([data-theme="bluedot-aurora"] *));
 
 :root {
-  --bg-light: url("/background-light.png");
-  --bg-dark: url("/background-dark.png");
+  --bg-light:
+    radial-gradient(circle at 12% 18%, rgba(15,159,225,0.14), transparent 28%),
+    radial-gradient(circle at 82% 8%, rgba(240,164,41,0.14), transparent 26%),
+    url("/background-light.png"),
+    linear-gradient(145deg, #f8fbff 0%, #e6f0ff 32%, #e6f7ff 100%);
+
+  --bg-dark:
+    radial-gradient(circle at 12% 18%, rgba(77,216,255,0.18), transparent 26%),
+    radial-gradient(circle at 82% 8%, rgba(243,181,69,0.16), transparent 24%),
+    url("/background-dark.png"),
+    linear-gradient(160deg, #050914 0%, #0a1628 52%, #06101f 100%);
+
+  --card-surface: linear-gradient(150deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  --card-stroke: rgba(255,255,255,0.12);
+  --card-shadow: 0 24px 80px rgba(5, 9, 20, 0.55);
+}
+
+html[data-theme="bluedot-dawn"] {
+  color-scheme: light;
+  --card-surface: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.78));
+  --card-stroke: rgba(6, 20, 32, 0.08);
+  --card-shadow: 0 22px 60px rgba(5, 16, 32, 0.16);
+}
+
+html[data-theme="bluedot-aurora"] {
+  color-scheme: dark;
 }
 
 @layer base {
-  body {
-    @apply bg-fixed bg-cover bg-center bg-no-repeat;
-    background-image: var(--bg-light);
-    transition: background-image 150ms ease-in-out;
+  * {
+    @apply antialiased;
   }
 
-  html[data-theme="forest"] body {
+  body {
+    @apply bg-fixed bg-cover bg-no-repeat text-base-content;
+    background-image: var(--bg-dark);
+    color: #e8f2ff;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 180px 180px, 180px 180px;
+    mask-image: radial-gradient(circle at 50% 40%, rgba(0,0,0,0.6), transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  html[data-theme="bluedot-dawn"] body {
+    background-image: var(--bg-light);
+    color: #0b172b;
+  }
+
+  html[data-theme="bluedot-aurora"] body {
     background-image: var(--bg-dark);
   }
 
-  html[data-theme="garden"] body {
-    background-image: var(--bg-light);
+  a {
+    @apply transition-colors;
+  }
+}
+
+@layer components {
+  .page-shell {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 2vw, 2.6rem) clamp(1.25rem, 3vw, 3rem);
+    position: relative;
+    z-index: 1;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: linear-gradient(120deg, rgba(77,216,255,0.16), rgba(243,181,69,0.14));
+    border: 1px solid rgba(255,255,255,0.16);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+  }
+
+  .grid-shell {
+    position: relative;
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    overflow: hidden;
+  }
+  .grid-shell::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    background:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 120px 120px, 120px 120px;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .beam {
+    position: absolute;
+    inset: auto;
+    width: 36%;
+    height: 160%;
+    filter: blur(68px);
+    opacity: 0.55;
+    transform: rotate(8deg);
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 35%, rgba(77,216,255,0.32), transparent 45%);
+  }
+
+  .heading-accent {
+    background: linear-gradient(120deg, #4dd8ff, #f3b545 45%, #8ef6c5 90%);
+    -webkit-background-clip: text;
+    color: transparent;
   }
 }

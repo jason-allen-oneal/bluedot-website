@@ -9,7 +9,7 @@ interface ProseProps {
 
 export function Prose({ children, className = '' }: ProseProps) {
   return (
-    <div className={`prose max-w-none prose-headings:text-secondary prose-p:text-secondary-content prose-strong:text-secondary prose-a:text-primary prose-li:text-secondary-content ${className}`}>
+    <div className={`prose max-w-none prose-headings:text-secondary prose-p:text-base-content/80 prose-strong:text-secondary prose-a:text-primary prose-li:text-base-content/80 ${className}`}>
       {children}
     </div>
   )

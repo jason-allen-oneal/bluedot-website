@@ -29,7 +29,7 @@ export default function Badge({
   ...props
 }: BadgeProps) {
   const classes = [
-    "badge",
+    "pill",
     `badge-${variant}`,
     size !== "md" ? `badge-${size}` : "", // md is effectively default
     outline ? "badge-outline" : "",

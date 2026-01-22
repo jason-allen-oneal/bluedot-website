@@ -53,8 +53,8 @@ export default function LoginPage() {
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-secondary/40 via-base-300/60 to-base-200/80" />
-      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(77,216,255,0.18),transparent_32%),radial-gradient(circle_at_80%_0%,rgba(243,181,69,0.16),transparent_30%),linear-gradient(160deg,#050914_0%,#0a1628_60%,#06101f_100%)]" />
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/30 rounded-full blur-[120px]" />
 
       {/* Logo */}
       <div className="absolute top-8 left-1/2 -translate-x-1/2 flex flex-col items-center">
@@ -66,17 +66,17 @@ export default function LoginPage() {
           className="opacity-90"
           priority
         />
-        <h1 className="text-2xl font-bold text-secondary mt-2">Bluedot Admin</h1>
+        <h1 className="text-2xl font-bold heading-accent mt-2">Bluedot Admin</h1>
       </div>
 
       {/* Login Card */}
-      <Card className="relative w-full max-w-md shadow-xl">
+      <Card className="relative w-full max-w-md shadow-xl border-white/10 bg-white/5">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
             <Lock className="h-7 w-7 text-primary" />
           </div>
-          <p className="text-2xl text-secondary">Sign In</p>
-          <div className="text-base-400">
+          <p className="text-2xl text-base-content">Sign In</p>
+          <div className="text-base-content/70">
             Access your admin dashboard securely
           </div>
         </CardHeader>
@@ -93,7 +93,7 @@ export default function LoginPage() {
                 value={form.username}
                 onChange={handleChange}
                 placeholder="Enter your username"
-                className="bg-secondary/20 border-accent/60 text-secondary mt-1"
+                className="bg-white/5 border-white/15 text-base-content mt-1"
               />
             </div>
 
@@ -107,7 +107,7 @@ export default function LoginPage() {
                 value={form.password}
                 onChange={handleChange}
                 placeholder="Enter your password"
-                className="bg-secondary/20 border-accent/60 text-secondary mt-1"
+                className="bg-white/5 border-white/15 text-base-content mt-1"
               />
             </div>
 
@@ -135,7 +135,7 @@ export default function LoginPage() {
       </Card>
 
       {/* Subtle Footer */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center text-xs text-base-400">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center text-xs text-base-content/70">
         &copy; {new Date().getFullYear()} Bluedot Systems. All rights reserved.
       </div>
     </div>

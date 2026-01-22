@@ -20,7 +20,7 @@ export default function RepoCard({ repo }: { repo: Project }) {
 
   return (
     <Card
-      className="group rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/80 hover:shadow-lg hover:shadow-accent/20"
+      className="group rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_60px_rgba(5,12,26,0.45)]"
     >
       <CardContent className="p-0">
         {/* Header */}
@@ -28,7 +28,7 @@ export default function RepoCard({ repo }: { repo: Project }) {
           <div className="space-y-1">
             <Link
               href={repo.url}
-              className="text-xl font-bold text-secondary group-hover:text-accent transition-colors duration-200"
+              className="text-xl font-bold text-base-content group-hover:text-primary transition-colors duration-200"
             >
               {repo.name}
             </Link>
@@ -49,7 +49,7 @@ export default function RepoCard({ repo }: { repo: Project }) {
 
         {/* Description */}
         {repo.description && (
-          <p className="text-base-content mb-4 leading-relaxed line-clamp-3">
+          <p className="text-base-content/80 mb-4 leading-relaxed line-clamp-3">
             {repo.description}
           </p>
         )}

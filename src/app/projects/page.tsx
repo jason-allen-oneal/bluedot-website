@@ -5,6 +5,7 @@ import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import type { Project } from "@/types/project";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
+import Reveal from "@/components/Reveal";
 
 export const revalidate = 3600;
 
@@ -60,61 +61,67 @@ export default async function Projects() {
     { label: "Tech / Pipelines", value: totalLangs },
   ]
 
-  const hfCount = hfItems.length
-
   return (
-    <div className="mx-auto max-w-7xl px-6 py-16 space-y-16">
-      {/* Header */}
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-accent">My Projects</h1>
-        <p className="text-lg text-base-400 max-w-2xl mx-auto">
-          A collection of open-source projects, tools, and experiments I&apos;ve built
-        </p>
-      </div>
-
-      {/* Stats Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {stats.map((stat) => (
-          <Card
-            key={stat.label}
-            className="text-center"
-          >
-            <CardContent className="pt-6 pb-5">
-              <div className="text-3xl font-bold text-primary mb-2">
-                {stat.value}
-              </div>
-              <div className="text-base-content text-sm uppercase tracking-wide">
-                {stat.label}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Projects Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((repo) => (
-          <RepoCard key={repo.id} repo={repo} />
-        ))}
-      </div>
-
-      {/* Call to Action */}
-      <Card className="text-center">
-        <CardHeader>
-          <p className="text-2xl font-bold text-accent">
-            Want to collaborate?
+    <div className="page-shell space-y-14">
+      <Reveal>
+        <div className="text-center space-y-4">
+          <span className="kicker">Bluedot builds</span>
+          <h1 className="heading-accent text-4xl md:text-5xl font-bold">Projects, tools, and experiments.</h1>
+          <p className="text-base-content/80 max-w-3xl mx-auto">
+            Security work, product builds, and creative explorations across GitHub and Hugging Face.
           </p>
-        </CardHeader>
-        <CardContent>
-          <p className="text-base-content mb-6 max-w-2xl mx-auto">
-            I&apos;m always interested in new projects and collaborations.
-            Feel free to reach out if you&apos;d like to work together!
-          </p>
-          <Link href="/contact">
-            <Button>Get in Touch</Button>
-          </Link>
-        </CardContent>
-      </Card>
+        </div>
+      </Reveal>
+
+      <Reveal>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {stats.map((stat) => (
+            <Reveal key={stat.label} className="h-full">
+              <Card
+                className="text-center h-full"
+              >
+                <CardContent className="pt-6 pb-5 space-y-2">
+                  <div className="text-3xl font-bold text-primary">
+                    {stat.value}
+                  </div>
+                  <div className="text-base-content/70 text-xs uppercase tracking-[0.2em]">
+                    {stat.label}
+                  </div>
+                </CardContent>
+              </Card>
+            </Reveal>
+          ))}
+        </div>
+      </Reveal>
+
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projects.map((repo) => (
+            <Reveal key={repo.id} className="h-full">
+              <RepoCard repo={repo} />
+            </Reveal>
+          ))}
+        </div>
+      
+
+      <Reveal>
+        <Card className="text-center">
+          <CardHeader>
+            <p className="text-2xl font-bold text-base-content">
+              Want to collaborate?
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-base-content/80 max-w-2xl mx-auto">
+              I&apos;m always interested in new projects and collaborations.
+              Feel free to reach out if you&apos;d like to work together!
+            </p>
+            <Link href="/contact">
+              <Button>Get in Touch</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </Reveal>
     </div>
   )
 }

@@ -78,14 +78,14 @@ export default function CommentsPage() {
   }
 
   return (
-    <div className="container py-12 space-y-10">
+    <div className="page-shell py-12 space-y-10">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-accent">
             Comments Management
           </h1>
-          <p className="text-base-400">
+          <p className="text-base-content/70">
             Review, approve, or delete user comments.
           </p>
         </div>
@@ -101,10 +101,10 @@ export default function CommentsPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-3">
-            <MessageSquare className="h-5 w-5 text-base-400" />
+            <MessageSquare className="h-5 w-5 text-base-content/70" />
             <div>
               <span className="text-secondary">All Comments</span>
-              <p className="text-base-400">
+              <p className="text-base-content/70">
                 {comments.length
                   ? `${comments.length} total • ${
                       comments.filter((c) => !c.approved).length
@@ -118,15 +118,15 @@ export default function CommentsPage() {
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4" />
-              <p className="text-base-400">Loading comments...</p>
+              <p className="text-base-content/70">Loading comments...</p>
             </div>
           ) : comments.length === 0 ? (
             <div className="text-center py-16">
-              <MessageSquare className="mx-auto h-12 w-12 text-base-400 mb-4" />
+              <MessageSquare className="mx-auto h-12 w-12 text-base-content/70 mb-4" />
               <h3 className="text-lg font-semibold text-secondary mb-2">
                 No comments yet
               </h3>
-              <p className="text-base-400">
+              <p className="text-base-content/70">
                 Comments will appear here for review.
               </p>
             </div>
@@ -138,12 +138,12 @@ export default function CommentsPage() {
                   className="p-6 hover:bg-secondary/30 transition-colors flex flex-col gap-3"
                 >
                   <div className="flex flex-wrap items-center gap-3">
-                    <User className="h-4 w-4 text-base-400" />
+                    <User className="h-4 w-4 text-base-content/70" />
                     <span className="font-medium text-secondary">{c.author}</span>
-                    <span className="flex items-center gap-1 text-sm text-base-400">
+                    <span className="flex items-center gap-1 text-sm text-base-content/70">
                       <Mail className="h-3 w-3" /> {c.email}
                     </span>
-                    <span className="flex items-center gap-1 text-sm text-base-400">
+                    <span className="flex items-center gap-1 text-sm text-base-content/70">
                       <Calendar className="h-3 w-3" />{" "}
                       {new Date(c.createdAt).toLocaleDateString()}
                     </span>
@@ -157,8 +157,8 @@ export default function CommentsPage() {
                       </Badge>
                     )}
                   </div>
-                  <p className="text-secondary-content leading-relaxed">{c.content}</p>
-                  <p className="text-sm text-base-400">
+                  <p className="text-base-content/80 leading-relaxed">{c.content}</p>
+                  <p className="text-sm text-base-content/70">
                     On post: <span className="font-medium">{c.post.title}</span>
                   </p>
                   <div className="flex gap-2 justify-end">

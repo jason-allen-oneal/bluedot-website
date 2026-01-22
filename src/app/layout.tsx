@@ -5,8 +5,6 @@ import Footer from '@/components/Footer'
 import { Metadata } from 'next'
 import Providers from '@/components/Providers'
 import { GoogleAnalytics } from '@next/third-parties/google'
-import bgLight from "../../public/background-light.png"
-import bgDark from "../../public/background-dark.png"
 
 
 export const metadata: Metadata = {
@@ -17,13 +15,8 @@ export const metadata: Metadata = {
 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-    const backgroundVars = {
-        "--bg-light": `url(${bgLight.src})`,
-        "--bg-dark": `url(${bgDark.src})`,
-    } as React.CSSProperties
-
     return (
-            <html lang="en" data-theme="forest" suppressHydrationWarning style={backgroundVars}>
+            <html lang="en" data-theme="bluedot-aurora" suppressHydrationWarning>
                 <body className="min-h-dvh flex flex-col">
                 <Providers>
                     <Header />

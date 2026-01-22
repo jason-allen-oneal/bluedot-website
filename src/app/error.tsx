@@ -15,7 +15,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="fixed inset-0 w-full h-full select-none overflow-hidden text-secondary-content">
+    <div className="fixed inset-0 w-full h-full select-none overflow-hidden text-base-content/80">
       {/* Clean gradient background matching desktop */}
       <div className="absolute inset-0 bg-gradient-to-br from-secondary/40 via-base-300/80 to-base-200/90" />
       
@@ -28,7 +28,7 @@ export default function Error({
           <div className="mb-6">
             <div className="text-6xl mb-4">😵</div>
             <h1 className="text-2xl font-bold mb-2 text-accent">Something went wrong!</h1>
-            <p className="text-base-400 mb-6">
+            <p className="text-base-content/70 mb-6">
               An unexpected error occurred. Please try again or contact support if the problem persists.
             </p>
           </div>
@@ -50,7 +50,7 @@ export default function Error({
           
           {process.env.NODE_ENV === 'development' && (
             <details className="mt-6 text-left">
-              <summary className="cursor-pointer text-sm text-base-400 hover:text-secondary">
+              <summary className="cursor-pointer text-sm text-base-content/70 hover:text-secondary">
                 Error details (development only)
               </summary>
               <pre className="mt-2 p-3 bg-secondary/60 border border-accent/50 rounded text-xs overflow-auto text-secondary">

@@ -117,11 +117,11 @@ export default function EditPostPage() {
   };
 
   return (
-    <div className="container py-12 space-y-10">
+    <div className="page-shell py-12 space-y-10">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-accent">Edit Post</h1>
-          <p className="text-base-400">Update and manage your blog post.</p>
+          <p className="text-base-content/70">Update and manage your blog post.</p>
         </div>
         <Button
           onClick={() => router.push("/admin")}
@@ -134,10 +134,10 @@ export default function EditPostPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-3">
-            <FileText className="h-5 w-5 text-base-400" />
+            <FileText className="h-5 w-5 text-base-content/70" />
             <div>
               <span className="text-secondary">Post Details</span>
-              <p className="text-base-400">Edit the fields and save your changes.</p>
+              <p className="text-base-content/70">Edit the fields and save your changes.</p>
             </div>
           </div>
         </CardHeader>

@@ -51,7 +51,7 @@ export function DeletePostModal({ postId, title, onDeleted, onClose }: DeletePos
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-lg font-semibold mb-2">Confirm Deletion</h2>
-        <p className="text-base-400 mb-6">
+        <p className="text-base-content/70 mb-6">
           Are you sure you want to permanently delete <span className="font-bold">{title}</span>?
         </p>
         <div className="flex justify-end gap-3">

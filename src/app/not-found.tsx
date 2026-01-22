@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="fixed inset-0 w-full h-full select-none overflow-hidden text-secondary-content">
+    <div className="fixed inset-0 w-full h-full select-none overflow-hidden text-base-content/80">
       {/* Clean gradient background matching desktop */}
       <div className="absolute inset-0 bg-gradient-to-br from-secondary/40 via-base-300/80 to-base-200/90" />
       
@@ -25,7 +25,7 @@ export default function NotFound() {
           <div className="mb-6">
             <div className="text-6xl mb-4">🔍</div>
             <h1 className="text-2xl font-bold mb-2 text-accent">Page not found</h1>
-            <p className="text-base-400 mb-6">
+            <p className="text-base-content/70 mb-6">
               The page you&rsquo;re looking for doesn&rsquo;t exist or has been moved.
             </p>
           </div>

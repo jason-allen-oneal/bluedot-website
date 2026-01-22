@@ -1,11 +1,11 @@
 
 export default async function Privacy() {
     return (
-        <div className="mx-auto max-w-7xl px-6 py-16">
+        <div className="page-shell">
             <div className="max-w-4xl mx-auto">
         <header className="mb-8">
-          <h1 className="text-3xl font-bold mb-4 text-accent">Privacy Policy</h1>
-          <p className="text-base-400">
+          <h1 className="text-3xl font-bold mb-4 heading-accent">Privacy Policy</h1>
+          <p className="text-base-content/70">
             Last updated: {new Date().toLocaleDateString('en-US', { 
               year: 'numeric', 
               month: 'long', 
@@ -17,10 +17,10 @@ export default async function Privacy() {
         <div className="space-y-8">
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-secondary">Introduction</h2>
-            <p className="mb-4 text-secondary-content leading-relaxed">
+            <p className="mb-4 text-base-content/80 leading-relaxed">
               BlueDot (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website bluedot.it.com (the &ldquo;Service&rdquo;).
             </p>
-            <p className="text-secondary-content leading-relaxed">
+            <p className="text-base-content/80 leading-relaxed">
               By using our Service, you agree to the collection and use of information in accordance with this policy.
             </p>
           </section>
@@ -29,10 +29,10 @@ export default async function Privacy() {
             <h2 className="text-2xl font-semibold mb-4 text-secondary">Information We Collect</h2>
             
             <h3 className="text-xl font-medium mb-3 text-primary">Personal Information</h3>
-            <p className="mb-4 text-secondary-content leading-relaxed">
+            <p className="mb-4 text-base-content/80 leading-relaxed">
               When you interact with our Service, we may collect personal information that you voluntarily provide, including:
             </p>
-            <ul className="list-disc pl-6 mb-6 space-y-2 text-secondary-content">
+            <ul className="list-disc pl-6 mb-6 space-y-2 text-base-content/80">
               <li>Name and email address (when leaving comments)</li>
               <li>Authentication information (when accessing admin features)</li>
               <li>Communication preferences</li>
@@ -40,10 +40,10 @@ export default async function Privacy() {
             </ul>
 
             <h3 className="text-xl font-medium mb-3 text-primary">Automatically Collected Information</h3>
-            <p className="mb-4 text-secondary-content leading-relaxed">
+            <p className="mb-4 text-base-content/80 leading-relaxed">
               We automatically collect certain information when you visit our Service:
             </p>
-            <ul className="list-disc pl-6 mb-6 space-y-2 text-secondary-content">
+            <ul className="list-disc pl-6 mb-6 space-y-2 text-base-content/80">
               <li>IP address and device information</li>
               <li>Browser type and version</li>
               <li>Operating system</li>
@@ -55,8 +55,8 @@ export default async function Privacy() {
 
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-secondary">How We Use Your Information</h2>
-            <p className="mb-4 text-secondary-content leading-relaxed">We use the collected information for various purposes:</p>
-            <ul className="list-disc pl-6 mb-6 space-y-2 text-secondary-content">
+            <p className="mb-4 text-base-content/80 leading-relaxed">We use the collected information for various purposes:</p>
+            <ul className="list-disc pl-6 mb-6 space-y-2 text-base-content/80">
               <li>To provide and maintain our Service</li>
               <li>To notify you about changes to our Service</li>
               <li>To allow you to participate in interactive features</li>
@@ -70,10 +70,10 @@ export default async function Privacy() {
 
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-secondary">Information Sharing and Disclosure</h2>
-            <p className="mb-4 text-secondary-content leading-relaxed">
+            <p className="mb-4 text-base-content/80 leading-relaxed">
               We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except in the following circumstances:
             </p>
-            <ul className="list-disc pl-6 mb-6 space-y-2 text-secondary-content">
+            <ul className="list-disc pl-6 mb-6 space-y-2 text-base-content/80">
               <li><strong>Service Providers:</strong> We may share information with trusted third-party service providers who assist us in operating our website and providing services</li>
               <li><strong>Legal Requirements:</strong> We may disclose information if required by law or in response to valid legal requests</li>
               <li><strong>Protection of Rights:</strong> We may disclose information to protect our rights, property, or safety, or that of our users</li>
@@ -83,22 +83,22 @@ export default async function Privacy() {
 
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-secondary">Data Security</h2>
-            <p className="mb-4 text-secondary-content leading-relaxed">
+            <p className="mb-4 text-base-content/80 leading-relaxed">
               We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet or electronic storage is 100% secure.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-secondary">Cookies and Tracking Technologies</h2>
-            <p className="mb-4 text-secondary-content leading-relaxed">
+            <p className="mb-4 text-base-content/80 leading-relaxed">
               We use cookies and similar tracking technologies to track activity on our Service and hold certain information. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-secondary">Your Rights</h2>
-            <p className="mb-4 text-secondary-content leading-relaxed">Depending on your location, you may have certain rights regarding your personal information:</p>
-            <ul className="list-disc pl-6 mb-6 space-y-2 text-secondary-content">
+            <p className="mb-4 text-base-content/80 leading-relaxed">Depending on your location, you may have certain rights regarding your personal information:</p>
+            <ul className="list-disc pl-6 mb-6 space-y-2 text-base-content/80">
               <li>The right to access and receive a copy of your personal information</li>
               <li>The right to rectify or update your personal information</li>
               <li>The right to delete your personal information</li>
@@ -110,24 +110,24 @@ export default async function Privacy() {
 
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-secondary">Children&rsquo;s Privacy</h2>
-            <p className="mb-4 text-secondary-content leading-relaxed">
+            <p className="mb-4 text-base-content/80 leading-relaxed">
               Our Service does not address anyone under the age of 13. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact us.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-secondary">Changes to This Privacy Policy</h2>
-            <p className="mb-4 text-secondary-content leading-relaxed">
+            <p className="mb-4 text-base-content/80 leading-relaxed">
               We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the &ldquo;Last updated&rdquo; date.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-secondary">Contact Us</h2>
-            <p className="mb-4 text-secondary-content leading-relaxed">
+            <p className="mb-4 text-base-content/80 leading-relaxed">
               If you have any questions about this Privacy Policy, please contact us:
             </p>
-            <ul className="list-none space-y-2 text-secondary-content">
+            <ul className="list-none space-y-2 text-base-content/80">
               <li>Email: <a href="mailto:admin@bluedot.it.com" className="text-primary hover:underline">admin@bluedot.it.com</a></li>
               <li>Website: <a href="https://bluedot.it.com" className="text-primary hover:underline">bluedot.it.com</a></li>
             </ul>

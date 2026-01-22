@@ -35,45 +35,46 @@ export default async function PostPage({
   })
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16 space-y-12">
-      <Card className="p-8">
-        <CardHeader>
-          <h1 className="text-3xl font-bold text-secondary">{post.title}</h1>
-          <p className="text-sm text-neutral-content">
-            {new Date(post.createdAt).toLocaleDateString()}
-          </p>
-        </CardHeader>
-        <CardContent className="prose max-w-none prose-headings:text-secondary prose-p:text-secondary-content prose-strong:text-secondary prose-code:text-primary">
-          <MDXContent source={mdxSource} />
-        </CardContent>
-      </Card>
+    <div className="page-shell">
+      <div className="mx-auto max-w-3xl space-y-12 py-12">
+        <Card className="p-8">
+          <CardHeader>
+            <h1 className="text-3xl font-bold text-base-content">{post.title}</h1>
+            <p className="text-sm text-base-content/70">
+              {new Date(post.createdAt).toLocaleDateString()}
+            </p>
+          </CardHeader>
+          <CardContent className="prose max-w-none prose-headings:text-base-content prose-p:text-base-content/85 prose-strong:text-primary prose-code:text-primary">
+            <MDXContent source={mdxSource} />
+          </CardContent>
+        </Card>
 
-      {/* Comments */}
-      <Card className="p-8">
-        <CardHeader>
-          <h2 className="text-xl font-semibold text-secondary">Comments</h2>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <CommentForm postId={post.id} />
-          <Separator className="bg-accent/40" />
-          <ul className="space-y-4">
-            {comments.map((comment: any) => (
-              <li
-                key={comment.id}
-                className="rounded-xl border border-accent/50 p-4"
-              >
-                <div className="text-sm text-base-400">
-                  {comment.author} •{" "}
-                  {new Date(comment.createdAt).toLocaleString()}
-                </div>
-                <p className="mt-1 text-secondary-content whitespace-pre-wrap">
-                  {comment.content}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
+        <Card className="p-8">
+          <CardHeader>
+            <h2 className="text-xl font-semibold text-base-content">Comments</h2>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <CommentForm postId={post.id} />
+            <Separator className="bg-white/10" />
+            <ul className="space-y-4">
+              {comments.map((comment: any) => (
+                <li
+                  key={comment.id}
+                  className="rounded-xl border border-white/10 p-4"
+                >
+                  <div className="text-sm text-base-content/70">
+                    {comment.author} •{" "}
+                    {new Date(comment.createdAt).toLocaleString()}
+                  </div>
+                  <p className="mt-1 text-base-content/85 whitespace-pre-wrap">
+                    {comment.content}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

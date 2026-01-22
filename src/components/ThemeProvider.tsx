@@ -10,8 +10,8 @@ export function ThemeProvider({
   return (
     <NextThemesProvider
       attribute="data-theme"
-      value={{ light: "garden", dark: "forest" }}
-      themes={["garden", "forest"]}
+      value={{ light: "bluedot-dawn", dark: "bluedot-aurora" }}
+      themes={["light", "dark"]}
       defaultTheme="dark"
       enableSystem={false}
       disableTransitionOnChange

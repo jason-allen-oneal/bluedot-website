@@ -124,40 +124,40 @@ export default function Contact() {
       icon: Github,
       label: "GitHub",
       href: "https://github.com/jason-allen-oneal",
-      color: "text-secondary-content hover:text-accent",
+      color: "text-base-content hover:text-primary",
     },
   ];
 
   return (
-    <div className="container py-12 space-y-8">
+    <div className="page-shell space-y-10">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-accent">Get In Touch</h2>
-        <p className="text-base-400 max-w-xl mx-auto">
+        <span className="kicker">Bluedot • contact</span>
+        <h2 className="text-3xl font-bold heading-accent">Get In Touch</h2>
+        <p className="text-base-content/80 max-w-xl mx-auto">
           I&apos;m always open to new opportunities, collaborations, and
           discussions. Let&apos;s connect and build something meaningful.
         </p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
-        {/* Contact Info */}
-        <Card>
+        <Card className="bg-white/5 border-white/10">
           <CardHeader>
-            <p>Contact Information</p>
+            <p className="text-base-content font-semibold">Contact Information</p>
           </CardHeader>
           <CardContent className="space-y-6">
             {contactMethods.map((method, i) => (
               <div
                 key={i}
-                className="flex items-center space-x-4 rounded-lg border border-accent/50 p-4 hover:bg-secondary/40 transition"
+                className="flex items-center space-x-4 rounded-lg border border-white/10 p-4 hover:bg-white/5 transition"
               >
                 <method.icon className={`w-5 h-5 ${method.color}`} />
                 <div>
-                  <p className="text-sm text-base-400">
+                  <p className="text-sm text-base-content/70">
                     {method.label}
                   </p>
                   <a
                     href={method.href}
-                    className="text-sm font-medium hover:underline text-secondary"
+                    className="text-sm font-medium hover:underline text-base-content"
                   >
                     {method.value}
                   </a>
@@ -168,7 +168,7 @@ export default function Contact() {
             <Separator />
 
             <div>
-              <h4 className="text-lg font-semibold mb-3">Follow Me</h4>
+              <h4 className="text-lg font-semibold mb-3 text-base-content">Follow Me</h4>
               <div className="flex space-x-3">
                 {socialLinks.map((social, i) => (
                   <a
@@ -176,7 +176,7 @@ export default function Contact() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-md border border-accent/50 p-2 hover:bg-secondary/40 transition"
+                    className="rounded-md border border-white/10 p-2 hover:bg-white/5 transition"
                   >
                     <social.icon className="w-5 h-5" />
                   </a>
@@ -186,10 +186,9 @@ export default function Contact() {
           </CardContent>
         </Card>
 
-        {/* Contact Form */}
-        <Card>
+        <Card className="bg-white/5 border-white/10">
           <CardHeader>
-            <p>Send a Message</p>
+            <p className="text-base-content font-semibold">Send a Message</p>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -203,7 +202,7 @@ export default function Contact() {
                     onChange={handleInputChange}
                     required
                     placeholder="Your name"
-                    className="bg-secondary/20 border-accent/60 text-secondary"
+                    className="bg-white/5 border-white/15 text-base-content"
                   />
                 </div>
                 <div>
@@ -216,7 +215,7 @@ export default function Contact() {
                     onChange={handleInputChange}
                     required
                     placeholder="your@email.com"
-                    className="bg-secondary/20 border-accent/60 text-secondary"
+                    className="bg-white/5 border-white/15 text-base-content"
                   />
                 </div>
               </div>
@@ -230,7 +229,7 @@ export default function Contact() {
                   onChange={handleInputChange}
                   required
                   placeholder="What's this about?"
-                  className="bg-secondary/20 border-accent/60 text-secondary"
+                  className="bg-white/5 border-white/15 text-base-content"
                 />
               </div>
 
@@ -244,7 +243,7 @@ export default function Contact() {
                   required
                   rows={4}
                   placeholder="Tell me about your project, idea, or just say hello!"
-                  className="bg-secondary/20 border-accent/60 text-secondary"
+                  className="bg-white/5 border-white/15 text-base-content"
                 />
               </div>
 
@@ -288,13 +287,12 @@ export default function Contact() {
         </Card>
       </div>
 
-      {/* Footer Note */}
-      <Card>
+      <Card className="bg-white/5 border-white/10">
         <CardHeader>
-          <p>Quick Response Times</p>
+          <p className="text-base-content font-semibold">Quick Response Times</p>
         </CardHeader>
         <CardContent>
-          <p className="text-base-400 text-sm leading-relaxed">
+          <p className="text-base-content/80 text-sm leading-relaxed">
             I typically respond to messages within 24 hours. For urgent
             inquiries, reach out via the social channels above. I&apos;m always
             eager to discuss new projects, cybersecurity ideas, or anything tech

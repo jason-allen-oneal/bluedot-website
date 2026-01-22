@@ -64,7 +64,7 @@ export default function AdminPage() {
 
   if (!session) {
     return (
-      <div className="container py-20 flex flex-col items-center justify-center">
+      <div className="page-shell py-20 flex flex-col items-center justify-center">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
@@ -73,7 +73,7 @@ export default function AdminPage() {
             <span>
               Admin Access Required
             </span>
-            <p className="text-base-400">
+            <p className="text-base-content/70">
               Please sign in to access the admin dashboard.
             </p>
           </CardHeader>
@@ -88,13 +88,13 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="container py-12 space-y-10">
+    <div className="page-shell py-12 space-y-10">
       {/* Header */}
       <div className="text-center space-y-2">
-        <h1 className="text-3xl md:text-4xl font-bold text-accent">
+        <h1 className="text-3xl md:text-4xl font-bold heading-accent">
           Admin Dashboard
         </h1>
-        <p className="text-base-400">
+        <p className="text-base-content/70">
           Manage posts, comments, and analytics in one place.
         </p>
       </div>
@@ -157,13 +157,13 @@ export default function AdminPage() {
               <span className="text-sm font-medium text-secondary">
                 {item.label}
               </span>
-              <item.icon className="h-4 w-4 text-base-400" />
+              <item.icon className="h-4 w-4 text-base-content/70" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-secondary">
                 {item.value}
               </div>
-              <p className="text-xs text-base-400">{item.detail}</p>
+              <p className="text-xs text-base-content/70">{item.detail}</p>
             </CardContent>
           </Card>
         ))}
@@ -175,7 +175,7 @@ export default function AdminPage() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div>
               <span className="text-xl text-secondary">Blog Posts</span>
-              <p className="text-base-400">
+              <p className="text-base-content/70">
                 Manage and organize your blog content
               </p>
             </div>
@@ -190,15 +190,15 @@ export default function AdminPage() {
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4" />
-              <p className="text-base-400">Loading posts...</p>
+              <p className="text-base-content/70">Loading posts...</p>
             </div>
           ) : posts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12">
-              <FileText className="h-12 w-12 text-base-400 mb-4" />
+              <FileText className="h-12 w-12 text-base-content/70 mb-4" />
               <h3 className="text-lg font-semibold text-secondary mb-2">
                 No posts yet
               </h3>
-              <p className="text-base-400 mb-6 text-center max-w-sm">
+              <p className="text-base-content/70 mb-6 text-center max-w-sm">
                 Create your first post to get started.
               </p>
               <Button onClick={() => router.push("/admin/post/create")}>
@@ -221,10 +221,10 @@ export default function AdminPage() {
                         Published
                       </Badge>
                     </div>
-                    <p className="text-sm text-base-400 line-clamp-2 mb-2">
+                    <p className="text-sm text-base-content/70 line-clamp-2 mb-2">
                       {post.excerpt || "No excerpt available"}
                     </p>
-                    <div className="flex items-center gap-4 text-xs text-base-400">
+                    <div className="flex items-center gap-4 text-xs text-base-content/70">
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
                         {new Date(post.createdAt).toLocaleDateString()}

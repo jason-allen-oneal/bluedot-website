@@ -1,20 +1,9 @@
 /** @type {import('postcss-load-config').Config} */
-const stripPropertyAtRule = () => ({
-  postcssPlugin: 'strip-property-at-rule',
-  AtRule(atRule) {
-    if (atRule.name === 'property') {
-      atRule.remove();
-    }
-  },
-});
-stripPropertyAtRule.postcss = true;
-
 const config = {
-  // Use array form for custom plugin so Next/PostCSS don't expect a config object.
-  plugins: [
-    '@tailwindcss/postcss',
-    // LightningCSS warns on @property (used by daisyUI radial progress). Strip it to silence build warnings.
-    stripPropertyAtRule(),
-  ],
+  plugins: {
+    '@tailwindcss/postcss': {},
+    autoprefixer: {},
+  },
 };
+
 export default config;
