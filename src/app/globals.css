@@ -13,13 +13,13 @@
   --bg-light:
     radial-gradient(circle at 12% 18%, rgba(15,159,225,0.14), transparent 28%),
     radial-gradient(circle at 82% 8%, rgba(240,164,41,0.14), transparent 26%),
-    url("/background-light.png"),
+    url("/background-light.webp"),
     linear-gradient(145deg, #f8fbff 0%, #e6f0ff 32%, #e6f7ff 100%);
 
   --bg-dark:
     radial-gradient(circle at 12% 18%, rgba(77,216,255,0.18), transparent 26%),
     radial-gradient(circle at 82% 8%, rgba(243,181,69,0.16), transparent 24%),
-    url("/background-dark.png"),
+    url("/background-dark.webp"),
     linear-gradient(160deg, #050914 0%, #0a1628 52%, #06101f 100%);
 
   --card-surface: linear-gradient(150deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));

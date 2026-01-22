@@ -8,7 +8,7 @@ export default async function Header() {
   const session = await auth();
   return (
     <header className="sticky top-0 z-50">
-      <div className="absolute inset-0 bg-gradient-to-r from-white/5 via-primary/8 to-white/5 backdrop-blur-2xl border-b border-white/10 shadow-[0_1px_0_rgba(255,255,255,0.08)]" />
+      <div className="absolute inset-0 bg-linear-to-r from-white/5 via-primary/8 to-white/5 backdrop-blur-2xl border-b border-white/10 shadow-[0_1px_0_rgba(255,255,255,0.08)]" />
       <nav className="page-shell relative flex items-center gap-6 py-4">
         <Link href="/" className="flex items-center gap-3 font-semibold tracking-tight text-base-content">
           <div className="relative h-10 w-10 overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-inner">
