@@ -2,8 +2,19 @@ import Badge from "@/components/ui/Badge";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import { Separator } from "@/components/ui/Separator";
 import Reveal from "@/components/Reveal";
+import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: 'About',
+  description: 'Jason O\'Neal - Engineer, security enthusiast, and creative problem-solver. Expert in AI-powered cybersecurity tooling, full-stack development, and creative projects.',
+  openGraph: {
+    title: 'About Jason O\'Neal | BlueDot IT',
+    description: 'Engineer, security enthusiast, and creative problem-solver',
+    type: 'profile',
+  }
+}
 
 export default function About() {
   return (

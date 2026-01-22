@@ -3,8 +3,19 @@ import { prisma } from "@/lib/prisma"
 import { Card, CardHeader, CardContent } from "@/components/ui/Card"
 import Button from "@/components/ui/Button"
 import Reveal from "@/components/Reveal"
+import { Metadata } from "next"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+  title: 'Blog',
+  description: 'Thoughts on technology, cybersecurity, and creative problem-solving.  Insights from building AI-powered security tools and modern web applications.',
+  openGraph: {
+    title: 'Blog | BlueDot IT',
+    description:  'Thoughts on technology, cybersecurity, and creative problem-solving',
+    type: 'website',
+  }
+}
 
 export default async function BlogPage() {
   const posts = await prisma.post.findMany({
