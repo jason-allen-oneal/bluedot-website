@@ -6,13 +6,13 @@ import { Metadata } from 'next'
 import Providers from '@/components/Providers'
 import { GoogleAnalytics } from '@next/third-parties/google'
 
-export const metadata:  Metadata = {
+export const metadata: Metadata = {
     title: {
         default: 'BlueDot IT | Jason O\'Neal - Cybersecurity & Development',
         template: '%s | BlueDot IT'
     },
     description: 'Expert in cybersecurity, AI-powered tooling, and full-stack development. Building secure, innovative solutions with TypeScript, Python, and modern web technologies.',
-    metadataBase: new URL('https://bluedot.it.com'),
+    metadataBase: new URL('https://bluedot.it. com'),
     keywords: ['cybersecurity', 'web development', 'AI', 'TypeScript', 'Python', 'security tools'],
     authors: [{ name: 'Jason O\'Neal' }],
     creator: 'Jason O\'Neal',
@@ -21,29 +21,35 @@ export const metadata:  Metadata = {
         locale: 'en_US',
         url: 'https://bluedot.it.com',
         siteName: 'BlueDot IT',
-        title: 'BlueDot IT | Jason O\'Neal',
+        title:  'BlueDot IT | Jason O\'Neal',
         description: 'Expert in cybersecurity, AI-powered tooling, and full-stack development',
-        images: [{
-            url: '/bluedot-logo.png',
-            width: 1200,
-            height: 630,
-            alt: 'BlueDot IT Logo'
-        }]
     },
     twitter: {
         card: 'summary_large_image',
         title: 'BlueDot IT | Jason O\'Neal',
         description: 'Expert in cybersecurity, AI-powered tooling, and full-stack development',
-        images: ['/bluedot-logo.png'],
-        // creator: '@yourhandle', // Add your Twitter handle
     }
 }
 
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: React. ReactNode }) {
     return (
             <html lang="en" data-theme="bluedot-aurora" suppressHydrationWarning>
-                <body className="min-h-dvh flex flex-col">
+                <body 
+                    className="min-h-dvh flex flex-col"
+                    style={{
+                        backgroundImage: 'var(--bg-image)',
+                        backgroundSize: 'cover',
+                        backgroundAttachment: 'fixed',
+                    }}
+                >
+                <style jsx global>{`
+                    :root {
+                        --bg-image: url('/background-light.webp');
+                    }
+                    [data-theme="bluedot-aurora"] {
+                        --bg-image: url('/background-dark.webp');
+                    }
+                `}</style>
                 <Providers>
                     <Header />
                     <main className="flex-1">{children}</main>

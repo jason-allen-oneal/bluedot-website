@@ -6,8 +6,19 @@ import type { Project } from "@/types/project";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
+import { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export const metadata:  Metadata = {
+  title:  'Projects',
+  description: 'Security work, product builds, and creative explorations across GitHub and Hugging Face.  View my open-source projects, AI models, and development tools.',
+  openGraph: {
+    title: 'Projects & Builds | BlueDot IT',
+    description: 'Security work, product builds, and creative explorations',
+    type: 'website',
+  }
+}
 
 export default async function Projects() {
   const githubUsername = process.env.GITHUB_USERNAME || "jason-allen-oneal"

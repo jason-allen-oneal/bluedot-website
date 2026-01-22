@@ -13,12 +13,23 @@ import Label from "@/components/ui/Label";
 import Button from "@/components/ui/Button";
 import Alert from "@/components/ui/Alert";
 import { Separator } from "@/components/ui/Separator";
+import { Metadata } from "next";
 
 interface ContactForm {
   name: string;
   email: string;
   subject: string;
   message: string;
+}
+
+export const metadata: Metadata = {
+  title: 'Contact',
+  description: 'Get in touch with Jason O\'Neal for cybersecurity projects, development collaborations, or general inquiries.  Available worldwide for remote work.',
+  openGraph: {
+    title: 'Contact | BlueDot IT',
+    description: 'Get in touch for projects and collaborations',
+    type: 'website',
+  }
 }
 
 export default function Contact() {
