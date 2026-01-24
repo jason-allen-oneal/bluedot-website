@@ -30,7 +30,7 @@ export default function ResumePage() {
 
               {/* CONTACT HEADER */}
               <section>
-                <h2 className="text-2xl font-bold">Jason O’Neal</h2>
+                <h2 className="text-2xl font-bold">Jason O&apos;Neal</h2>
                 <p>Cybersecurity Student | Full-Stack Developer | Systems Builder</p>
 
                 <div className="mt-2 text-sm space-y-1">
@@ -74,7 +74,7 @@ export default function ResumePage() {
                   <p><strong>Freelance Full-Stack Developer</strong> | January 2002 – Present</p>
                   <p className="italic">The Realms Beyond — Lenoir, NC</p>
                   <ul className="list-disc pl-5 mt-1 space-y-1">
-                    <li>Delivered 50+ custom software solutions for automotive, gaming, and SaaS clients</li>
+                    <li>Delivered 20+ custom software solutions for automotive, gaming, and SaaS clients</li>
                     <li>Architected secure full-stack systems integrating APIs, databases, and payment processing</li>
                     <li>Implemented encryption, HTTPS, and authentication controls to reduce security risk</li>
                     <li>Managed projects end-to-end from requirements through deployment and support</li>
@@ -86,7 +86,7 @@ export default function ResumePage() {
                   <p className="italic">Convergys — Hickory, NC</p>
                   <ul className="list-disc pl-5 mt-1 space-y-1">
                     <li>Resolved Tier 1 and Tier 2 mobile connectivity and device issues</li>
-                    <li>Handled 80+ customer interactions daily while maintaining high satisfaction</li>
+                    <li>Handled 60+ customer interactions daily while maintaining high satisfaction</li>
                   </ul>
                 </div>
 
@@ -135,6 +135,45 @@ export default function ResumePage() {
 
             </CardContent>
           </Card>
+
+          {/* CERTIFICATE PREVIEW (screen only) */}
+          <section className="print:hidden">
+            <Card className="p-6">
+              <CardContent className="p-0 space-y-3">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="text-lg font-semibold">Undergraduate Certificate</h3>
+                    <p className="text-sm text-base-content/70">Preview is hidden when printing the resume.</p>
+                  </div>
+                  <a
+                    href="/cert.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm font-medium underline"
+                  >
+                    Open PDF
+                  </a>
+                </div>
+
+                <div className="overflow-hidden rounded-lg border border-base-300 bg-base-100">
+                  <object
+                    data="/cert.pdf"
+                    type="application/pdf"
+                    className="h-[70vh] w-full"
+                    aria-label="Undergraduate certificate PDF preview"
+                  >
+                    <div className="p-4 text-sm">
+                      PDF preview not available.{" "}
+                      <a href="/cert.pdf" className="underline">
+                        Download the certificate
+                      </a>
+                      .
+                    </div>
+                  </object>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
 
           {/* PRINT NORMALIZATION */}
           <style jsx global>{`
