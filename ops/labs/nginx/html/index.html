@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BlueDot Labs</title>
+    <style>
+      :root { color-scheme: dark; }
+      body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background:#0b0e14; color:#e6e6e6; }
+      .wrap { max-width: 980px; margin: 0 auto; padding: 48px 20px; }
+      h1 { margin: 0 0 12px; font-size: 32px; letter-spacing: .2px; }
+      p { margin: 0 0 24px; color: #b9c0cc; line-height: 1.5; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+      a.card { display:block; padding: 16px; border: 1px solid #1f2633; border-radius: 12px; text-decoration: none; color: inherit; background: #0f1420; }
+      a.card:hover { border-color:#3a465f; }
+      .tag { display:inline-block; font-size: 12px; padding: 2px 8px; border-radius: 999px; background:#131b2a; color:#9fb0cc; margin-right: 6px; }
+      .muted { color:#9aa5b6; font-size: 13px; }
+      footer { margin-top: 32px; color:#768199; font-size: 12px; }
+      code { color:#c9d4ff; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>BlueDot Labs</h1>
+      <p>
+        Live demos and experiments. Things here may be unfinished, unstable, or quietly replaced.
+      </p>
+
+      <div class="grid">
+        <a class="card" href="/hello/">
+          <div><span class="tag">demo</span><span class="tag">template</span></div>
+          <h2 style="margin:10px 0 6px; font-size:18px;">Hello</h2>
+          <div class="muted">Reference service + proxy wiring.</div>
+        </a>
+      </div>
+
+      <footer>
+        Proxy health: <code>/\_health</code>
+      </footer>
+    </div>
+  </body>
+</html>

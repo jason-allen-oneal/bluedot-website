@@ -1,30 +1,28 @@
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { apiRateLimit } from "@/lib/rateLimit";
 
-export async function DELETE(req: Request) {
+export async function DELETE(request: NextRequest) {
+  const rateLimitResult = apiRateLimit(request);
+  if (rateLimitResult) return rateLimitResult;
+
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
-    const { id } = await req.json();
-
+    const { id } = await request.json();
     if (!id) {
       return NextResponse.json({ error: "Post ID required" }, { status: 400 });
     }
 
     const postId = Number(id);
-
-    // 1️⃣ Remove post-tag relationships first
-    await prisma.postTag.deleteMany({
-      where: { postId },
-    });
-
-    // 2️⃣ Remove associated comments (optional, but safe to be explicit)
-    await prisma.comment.deleteMany({
-      where: { postId },
-    });
-
-    // 3️⃣ Now safely delete the post
-    await prisma.post.delete({
-      where: { id: postId },
-    });
+    await prisma.postTag.deleteMany({ where: { postId } });
+    await prisma.comment.deleteMany({ where: { postId } });
+    await prisma.post.delete({ where: { id: postId } });
 
     return NextResponse.json({ success: true });
   } catch (error) {

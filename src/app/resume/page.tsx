@@ -127,6 +127,11 @@ export default function ResumePage() {
               <section>
                 <h3 className="font-semibold uppercase border-b">Education</h3>
                 <p className="mt-2">
+                  <strong>Undergraduate Certificate in Information Technology Essentials</strong><br />
+                  DeVry University Online<br />
+                  Completed Dec 2025
+                </p>
+                <p className="mt-2">
                   <strong>Bachelor of Science in Cybersecurity</strong><br />
                   DeVry University Online<br />
                   Expected Graduation: 2026

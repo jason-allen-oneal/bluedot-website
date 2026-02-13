@@ -1,0 +1,22 @@
+services:
+  labs-proxy:
+    image: nginx:1.27-alpine
+    container_name: bluedot-labs-proxy
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/html:/usr/share/nginx/html:ro
+    depends_on:
+      - hello
+
+  # Example demo service
+  hello:
+    build:
+      context: ./demos/hello
+    container_name: bluedot-labs-hello
+    environment:
+      - PORT=3000
+      - BASE_PATH=/hello
+    expose:
+      - "3000"

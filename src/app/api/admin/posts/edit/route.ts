@@ -1,15 +1,25 @@
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { apiRateLimit } from "@/lib/rateLimit";
 
-export async function PUT(req: Request) {
+export async function PUT(request: NextRequest) {
+  const rateLimitResult = apiRateLimit(request);
+  if (rateLimitResult) return rateLimitResult;
+
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
-    const { id, title, slug, excerpt, content, categoryId, tagIds } = await req.json();
+    const { id, title, slug, excerpt, content, categoryId, tagIds } = await request.json();
 
     if (!id || !title || !slug || !content) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Clear existing tag relations first, then reattach
     await prisma.postTag.deleteMany({ where: { postId: Number(id) } });
 
     const updated = await prisma.post.update({
