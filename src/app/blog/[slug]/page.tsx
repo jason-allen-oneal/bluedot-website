@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import MDXContent from "@/components/MDXContent"
 import CommentForm from "@/components/CommentForm"
+import ShareButtons from "@/components/ShareButtons"
 import { Card, CardHeader, CardContent } from "@/components/ui/Card"
 import { Separator } from "@/components/ui/Separator"
 import { Metadata } from "next"
@@ -119,6 +120,12 @@ export default async function PostPage({
             <CardContent className="prose max-w-none prose-headings:text-base-content prose-p:text-base-content/85 prose-strong:text-primary prose-code:text-primary">
               <MDXContent source={mdxSource} />
             </CardContent>
+            <div className="px-4 pb-6 pt-6">
+              <ShareButtons
+                title={post.title}
+                url={`https://bluedot.it.com/blog/${post.slug}`}
+              />
+            </div>
           </Card>
 
           <Card className="p-8">

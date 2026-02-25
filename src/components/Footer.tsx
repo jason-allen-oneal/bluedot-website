@@ -1,4 +1,5 @@
 import Image from "next/image";
+import NewsletterForm from "@/components/NewsletterForm";
 
 interface MenuItem {
   title: string;
@@ -72,22 +73,26 @@ export default function Footer({
                 <a href="/services" className="btn btn-outline btn-lg rounded-full px-6 border-white/20 hover:bg-white/10">View services</a>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-6 text-sm">
-              {menuItems.map((section, sectionIdx) => (
-                <div key={sectionIdx} className="space-y-3">
-                  <h3 className="text-base font-semibold text-primary">{section.title}</h3>
-                  <ul className="space-y-2 text-base-content/80">
-                    {section.links.map((link, linkIdx) => (
-                      <li
-                        key={linkIdx}
-                        className="hover:text-primary transition"
-                      >
-                        <a href={link.url}>{link.text}</a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-6 text-sm">
+                {menuItems.map((section, sectionIdx) => (
+                  <div key={sectionIdx} className="space-y-3">
+                    <h3 className="text-base font-semibold text-primary">{section.title}</h3>
+                    <ul className="space-y-2 text-base-content/80">
+                      {section.links.map((link, linkIdx) => (
+                        <li
+                          key={linkIdx}
+                          className="hover:text-primary transition"
+                        >
+                          <a href={link.url}>{link.text}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              <NewsletterForm />
             </div>
           </div>
 

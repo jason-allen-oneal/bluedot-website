@@ -64,3 +64,15 @@ model PostTag {
 
   @@id([postId, tagId])
 }
+
+enum SubscriberStatus {
+  ACTIVE
+  UNSUBSCRIBED
+}
+
+model Subscriber {
+  id        Int              @id @default(autoincrement())
+  email     String           @unique
+  status    SubscriberStatus @default(ACTIVE)
+  createdAt DateTime         @default(now())
+}
