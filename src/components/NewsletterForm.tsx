@@ -58,6 +58,7 @@ export default function NewsletterForm({
 
       <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-3 sm:flex-row">
         <input
+          id="newsletter_signup"
           type="email"
           inputMode="email"
           autoComplete="email"

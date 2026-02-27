@@ -9,6 +9,13 @@
 
 @custom-variant dark (&:is([data-theme="bluedot-aurora"] *));
 
+/* Fix for DaisyUI v5 radial-progress @property rule */
+@property --radialprogress {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+
 :root {
   --bg-light:
     radial-gradient(circle at 12% 18%, rgba(15,159,225,0.14), transparent 28%),
