@@ -9,11 +9,12 @@
 
 @custom-variant dark (&:is([data-theme="bluedot-aurora"] *));
 
-/* Fix for DaisyUI v5 radial-progress @property rule */
+/* Fix for DaisyUI v5 radial-progress @property rule. 
+   We use 0.001% to prevent the minifier from stripping the unit and making it invalid. */
 @property --radialprogress {
   syntax: "<percentage>";
   inherits: true;
-  initial-value: 0%;
+  initial-value: 0.001%;
 }
 
 :root {
