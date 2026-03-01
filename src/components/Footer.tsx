@@ -1,115 +1,75 @@
-import Image from "next/image";
-import NewsletterForm from "@/components/NewsletterForm";
+'use client'
+import Link from 'next/link'
+import Image from 'next/image'
+import NewsletterForm from './NewsletterForm'
 
-interface MenuItem {
-  title: string;
-  links: {
-    text: string;
-    url: string;
-  }[];
-}
+const navLinks = [
+  { href: '/about', label: 'About' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact' },
+]
 
-interface FooterProps {
-  tagline?: string;
-  menuItems?: MenuItem[];
-  copyright?: string;
-  bottomLinks?: {
-    text: string;
-    url: string;
-  }[];
-}
-
-export default function Footer({
-  tagline = "App development for all.",
-  menuItems = [
-    {
-      title: "Company",
-      links: [
-        { text: "About", url: "/about" },
-        { text: "Projects", url: "/projects" },
-        { text: "Blog", url: "/blog" },
-        { text: "Contact", url: "/contact" }
-      ],
-    },
-    {
-      title: "Social",
-      links: [
-        { text: "Facebook", url: "https://www.facebook.com/chaoskreator" },
-        { text: "Tiktok", url: "https://www.tiktok.com/@7h3.r3v3n4n7" },
-        { text: "Github", url: "https://github.com/jason-allen-oneal" },
-        { text: "HuggingFace", url: "https://huggingface.co/jason-oneal"}
-      ],
-    },
-  ],
-  copyright = ` ᴥ BlueDot IT ᴥ Jason O'Neal. All rights reserved.`,
-  bottomLinks = [
-    { text: "Privacy", url: "/legal/privacy" },
-    { text: "Terms & Conditions", url: "/legal/terms"}
-  ],
-}: FooterProps) {
+export default function Footer() {
   return (
-    <section className="relative mt-20 border-t border-white/10 bg-linear-to-b from-transparent via-white/5 to-white/10 text-base-content/90 backdrop-blur-xl">
-      <div className="absolute inset-x-0 -top-32 h-64 bg-[radial-gradient(circle_at_50%_0%,rgba(77,216,255,0.14),transparent_45%)] blur-3xl opacity-70 pointer-events-none" />
-      <div className="page-shell space-y-12">
-        <footer className="space-y-10">
-          <div className="grid gap-6 rounded-3xl border border-white/10 bg-white/5 p-8 shadow-[0_18px_50px_rgba(5,12,26,0.28)] md:grid-cols-[1.4fr_1fr]">
-            <div className="space-y-4">
-              <Image
+    <section className="relative mt-20 border-t border-white/5 bg-black/40 text-base-content/60 backdrop-blur-xl">
+      <div className="page-shell py-24 space-y-12">
+        <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+          <div className="space-y-8">
+            <Link href="/" className="flex items-center gap-4 group grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+              <div className="relative h-10 w-10 overflow-hidden rounded border border-white/10 bg-white/5">
+                <Image
                   src="/bluedot-logo.png"
                   alt="Logo"
-                  width={128}
-                  height={128}
-                  className="rounded-2xl border border-white/10 bg-white/5 p-2"
+                  fill
+                  className="object-contain p-2"
                 />
-              <p className="pill w-fit">Bluedot IT</p>
-              <h2 className="heading-accent text-3xl font-bold leading-tight">
-                {tagline}
-              </h2>
-              <p className="max-w-2xl text-base-content/80">
-                Design-forward engineering, bold visuals, and thoughtful security. Inspired, everywhere.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <a href="/contact" className="btn btn-primary btn-lg rounded-full px-6 shadow-[0_16px_38px_rgba(15,159,225,0.26)]">Start a project</a>
-                <a href="/services" className="btn btn-outline btn-lg rounded-full px-6 border-white/20 hover:bg-white/10">View services</a>
               </div>
+              <span className="text-xl font-bold text-white tracking-tighter">BlueDot IT</span>
+            </Link>
+            <p className="max-w-md text-sm font-medium leading-relaxed">
+              Engineering resilient systems and hardened security layers for organizations that require absolute stability. 
+            </p>
+            <div className="flex gap-6 items-center">
+               <Link href="/api/auth/signin" className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary hover:text-white transition-colors">
+                  Reader Login
+               </Link>
+               <Link href="/api/auth/signin" className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 hover:text-white transition-colors">
+                  Admin
+               </Link>
+            </div>
+          </div>
+
+          <div className="grid gap-12 sm:grid-cols-2">
+            <div className="space-y-6">
+              <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-white">Navigation</h3>
+              <ul className="grid grid-cols-2 gap-4">
+                {navLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="text-sm font-medium hover:text-primary transition-colors">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
             <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-6 text-sm">
-                {menuItems.map((section, sectionIdx) => (
-                  <div key={sectionIdx} className="space-y-3">
-                    <h3 className="text-base font-semibold text-primary">{section.title}</h3>
-                    <ul className="space-y-2 text-base-content/80">
-                      {section.links.map((link, linkIdx) => (
-                        <li
-                          key={linkIdx}
-                          className="hover:text-primary transition"
-                        >
-                          <a href={link.url}>{link.text}</a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-
-              <NewsletterForm />
+               <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-white">Intelligence Updates</h3>
+               <NewsletterForm />
             </div>
           </div>
+        </div>
 
-          <div className="border-t border-white/10 pt-6 text-sm text-base-content/70 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <p>© {new Date().getFullYear()} {copyright}</p>
-            <ul className="flex gap-4">
-              {bottomLinks.map((link, linkIdx) => (
-                <li key={linkIdx} className="hover:text-primary transition">
-                  <a href={link.url}>{link.text}</a>
-                </li>
-              ))}
-            </ul>
+        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-[10px] font-bold uppercase tracking-widest opacity-40">
+            © 2026 BlueDot IT • Hardened in North Carolina
+          </p>
+          <div className="flex gap-8">
+             <Link href="/legal/privacy" className="text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors">Privacy</Link>
+             <Link href="/legal/terms" className="text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors">Terms</Link>
           </div>
-        </footer>
+        </div>
       </div>
     </section>
-  );
-};
-
-export { Footer };
+  )
+}
