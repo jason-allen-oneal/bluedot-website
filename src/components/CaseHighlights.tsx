@@ -1,42 +1,42 @@
 'use client'
 import Reveal from '@/components/Reveal'
 
-const cases = [
+const methodology = [
   {
-    metric: '70%',
-    label: 'Attack Surface Reduction',
-    description: 'Hardened infrastructure for a fintech startup through automated CI/CD security gating.'
+    label: 'Isolation',
+    description: 'We treat every environment as hostile, implementing tiered isolation as a default.'
   },
   {
-    metric: '12ms',
-    label: 'API Response P99',
-    description: 'Optimized high-traffic backend for an enterprise partner using Rust and Go.'
+    label: 'Automation',
+    description: 'If it can be codified, it must be. Our CI/CD pipelines are inherently security-aware.'
+  },
+  {
+    label: 'Resilience',
+    description: 'Systems are designed for failure. We prioritize mean-time-to-recovery (MTTR) as a primary KPI.'
   }
 ]
 
 export default function CaseHighlights() {
   return (
-    <section className="page-shell py-12">
-      <div className="grid gap-12 lg:grid-cols-2">
-        <div className="space-y-6">
-          <h2 className="text-3xl font-bold">Selected Work</h2>
-          <p className="text-base-content/70">
-            Real outcomes for complex builds. We focus on evidence and impact, not just lines of code.
+    <section className="page-shell py-24">
+      <div className="grid gap-24 lg:grid-cols-2">
+        <div className="space-y-10">
+          <div className="w-12 h-1 bg-white" />
+          <h2 className="text-4xl font-bold tracking-tight text-white leading-tight">Operating <br />Methodology</h2>
+          <p className="text-lg text-base-content/60 leading-relaxed font-medium">
+            BlueDot IT approaches software engineering as a discipline of hardening and risk reduction. We focus on verifiable evidence and high-assurance outcomes, not just delivery speed.
           </p>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-8 italic text-base-content/80">
-            &quot;BlueDot IT transformed our deployment pipeline. Security is no longer a bottleneck.&quot;
-            <span className="mt-4 block text-sm font-bold not-italic">— CTO, Enterprise Partner</span>
+          <div className="border-l border-white/10 bg-white/5 p-8 font-medium text-base-content/80">
+            &quot;Our engineering philosophy is built on the belief that a system is only as strong as its weakest dependency.&quot;
+            <span className="mt-6 block text-xs font-bold uppercase tracking-widest text-primary">— BlueDot IT Engineering Core</span>
           </div>
         </div>
-        <div className="grid gap-6">
-          {cases.map((c) => (
-            <Reveal key={c.label}>
-              <div className="flex gap-6 rounded-2xl border border-white/10 bg-white/5 p-6">
-                <div className="text-4xl font-black text-primary">{c.metric}</div>
-                <div className="space-y-1">
-                  <div className="font-bold text-lg">{c.label}</div>
-                  <div className="text-sm text-base-content/70">{c.description}</div>
-                </div>
+        <div className="grid gap-12 self-center">
+          {methodology.map((m) => (
+            <Reveal key={m.label}>
+              <div className="space-y-3">
+                <div className="text-xs font-bold uppercase tracking-widest text-white">{m.label}</div>
+                <div className="text-base text-base-content/60 leading-relaxed font-medium">{m.description}</div>
               </div>
             </Reveal>
           ))}

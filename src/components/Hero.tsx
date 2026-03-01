@@ -7,28 +7,28 @@ export default function Hero() {
   useReveal(textRef)
 
   return (
-    <section className="relative overflow-hidden pt-12">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_30%,rgba(77,216,255,0.22),transparent_35%),radial-gradient(circle_at_82%_12%,rgba(243,181,69,0.18),transparent_32%)] blur-3xl opacity-80" />
+    <section className="relative overflow-hidden pt-24 pb-12 border-b border-white/5">
       <div className="page-shell">
-        <div ref={textRef} className="reveal space-y-8 text-center md:text-left md:max-w-3xl">
-          <span className="pill">Systems • Security • AI</span>
-          <h1 className="text-5xl font-extrabold tracking-tight md:text-7xl">
-            Build fast. <span className="heading-accent">Stay secure.</span>
+        <div ref={textRef} className="reveal space-y-10 text-center md:text-left md:max-w-4xl">
+          <div className="flex items-center gap-4 justify-center md:justify-start opacity-60">
+             <span className="pill">Systems</span>
+             <span className="pill">Security</span>
+             <span className="pill">Machine Intelligence</span>
+          </div>
+          <h1 className="text-6xl font-bold tracking-tighter md:text-8xl leading-[1.1]">
+            Engineering for <br />
+            <span className="text-primary">high-stakes</span> resilience.
           </h1>
-          <p className="text-xl text-base-content/80 max-w-[50ch]">
-            Engineering resilient systems and hardened security layers for teams that ship without compromise.
+          <p className="text-xl text-base-content/60 max-w-[60ch] font-medium leading-relaxed">
+            BlueDot IT builds hardened infrastructure and precision software for organizations that require absolute stability. We don't just ship; we secure.
           </p>
 
-          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-            <a href="/contact" className="btn btn-primary btn-lg rounded-full px-8">Plan a build</a>
-            <a href="/projects" className="btn btn-outline btn-lg rounded-full px-8 border-white/20">See the work</a>
+          <div className="flex flex-wrap gap-6 justify-center md:justify-start pt-4">
+            <a href="/contact" className="px-10 py-4 bg-white text-black font-bold uppercase tracking-widest text-xs hover:bg-primary transition-colors">Start Engagement</a>
+            <a href="/projects" className="px-10 py-4 border border-white/20 text-white font-bold uppercase tracking-widest text-xs hover:border-white transition-colors">Technical Portfolio</a>
           </div>
         </div>
       </div>
-
-      <svg className="mt-12 block w-full h-12 opacity-5" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0 0 L1200 18 L1200 56 L0 56 Z" fill="currentColor"></path>
-      </svg>
     </section>
   )
 }
