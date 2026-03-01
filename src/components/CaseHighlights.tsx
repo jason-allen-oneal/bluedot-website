@@ -1,45 +1,59 @@
 'use client'
 import Reveal from '@/components/Reveal'
-
-const methodology = [
-  {
-    label: 'Isolation',
-    description: 'We treat every environment as hostile, implementing tiered isolation as a default.'
-  },
-  {
-    label: 'Automation',
-    description: 'If it can be codified, it must be. Our CI/CD pipelines are inherently security-aware.'
-  },
-  {
-    label: 'Resilience',
-    description: 'Systems are designed for failure. We prioritize mean-time-to-recovery (MTTR) as a primary KPI.'
-  }
-]
+import Link from 'next/link'
 
 export default function CaseHighlights() {
   return (
-    <section className="page-shell py-24">
+    <section className="page-shell py-24 border-b border-white/5">
       <div className="grid gap-24 lg:grid-cols-2">
         <div className="space-y-10">
-          <div className="w-12 h-1 bg-white" />
-          <h2 className="text-4xl font-bold tracking-tight text-white leading-tight">Operating <br />Methodology</h2>
+          <div className="flex items-center gap-3">
+             <div className="w-12 h-0.5 bg-primary" />
+             <span className="text-xs font-bold uppercase tracking-widest text-primary">Featured System</span>
+          </div>
+          <h2 className="text-4xl font-bold tracking-tight text-white leading-tight">GhostMCP: <br />Audit-First Security Gateway</h2>
           <p className="text-lg text-base-content/60 leading-relaxed font-medium">
-            BlueDot IT approaches software engineering as a discipline of hardening and risk reduction. We focus on verifiable evidence and high-assurance outcomes, not just delivery speed.
+            A production-oriented Model Context Protocol (MCP) server designed for authorized red-team and security operations. GhostMCP enforces strict policy isolation and audit chaining for LLM-driven tool use.
           </p>
-          <div className="border-l border-white/10 bg-white/5 p-8 font-medium text-base-content/80">
-            &quot;Our engineering philosophy is built on the belief that a system is only as strong as its weakest dependency.&quot;
-            <span className="mt-6 block text-xs font-bold uppercase tracking-widest text-primary">— BlueDot IT Engineering Core</span>
+          
+          <div className="grid grid-cols-2 gap-8 pt-4">
+            <div className="space-y-2">
+               <div className="text-2xl font-bold text-white tracking-tighter">mTLS + Token</div>
+               <div className="text-xs font-bold uppercase tracking-widest text-base-content/40">Auth Architecture</div>
+            </div>
+            <div className="space-y-2">
+               <div className="text-2xl font-bold text-white tracking-tighter">AppArmor</div>
+               <div className="text-xs font-bold uppercase tracking-widest text-base-content/40">Binary Confinement</div>
+            </div>
+          </div>
+
+          <div className="flex gap-6 pt-6">
+            <Link href="/blog/building-ghostmcp-a-cybersecurity-mcp-server-for-agents" className="text-primary text-xs font-bold tracking-widest uppercase hover:text-white transition-colors border-b border-primary/20 pb-1">
+              Read Technical Breakdown →
+            </Link>
+            <a href="https://github.com/jason-allen-oneal/ghostmcp" className="text-base-content/40 text-xs font-bold tracking-widest uppercase hover:text-white transition-colors border-b border-white/10 pb-1">
+              View Source (GitHub)
+            </a>
           </div>
         </div>
-        <div className="grid gap-12 self-center">
-          {methodology.map((m) => (
-            <Reveal key={m.label}>
-              <div className="space-y-3">
-                <div className="text-xs font-bold uppercase tracking-widest text-white">{m.label}</div>
-                <div className="text-base text-base-content/60 leading-relaxed font-medium">{m.description}</div>
+
+        <div className="relative group">
+           <div className="absolute -inset-4 bg-primary/5 rounded-3xl blur-2xl group-hover:bg-primary/10 transition-colors" />
+           <div className="relative p-8 border border-white/10 bg-black/40 rounded-2xl space-y-6 font-mono text-xs">
+              <div className="flex items-center gap-2 border-b border-white/5 pb-4 opacity-40">
+                 <div className="w-2 h-2 rounded-full bg-red-500/50" />
+                 <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
+                 <div className="w-2 h-2 rounded-full bg-green-500/50" />
+                 <span className="ml-2">ghostmcp-audit.jsonl</span>
               </div>
-            </Reveal>
-          ))}
+              <div className="space-y-4 text-base-content/60">
+                 <div className="text-primary/80">{"{"} "event": "tool_call", "tool": "nmap_raw_tool" {"}"}</div>
+                 <div>{"{"} "policy": "GHOSTMCP_MAX_TOOL_LEVEL", "result": "authorized" {"}"}</div>
+                 <div className="text-secondary/80">{"{"} "audit_chain": "sha256:8f3c...b2e4" {"}"}</div>
+                 <div>{"{"} "status": "executing", "pid": 287503 {"}"}</div>
+                 <div className="animate-pulse">_</div>
+              </div>
+           </div>
         </div>
       </div>
     </section>

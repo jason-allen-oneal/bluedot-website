@@ -1,65 +1,69 @@
-// src/components/Header.tsx
-import Link from "next/link";
-import Image from "next/image";
-import { auth } from "@/lib/auth";
-import ThemeSwitch from "./ThemeSwitch";
+'use client'
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import ThemeSwitch from '@/components/ThemeSwitch'
 
-export default async function Header() {
-  const session = await auth();
+const navLinks = [
+  { href: '/about', label: 'About' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/services', label: 'Services' },
+  { href: '/blog', label: 'Blog' },
+]
+
+export default function Header() {
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <header className="sticky top-0 z-50">
-      <div className="absolute inset-0 bg-linear-to-r from-white/5 via-primary/8 to-white/5 backdrop-blur-2xl border-b border-white/10 shadow-[0_1px_0_rgba(255,255,255,0.08)]" />
-      <nav className="page-shell relative flex items-center gap-6 py-4">
-        <Link href="/" className="flex items-center gap-3 font-semibold tracking-tight text-base-content">
-          <div className="relative h-10 w-10 overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-inner">
-            <Image alt="logo" src="/bluedot-logo.png" fill className="object-contain" sizes="40px" />
+    <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'py-3' : 'py-5'}`}>
+      <div className={`absolute inset-0 transition-all duration-300 ${isScrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-lg' : 'bg-transparent'}`} />
+      <nav className="page-shell relative flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-4 group">
+          <div className="relative h-12 w-12 overflow-hidden rounded-lg border border-white/10 bg-white/5 transition-colors group-hover:border-primary/50">
+            <Image
+              src="/bluedot-logo.png"
+              alt="logo"
+              fill
+              className="object-contain p-2"
+              sizes="48px"
+            />
           </div>
-          <div className="leading-tight">
-            <span className="block text-sm uppercase tracking-[0.2em] text-base-content/70"></span>
-            <span className="block text-lg heading-accent">BlueDot IT</span>
+          <div className="leading-none">
+            <span className="block text-xl font-bold text-white tracking-tighter">BlueDot IT</span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/60">Systems • Security</span>
           </div>
         </Link>
 
-        <div className="hidden md:flex items-center gap-2 text-sm font-medium">
-          {[
-            { href: "/about", label: "About" },
-            { href: "/projects", label: "Projects" },
-            { href: "/services", label: "Services" },
-            { href: "/blog", label: "Blog" },
-            { href: "/resume", label: "Resume" },
-          ].map((item) => (
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
             <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-full px-3 py-2 text-base-content/80 hover:text-primary hover:bg-white/5 transition"
+              key={link.href}
+              href={link.href}
+              className="text-xs font-bold uppercase tracking-widest text-base-content/60 hover:text-white transition-colors"
             >
-              {item.label}
+              {link.label}
             </Link>
           ))}
-        </div>
-
-        <div className="ml-auto flex items-center gap-3">
+          <div className="w-px h-4 bg-white/10" />
+          <ThemeSwitch className="btn-ghost" />
           <Link
             href="/contact"
-            className="hidden sm:inline-flex items-center gap-2 rounded-full border border-white/15 bg-primary text-primary-content px-4 py-2 text-sm font-semibold shadow-[0_12px_30px_rgba(15,159,225,0.28)] hover:-translate-y-0.5 transition"
+            className="px-6 py-2 bg-primary text-black text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-colors"
           >
-            Let&apos;s build
+            Engagement
           </Link>
-
-          {session ? (
-            <form action="/api/auth/signout" method="post">
-              <button className="rounded-full px-4 py-2 text-sm font-semibold border border-white/15 bg-white/5 hover:bg-white/10 transition">
-                Sign out
-              </button>
-            </form>
-          ) : (
-            <Link href="/api/auth/signin" className="rounded-full px-4 py-2 text-sm font-semibold border border-white/15 bg-white/5 hover:bg-white/10 transition">
-              Sign in
-            </Link>
-          )}
-          <ThemeSwitch className="btn-ghost border border-white/10" />
         </div>
+
+        {/* Mobile menu toggle would go here */}
       </nav>
     </header>
-  );
+  )
 }
