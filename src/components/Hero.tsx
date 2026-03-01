@@ -20,7 +20,7 @@ export default function Hero() {
             <span className="text-primary">high-stakes</span> resilience.
           </h1>
           <p className="text-xl text-base-content/60 max-w-[60ch] font-medium leading-relaxed">
-            BlueDot IT builds hardened infrastructure and precision software for organizations that require absolute stability. We don't just ship; we secure.
+            BlueDot IT builds hardened infrastructure and precision software for organizations that require absolute stability. We don&apos;t just ship; we secure.
           </p>
 
           <div className="flex flex-wrap gap-6 justify-center md:justify-start pt-4">
