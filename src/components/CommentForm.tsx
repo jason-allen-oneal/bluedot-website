@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useSession, signIn } from "next-auth/react";
 import Textarea from "./ui/Textarea";
-import Button from "./ui/Button";
 
 export default function CommentForm({ postId }: { postId: number }) {
     const { data: session, status } = useSession();
@@ -35,7 +34,6 @@ export default function CommentForm({ postId }: { postId: number }) {
                     >
                         Sign In
                     </button>
-                    {/* Placeholder for social logins */}
                 </div>
             </div>
         );
@@ -62,9 +60,12 @@ export default function CommentForm({ postId }: { postId: number }) {
                 <p className="text-[10px] text-base-content/40 uppercase tracking-widest font-bold italic">
                     Comments are moderated.
                 </p>
-                <Button className="rounded-none px-8 py-2 bg-white text-black font-bold uppercase tracking-widest text-[10px]">
+                <button 
+                    type="submit"
+                    className="px-8 py-2 bg-white text-black font-bold uppercase tracking-widest text-[10px] hover:bg-primary transition-colors"
+                >
                     Post Comment
-                </Button>
+                </button>
             </div>
             {ok && <div className="text-xs font-bold uppercase tracking-widest text-primary mt-2">{ok}</div>}
         </form>
