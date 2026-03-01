@@ -10,7 +10,7 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
-  email     String @unique
+  email     String   @unique
   username  String
   password  String
   createdAt DateTime @default(now())
@@ -23,25 +23,26 @@ model Comment {
   email     String
   createdAt DateTime @default(now())
   approved  Boolean  @default(false)
-  
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId], map: "Comment_postId_fkey")
 }
 
 model Post {
-  id          Int        @id @default(autoincrement())
-  title       String
-  slug        String     @unique
-  excerpt     String?    @db.Text
-  content     String     @db.LongText
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id         Int       @id @default(autoincrement())
+  title      String
+  slug       String    @unique
+  excerpt    String?   @db.Text
+  content    String    @db.LongText
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  categoryId Int?
+  comments   Comment[]
+  category   Category? @relation(fields: [categoryId], references: [id])
+  tags       PostTag[]
 
-  category    Category?  @relation(fields: [categoryId], references: [id])
-  categoryId  Int?
-
-  tags        PostTag[]
-  comments    Comment[]
+  @@index([categoryId], map: "Post_categoryId_fkey")
 }
 
 model Category {
@@ -57,17 +58,13 @@ model Tag {
 }
 
 model PostTag {
-  post   Post @relation(fields: [postId], references: [id])
   postId Int
-  tag    Tag  @relation(fields: [tagId], references: [id])
   tagId  Int
+  post   Post @relation(fields: [postId], references: [id])
+  tag    Tag  @relation(fields: [tagId], references: [id])
 
   @@id([postId, tagId])
-}
-
-enum SubscriberStatus {
-  ACTIVE
-  UNSUBSCRIBED
+  @@index([tagId], map: "PostTag_tagId_fkey")
 }
 
 model Subscriber {
@@ -75,4 +72,9 @@ model Subscriber {
   email     String           @unique
   status    SubscriberStatus @default(ACTIVE)
   createdAt DateTime         @default(now())
+}
+
+enum SubscriberStatus {
+  ACTIVE
+  UNSUBSCRIBED
 }

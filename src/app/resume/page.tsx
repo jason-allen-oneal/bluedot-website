@@ -37,7 +37,7 @@ export default function ResumePage() {
               {/* CONTACT HEADER */}
               <section>
                 <h2 className="text-2xl font-bold">Jason O&apos;Neal</h2>
-                <p>Systems Administrator | Security Engineer | Full-Stack Developer</p>
+                <p>Security Engineer | Systems & Automation Specialist</p>
 
                 <div className="mt-2 text-sm space-y-1">
                   <p>Lenoir, NC 28645</p>
@@ -51,24 +51,19 @@ export default function ResumePage() {
               {/* SUMMARY */}
               <section>
                 <h3 className="font-semibold uppercase border-b">Summary</h3>
-                <ul className="mt-2 list-disc pl-5 space-y-1">
-                  <li>24+ years of systems administration and engineering experience (since 2002).</li>
-                  <li>Specialist in infrastructure hardening, DevSecOps, and secure software delivery.</li>
-                  <li>Architected and deployed secure full-stack applications for automotive, gaming, and SaaS.</li>
-                  <li>Expertise in Linux systems (Kali, Debian, Parrot OS), automation, and AI integration.</li>
-                  <li>Proven track record of managing end-to-end projects with high-reliability requirements.</li>
-                </ul>
+                <p className="mt-2">
+                  Security-focused engineer with 24+ years of experience in full-stack development, systems administration, network security, and vulnerability research. Specializing in threat analysis, secure architecture design, automation, and AI-integrated security tooling. Hands-on background in incident response, risk assessment, and Linux-based security hardening. Strong communicator capable of translating technical risk into actionable strategy. Completing a B.S. in Cybersecurity to formalize deep practical expertise and pursue Security Engineering or Red/Blue Team roles.
+                </p>
               </section>
 
               {/* SKILLS */}
               <section>
                 <h3 className="font-semibold uppercase border-b">Technical Skills</h3>
 
-                <p className="mt-2"><strong>Languages & Frameworks:</strong> TypeScript, JavaScript, Python, PHP, React, Next.js, Node.js, Django</p>
-                <p><strong>DevOps & Infrastructure:</strong> Docker, Kubernetes, CI/CD pipelines, NGINX, SSH, TLS, AWS, Linode</p>
-                <p><strong>Databases & ORMs:</strong> MySQL, PostgreSQL, MongoDB, Prisma, SQLAlchemy</p>
-                <p><strong>Cybersecurity:</strong> Pentesting (OWASP), Hardening, Network Analysis (Nmap/Wireshark), Threat Modeling</p>
-                <p><strong>Operational Tools:</strong> Git, GitHub, Linux CLI/Zsh, PM2, Agentic AI Tooling</p>
+                <p className="mt-2"><strong>Security Research:</strong> Penetration Testing (Kali Linux, Metasploit, Nmap), Vulnerability Assessment, Threat Intel (STIX/TAXII), OSINT</p>
+                <p><strong>Full-Stack Development:</strong> TypeScript/JavaScript (Next.js, Node.js, React), Python (Django, Flask), PHP, Java, SQL (MySQL, PostgreSQL, MongoDB)</p>
+                <p><strong>Systems & Infrastructure:</strong> Linux Administration (Debian, Ubuntu, Kali), NGINX, Docker, AWS, CI/CD (GitHub Actions), SSH/VPN/DNS Hardening</p>
+                <p><strong>AI/ML Security:</strong> LLM Tooling, Autonomous Agent Orchestration, MCP Server Development, Prompt Engineering</p>
               </section>
 
               {/* EXPERIENCE */}
@@ -76,30 +71,39 @@ export default function ResumePage() {
                 <h3 className="font-semibold uppercase border-b">Experience</h3>
 
                 <div className="mt-2">
-                  <p className="flex justify-between"><strong>Principal Systems Engineer & Developer</strong> <span>January 2002 – Present</span></p>
-                  <p className="italic text-sm">BlueDot IT (The Realms Beyond) — Lenoir, NC</p>
+                  <p className="flex justify-between"><strong>Technical/Cybersecurity Consultant / Owner</strong> <span>January 2026 – Present</span></p>
+                  <p className="italic text-sm">BlueDot IT — Lenoir, NC</p>
                   <ul className="list-disc pl-5 mt-1 space-y-1">
-                    <li>Deliver custom IT foundations and application development for 20+ diverse clients.</li>
-                    <li>Design and maintain secure production environments with 99.9% uptime targets.</li>
-                    <li>Automate complex workflows via custom tooling and intelligent agent integration.</li>
-                    <li>Provide security audits, vulnerability remediation, and infrastructure hardening.</li>
+                    <li>Founded and launched a cybersecurity-focused consultancy delivering secure infrastructure design, web application hardening, and network defense services.</li>
+                    <li>Architect and deploy hardened Linux/NGINX environments with SSH, firewall, and access control enforcement.</li>
+                    <li>Lead full lifecycle development of secure web applications, from database schema design to production-grade deployment and monitoring.</li>
+                    <li>Provide small-business security assessments, remediation planning, and risk reduction strategies.</li>
                   </ul>
                 </div>
 
                 <div className="mt-4">
-                  <p className="flex justify-between"><strong>Customer Support Representative</strong> <span>March 2009 – December 2010</span></p>
-                  <p className="italic text-sm">Convergys — Hickory, NC</p>
+                  <p className="flex justify-between"><strong>Independent Technical Consultant</strong> <span>January 2002 – December 2025</span></p>
+                  <p className="italic text-sm">Lenoir, NC</p>
                   <ul className="list-disc pl-5 mt-1 space-y-1">
-                    <li>Resolved Tier 1 and Tier 2 connectivity and device configuration issues.</li>
-                    <li>Optimized documentation and troubleshooting procedures for mobile hardware.</li>
+                    <li>Designed, deployed, and maintained Linux-based infrastructure with continuous uptime, patch management, and access control enforcement.</li>
+                    <li>Built custom web applications and automation tooling for independent clients, emphasizing secure coding and maintainable architecture.</li>
+                    <li>Managed long-term hosting, backups, and system resilience across self-administered environments.</li>
                   </ul>
                 </div>
 
                 <div className="mt-4">
-                  <p className="flex justify-between"><strong>Technical Support & Retention</strong> <span>June 2005 – December 2005</span></p>
-                  <p className="italic text-sm">ClientLogic — Asheville, NC</p>
+                  <p className="flex justify-between"><strong>PSE Mail Processing Clerk</strong> <span>September 2023 – February 2025</span></p>
+                  <p className="italic text-sm">United States Postal Service — Lenoir, NC</p>
                   <ul className="list-disc pl-5 mt-1 space-y-1">
-                    <li>Performed technical troubleshooting for ISP services and local network configurations.</li>
+                    <li>Managed high-volume logistics and time-sensitive processing in a high-pressure environment.</li>
+                  </ul>
+                </div>
+
+                <div className="mt-4">
+                  <p className="flex justify-between"><strong>Security Guard</strong> <span>April 2021 – August 2022</span></p>
+                  <p className="italic text-sm">AgTac / Allied Universal — Lenoir, NC</p>
+                  <ul className="list-disc pl-5 mt-1 space-y-1">
+                    <li>Monitored industrial and commercial perimeters; reported suspicious activity and maintained detailed incident logs.</li>
                   </ul>
                 </div>
               </section>
@@ -109,16 +113,23 @@ export default function ResumePage() {
                 <h3 className="font-semibold uppercase border-b">Selected Projects</h3>
 
                 <div className="mt-2">
-                  <p><strong>ExploitRank (EIE)</strong> | Intelligence Engine</p>
+                  <p><strong>Pentest-Agent</strong> | Python, Kali Linux, AI Orchestration</p>
                   <ul className="list-disc pl-5 mt-1 space-y-1">
-                    <li>Automated pipeline for vulnerability ingestion (NVD), GitHub exploit discovery, and ERS scoring.</li>
+                    <li>Architected a modular, AI-assisted red-team framework that automates reconnaissance and vulnerability discovery.</li>
                   </ul>
                 </div>
 
                 <div className="mt-3">
-                  <p><strong>BlueDot IT Platform</strong> | Next.js Portfolio & Service Delivery</p>
+                  <p><strong>GhostMCP</strong> | Python, MCP Protocol, Cybersecurity Tooling</p>
                   <ul className="list-disc pl-5 mt-1 space-y-1">
-                    <li>Persona-driven business platform featuring automated builds and secure delivery pipelines.</li>
+                    <li>Developed a production-ready Model Context Protocol (MCP) server providing AI agents with high-integrity cybersecurity tools.</li>
+                  </ul>
+                </div>
+
+                <div className="mt-3">
+                  <p><strong>Sentry-Flow</strong> | Python, Threat Intelligence</p>
+                  <ul className="list-disc pl-5 mt-1 space-y-1">
+                    <li>Built a threat intelligence sharing platform to collect, normalize, and score Indicators of Compromise (IOCs).</li>
                   </ul>
                 </div>
               </section>
@@ -128,53 +139,19 @@ export default function ResumePage() {
                 <h3 className="font-semibold uppercase border-b">Education</h3>
                 <p className="mt-2">
                   <strong>B.S. in Cybersecurity</strong><br />
-                  DeVry University Online (Expected 2026)
+                  DeVry University Online (Expected 2027)
                 </p>
-                <p className="mt-2 text-sm italic">
+                <p className="mt-1">
+                  <strong>A.S. in Cybersecurity</strong><br />
+                  DeVry University Online (Expected Oct 2026)
+                </p>
+                <p className="mt-1 text-sm italic">
                   *Undergraduate Certificate in IT Essentials Completed Dec 2025.
                 </p>
               </section>
 
             </CardContent>
           </Card>
-
-          {/* PDF PREVIEW (screen only) */}
-          <section className="print:hidden">
-            <Card className="p-6">
-              <CardContent className="p-0 space-y-3">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 className="text-lg font-semibold">Latest Resume (PDF)</h3>
-                    <p className="text-sm text-base-content/70">Mirroring the latest Jason_ONeal_Resume_2026.pdf version.</p>
-                  </div>
-                  <a
-                    href="/resume.pdf"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-sm font-medium underline"
-                  >
-                    Open in tab
-                  </a>
-                </div>
-
-                <div className="overflow-hidden rounded-lg border border-base-300 bg-base-100">
-                  <object
-                    data="/resume.pdf"
-                    type="application/pdf"
-                    className="h-[80vh] w-full"
-                    aria-label="Resume PDF preview"
-                  >
-                    <div className="p-4 text-sm text-center">
-                      <p className="mb-4">PDF preview not available in this browser.</p>
-                      <a href="/resume.pdf" className="btn btn-primary">
-                        Download Latest Resume
-                      </a>
-                    </div>
-                  </object>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
 
           {/* PRINT NORMALIZATION */}
           <style jsx global>{`
