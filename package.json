@@ -7,6 +7,7 @@
     "build": "next build && ./scripts/fix-css.sh",
     "start": "next start",
     "lint": "eslint",
+    "verify:ai-indexing": "node scripts/verify-ai-indexing.mjs",
     "optimize": "tsx scripts/optimize-images.ts"
   },
   "prisma": {

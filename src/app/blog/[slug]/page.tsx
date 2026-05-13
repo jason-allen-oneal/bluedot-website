@@ -75,24 +75,30 @@ export default async function PostPage({
 
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    '@type': 'Article',
     headline: post.title,
-    description: post.excerpt,
-    datePublished: post. createdAt.toISOString(),
+    description: post.excerpt || post.title,
+    datePublished: post.createdAt.toISOString(),
     dateModified: post.updatedAt?.toISOString() || post.createdAt.toISOString(),
     author: {
       '@type': 'Person',
       name: 'Jason O\'Neal',
-      url: 'https://bluedot.it.com/about'
+      url: 'https://bluedot.it.com/about',
     },
     publisher: {
-      '@type': 'Person',
-      name: 'Jason O\'Neal'
+      '@type': 'Organization',
+      '@id': 'https://bluedot.it.com/#organization',
+      name: 'BlueDot IT',
+      url: 'https://bluedot.it.com/',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://bluedot.it.com/bluedot-logo.png',
+      },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://bluedot.it.com/blog/${slug}`
-    }
+      '@id': `https://bluedot.it.com/blog/${slug}`,
+    },
   }
 
   const mdxSource = await serialize(post.content)

@@ -98,7 +98,7 @@ export default function ContactForm() {
     {
       icon: Mail,
       label: "Email",
-      value:  "jason@bluedot.it. com",
+      value: "jason@bluedot.it.com",
       href: "mailto:jason@bluedot.it.com",
       color: "text-primary",
     },
