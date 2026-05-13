@@ -3,6 +3,16 @@ import { Card } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/Reveal";
 
+const dedicatedServices = [
+  { title: "Security reviews", href: "/services/security-reviews" },
+  { title: "Server hardening", href: "/services/server-hardening" },
+  { title: "Next.js security hardening", href: "/services/nextjs-security-hardening" },
+  { title: "Workflow automation", href: "/services/workflow-automation" },
+  { title: "MCP security consulting", href: "/services/mcp-security-consulting" },
+  { title: "Small business websites", href: "/services/small-business-websites" },
+  { title: "AI security tooling", href: "/services/ai-security-tooling" },
+];
+
 const groups = [
   {
     id: "startups",
@@ -71,6 +81,26 @@ export default function ServicesPage() {
           <p className="text-xl text-base-content/80">
             Hardened systems and secure delivery workflows tailored to your scale.
           </p>
+        </section>
+      </Reveal>
+
+      <Reveal>
+        <section className="space-y-6">
+          <div className="space-y-2 text-center">
+            <h2 className="text-3xl font-bold">Dedicated service pages</h2>
+            <p className="text-base-content/70">Specific pages for the work people and answer engines ask about most often.</p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {dedicatedServices.map((service) => (
+              <Link
+                key={service.href}
+                href={service.href}
+                className="rounded-2xl border border-white/10 bg-white/5 p-5 font-semibold hover:bg-white/10 transition-colors"
+              >
+                {service.title}
+              </Link>
+            ))}
+          </div>
         </section>
       </Reveal>
 
