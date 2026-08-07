@@ -15,21 +15,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      DATABASE_URL: mysql://root:ci-root@127.0.0.1:3306/bluedot_ci
+      DATABASE_URL: mysql://root@127.0.0.1:3306/bluedot_ci
       NEXTAUTH_URL: http://localhost:3000
-      NEXTAUTH_SECRET: ci-only-nextauth-secret
       ADMIN_EMAIL: admin@example.com
       RATE_LIMIT_IP_HEADER: x-forwarded-for
     services:
       mysql:
         image: mysql@sha256:b3b90af2a6552ae30c266fdb7d5dd55f3afb72404bb78d37fe8a23eb857fd3fb # 8.4
         env:
-          MYSQL_ROOT_PASSWORD: ci-root
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
           MYSQL_DATABASE: bluedot_ci
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -pci-root --silent"
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot --silent"
           --health-interval=5s
           --health-timeout=5s
           --health-retries=20
@@ -39,6 +38,10 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
+
+      - name: Generate ephemeral CI secret
+        shell: bash
+        run: echo "NEXTAUTH_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
 
       - name: Setup Node.js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
